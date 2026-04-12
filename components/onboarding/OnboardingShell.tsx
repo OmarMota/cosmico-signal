@@ -97,10 +97,7 @@ export function OnboardingShell({
         {/* Footer actions */}
         <div className="mt-8 flex items-center justify-between">
           {currentStep > 1 ? (
-            <button
-              onClick={onBack}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors px-2 py-1"
-            >
+            <button onClick={onBack} className="btn-ghost">
               ← Back
             </button>
           ) : <div />}
@@ -108,12 +105,7 @@ export function OnboardingShell({
           <button
             onClick={onNext}
             disabled={!canProceed || isLoading}
-            className={cn(
-              'rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-200',
-              canProceed && !isLoading
-                ? 'bg-signal text-white hover:bg-signal/90 shadow-lg shadow-signal/25'
-                : 'bg-muted text-muted-foreground cursor-not-allowed opacity-50'
-            )}
+            className="btn-signal"
           >
             {isLoading ? 'Saving…' : isLast ? 'Launch My Signal ✦' : 'Continue →'}
           </button>

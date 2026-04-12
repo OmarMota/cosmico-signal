@@ -1,0 +1,363 @@
+import type {
+  SignalProfile,
+  SignalAggregate,
+  TrajectorySnapshot,
+  TrajectoryMilestone,
+  LearningRecommendation,
+  Opportunity,
+} from '@/lib/types/signal.types'
+
+function weekAgo(n: number): string {
+  const d = new Date()
+  d.setDate(d.getDate() - n * 7)
+  return d.toISOString().split('T')[0]
+}
+
+// ─── Signal ───────────────────────────────────────────────────────────────────
+
+export const MOCK_SIGNAL: SignalProfile = {
+  reliability:    81.5,
+  performance:    74.2,
+  responsiveness: 68.0,
+  feedback:       77.8,
+  growth:         62.4,
+  composite_score: 74.8,
+  score_trend:    'rising',
+  percentile_rank: 82,
+}
+
+export const MOCK_HISTORY: SignalAggregate[] = [
+  { id: 'a1',  week_start: weekAgo(11), reliability: 60.0, performance: 55.0, responsiveness: 52.5, feedback: 57.0, growth: 43.0, composite_score: 55.6, event_count: 5 },
+  { id: 'a2',  week_start: weekAgo(10), reliability: 62.0, performance: 57.0, responsiveness: 54.0, feedback: 59.5, growth: 44.5, composite_score: 57.5, event_count: 3 },
+  { id: 'a3',  week_start: weekAgo(9),  reliability: 64.0, performance: 58.5, responsiveness: 55.5, feedback: 61.0, growth: 46.0, composite_score: 59.2, event_count: 6 },
+  { id: 'a4',  week_start: weekAgo(8),  reliability: 66.0, performance: 60.0, responsiveness: 57.0, feedback: 63.0, growth: 48.0, composite_score: 61.0, event_count: 5 },
+  { id: 'a5',  week_start: weekAgo(7),  reliability: 68.0, performance: 62.5, responsiveness: 58.5, feedback: 65.0, growth: 49.5, composite_score: 62.8, event_count: 7 },
+  { id: 'a6',  week_start: weekAgo(6),  reliability: 70.5, performance: 64.0, responsiveness: 60.0, feedback: 67.0, growth: 51.5, composite_score: 64.8, event_count: 4 },
+  { id: 'a7',  week_start: weekAgo(5),  reliability: 73.0, performance: 66.5, responsiveness: 62.0, feedback: 69.5, growth: 53.0, composite_score: 67.0, event_count: 6 },
+  { id: 'a8',  week_start: weekAgo(4),  reliability: 75.0, performance: 68.0, responsiveness: 63.5, feedback: 71.0, growth: 55.0, composite_score: 68.5, event_count: 9 },
+  { id: 'a9',  week_start: weekAgo(3),  reliability: 77.5, performance: 69.8, responsiveness: 65.0, feedback: 73.0, growth: 57.5, composite_score: 70.5, event_count: 5 },
+  { id: 'a10', week_start: weekAgo(2),  reliability: 79.0, performance: 71.0, responsiveness: 66.5, feedback: 74.5, growth: 59.0, composite_score: 72.0, event_count: 7 },
+  { id: 'a11', week_start: weekAgo(1),  reliability: 80.0, performance: 72.5, responsiveness: 67.0, feedback: 76.2, growth: 60.0, composite_score: 73.1, event_count: 6 },
+  { id: 'a12', week_start: weekAgo(0),  reliability: 81.5, performance: 74.2, responsiveness: 68.0, feedback: 77.8, growth: 62.4, composite_score: 74.8, event_count: 8 },
+]
+
+// ─── Trajectory ───────────────────────────────────────────────────────────────
+
+export const MOCK_TRAJECTORY: TrajectorySnapshot = {
+  current_phase:   'specializing',
+  growth_velocity: 0.38,
+  momentum_score:  0.72,
+  detected_patterns: [
+    {
+      type: 'technical_deepening',
+      confidence: 0.84,
+      evidence: [
+        'Growth dimension rising for 8 consecutive weeks',
+        'Performance consistently above 65 this quarter',
+        'New technical skills added in recent months',
+      ],
+    },
+    {
+      type: 'reliability_building',
+      confidence: 0.91,
+      evidence: ['7 consecutive weeks with reliability above 75'],
+    },
+    {
+      type: 'specialization',
+      confidence: 0.72,
+      evidence: [
+        'Reliability significantly above all other dimensions',
+        'Focused skill pattern detected in signal events',
+      ],
+    },
+  ],
+  role_predictions: [
+    { role: 'Tech Lead',          confidence: 0.55, timeframe_months: 8  },
+    { role: 'Staff Engineer',     confidence: 0.71, timeframe_months: 14 },
+    { role: 'Principal Engineer', confidence: 0.42, timeframe_months: 28 },
+  ],
+}
+
+export const MOCK_MILESTONES: TrajectoryMilestone[] = [
+  {
+    id: 'm3',
+    title: 'Entered Specializing phase',
+    description: 'Signal patterns shifted from Building to Specializing',
+    achieved_at: weekAgo(5),
+  },
+  {
+    id: 'm2',
+    title: 'Reliability Streak',
+    description: '6 consecutive weeks with reliability above 75',
+    achieved_at: weekAgo(1),
+  },
+  {
+    id: 'm1',
+    title: 'Signal crossed 70',
+    description: 'Composite signal exceeded 70 for the first time',
+    achieved_at: weekAgo(3),
+  },
+]
+
+// ─── Learning ─────────────────────────────────────────────────────────────────
+
+export const MOCK_LEARNING: LearningRecommendation[] = [
+  {
+    id: 'r1',
+    content_id: 'lc2',
+    reason_type: 'trajectory_aligned',
+    reason_text: 'Required for your next role: systems design',
+    fit_score: 92,
+    content: {
+      id: 'lc2',
+      title: 'Systems Thinking for Technical Leaders',
+      content_type: 'course',
+      duration_minutes: 360,
+      price_usd: 99,
+      signal_dimension: 'growth',
+      short_description: 'The mental models that separate staff engineers from senior ones.',
+      skill_tags: ['systems thinking', 'leadership', 'architecture'],
+      quality_score: 0.93,
+    },
+  },
+  {
+    id: 'r2',
+    content_id: 'lc3',
+    reason_type: 'signal_gap',
+    reason_text: 'Improves your responsiveness signal',
+    fit_score: 78,
+    content: {
+      id: 'lc3',
+      title: 'Mastering Client Communication',
+      content_type: 'video',
+      duration_minutes: 30,
+      price_usd: 0,
+      signal_dimension: 'responsiveness',
+      short_description: 'Frameworks for fast, clear, and trustworthy client communication.',
+      skill_tags: ['communication', 'client relations'],
+      quality_score: 0.85,
+    },
+  },
+  {
+    id: 'r3',
+    content_id: 'lc8',
+    reason_type: 'intent_support',
+    reason_text: 'Supports your goal: advance to Staff Engineer',
+    fit_score: 85,
+    content: {
+      id: 'lc8',
+      title: 'Building Your Technical Trajectory',
+      content_type: 'course',
+      duration_minutes: 180,
+      price_usd: 0,
+      signal_dimension: 'growth',
+      short_description: 'A structured path from competent to exceptional.',
+      skill_tags: ['career growth', 'learning', 'specialization'],
+      quality_score: 0.88,
+    },
+  },
+  {
+    id: 'r4',
+    content_id: 'lc6',
+    reason_type: 'intent_support',
+    reason_text: 'Supports your goal: increase your rate',
+    fit_score: 74,
+    content: {
+      id: 'lc6',
+      title: "The Freelancer's Rate Negotiation Playbook",
+      content_type: 'video',
+      duration_minutes: 60,
+      price_usd: 0,
+      signal_dimension: 'feedback',
+      short_description: 'How to raise your rates without losing clients.',
+      skill_tags: ['negotiation', 'pricing', 'business'],
+      quality_score: 0.89,
+    },
+  },
+  {
+    id: 'r5',
+    content_id: 'lc7',
+    reason_type: 'signal_gap',
+    reason_text: 'Strengthens your performance signal',
+    fit_score: 70,
+    content: {
+      id: 'lc7',
+      title: 'Performance Under Pressure',
+      content_type: 'video',
+      duration_minutes: 45,
+      price_usd: 0,
+      signal_dimension: 'performance',
+      short_description: 'How to maintain output quality during tight timelines.',
+      skill_tags: ['performance', 'execution', 'focus'],
+      quality_score: 0.87,
+    },
+  },
+  {
+    id: 'r6',
+    content_id: 'lc5',
+    reason_type: 'trajectory_aligned',
+    reason_text: 'Deepens your frontend specialization',
+    fit_score: 68,
+    content: {
+      id: 'lc5',
+      title: 'Advanced React Patterns',
+      content_type: 'course',
+      duration_minutes: 240,
+      price_usd: 49,
+      signal_dimension: 'growth',
+      short_description: 'Compound components, render props, and custom hook architectures.',
+      skill_tags: ['react', 'javascript', 'frontend'],
+      quality_score: 0.92,
+    },
+  },
+]
+
+// ─── Opportunities ────────────────────────────────────────────────────────────
+
+export const MOCK_OPPORTUNITIES: Opportunity[] = [
+  {
+    id: 'o1',
+    title: 'Senior Frontend Engineer',
+    company_name: 'Acme SaaS',
+    description: 'Build and own the frontend of our B2B dashboard. React + TypeScript, design system ownership, collaborate closely with product and design.',
+    opportunity_type: 'contract',
+    required_skills: ['React', 'TypeScript', 'CSS'],
+    preferred_skills: ['Next.js', 'Tailwind', 'Figma'],
+    seniority_level: 'Senior',
+    rate_min: 120,
+    rate_max: 160,
+    currency: 'USD',
+    remote_policy: 'remote',
+    posted_at: weekAgo(1),
+    fit: {
+      fit_score: 91,
+      skill_match: 95,
+      signal_match: 82,
+      trajectory_match: 88,
+      rate_match: 90,
+      breakdown: {
+        matching_skills: ['React', 'TypeScript', 'CSS'],
+        missing_skills: [],
+        signal_notes: 'Composite 74.8 — strong match',
+        trajectory_notes: 'Aligned with Senior trajectory',
+        rate_notes: 'Rate within your range',
+      },
+    },
+  },
+  {
+    id: 'o2',
+    title: 'Staff Engineer — Platform',
+    company_name: 'Scale Inc',
+    description: 'Architect and lead our platform modernization. You will mentor 4 engineers and define the technical roadmap for the next 18 months.',
+    opportunity_type: 'full_time',
+    required_skills: ['Systems Design', 'Mentoring', 'Architecture'],
+    preferred_skills: ['TypeScript', 'Distributed Systems'],
+    seniority_level: 'Staff',
+    rate_min: 160,
+    rate_max: 200,
+    currency: 'USD',
+    remote_policy: 'remote',
+    posted_at: weekAgo(0),
+    fit: {
+      fit_score: 62,
+      skill_match: 45,
+      signal_match: 78,
+      trajectory_match: 85,
+      rate_match: 72,
+      breakdown: {
+        matching_skills: [],
+        missing_skills: ['Systems Design', 'Mentoring', 'Architecture'],
+        signal_notes: 'Good signal for growth trajectory',
+        trajectory_notes: 'On the path to Staff — 14 months out',
+        rate_notes: 'Above your current range',
+      },
+    },
+  },
+  {
+    id: 'o3',
+    title: 'Full-Stack Engineer — Early Stage',
+    company_name: 'Stealth AI',
+    description: 'Build 0→1 as the first engineering hire. Own frontend and backend. Huge opportunity for ownership and equity.',
+    opportunity_type: 'full_time',
+    required_skills: ['React', 'Node.js', 'PostgreSQL'],
+    preferred_skills: ['Next.js', 'TypeScript'],
+    seniority_level: 'Mid',
+    rate_min: 80,
+    rate_max: 120,
+    currency: 'USD',
+    remote_policy: 'remote',
+    posted_at: weekAgo(2),
+    fit: {
+      fit_score: 79,
+      skill_match: 80,
+      signal_match: 74,
+      trajectory_match: 60,
+      rate_match: 70,
+      breakdown: {
+        matching_skills: ['React', 'PostgreSQL'],
+        missing_skills: ['Node.js (primary)'],
+        signal_notes: 'Strong composite signal',
+        trajectory_notes: 'Below current trajectory target',
+        rate_notes: 'Below your preferred range',
+      },
+    },
+  },
+  {
+    id: 'o5',
+    title: 'Tech Lead — Consumer Product',
+    company_name: 'Vibe Corp',
+    description: 'Lead a team of 3 engineers building a consumer app used by 200k+ users. Own technical direction and code quality.',
+    opportunity_type: 'full_time',
+    required_skills: ['React', 'TypeScript', 'Leadership'],
+    preferred_skills: ['Next.js', 'Product Thinking'],
+    seniority_level: 'Senior',
+    rate_min: 130,
+    rate_max: 170,
+    currency: 'USD',
+    remote_policy: 'hybrid',
+    posted_at: weekAgo(0),
+    fit: {
+      fit_score: 74,
+      skill_match: 75,
+      signal_match: 78,
+      trajectory_match: 82,
+      rate_match: 75,
+      breakdown: {
+        matching_skills: ['React', 'TypeScript'],
+        missing_skills: ['Leadership (formal)'],
+        signal_notes: 'Rising signal trend — good timing',
+        trajectory_notes: 'Tech Lead is in your role predictions',
+        rate_notes: 'Slightly above your range',
+      },
+    },
+  },
+  {
+    id: 'o4',
+    title: 'Frontend Consultant — Design System',
+    company_name: 'Flux Agency',
+    description: 'Audit and rebuild our design system used across 4 client projects. 3-month engagement, potential extension.',
+    opportunity_type: 'freelance',
+    required_skills: ['React', 'Design Systems', 'CSS'],
+    preferred_skills: ['Figma', 'Accessibility', 'Storybook'],
+    seniority_level: 'Senior',
+    rate_min: 100,
+    rate_max: 140,
+    currency: 'USD',
+    remote_policy: 'remote',
+    posted_at: weekAgo(1),
+    fit: {
+      fit_score: 85,
+      skill_match: 88,
+      signal_match: 80,
+      trajectory_match: 72,
+      rate_match: 88,
+      breakdown: {
+        matching_skills: ['React', 'CSS', 'Design Systems'],
+        missing_skills: [],
+        signal_notes: 'Strong reliability and performance',
+        trajectory_notes: 'Aligned with specialization phase',
+        rate_notes: 'Compatible with your range',
+      },
+    },
+  },
+]

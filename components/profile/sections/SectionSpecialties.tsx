@@ -157,7 +157,7 @@ export function SectionSpecialties() {
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="rounded-xl px-5 py-2.5 text-sm font-semibold bg-signal text-white hover:bg-signal/90 shadow-lg shadow-signal/20 transition-all disabled:opacity-50"
+          className="btn-signal"
         >
           {isSaving ? 'Saving…' : 'Save changes'}
         </button>

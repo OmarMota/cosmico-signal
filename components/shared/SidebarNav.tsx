@@ -2,14 +2,18 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useRef } from 'react'
-import { Zap, LayoutDashboard, User, LogOut } from 'lucide-react'
+import { Zap, LayoutDashboard, User, LogOut, Radio, TrendingUp, BookOpen, Briefcase } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/lib/stores/auth.store'
 import { useSidebarReveal } from '@/lib/gsap/hooks'
 
 const NAV_ITEMS = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/profile',   label: 'Profile',   icon: User },
+  { href: '/dashboard',    label: 'Dashboard',    icon: LayoutDashboard },
+  { href: '/signal',       label: 'My Signal',    icon: Radio },
+  { href: '/trajectory',   label: 'Trajectory',   icon: TrendingUp },
+  { href: '/learn',        label: 'Learn',        icon: BookOpen },
+  { href: '/opportunities',label: 'Opportunities',icon: Briefcase },
+  { href: '/profile',      label: 'Profile',      icon: User },
 ]
 
 export function SidebarNav() {

@@ -240,9 +240,14 @@ function StepSkills({ data, onChange }: { data: any; onChange: (d: any) => void 
   const skills: Skill[] = data.skills ?? []
 
   function addSkill() {
-    const name = input.trim()
-    if (!name || skills.find(s => s.name.toLowerCase() === name.toLowerCase())) return
-    onChange({ ...data, skills: [...skills, { name, proficiency: 3, category: 'technical' }] })
+    // Split on commas and semicolons, trim each, deduplicate
+    const names = input.split(/[,;]+/).map(s => s.trim()).filter(Boolean)
+    if (names.length === 0) return
+    const newSkills = names
+      .filter(name => !skills.find(s => s.name.toLowerCase() === name.toLowerCase()))
+      .map(name => ({ name, proficiency: 3, category: 'technical' as const }))
+    if (newSkills.length === 0) return
+    onChange({ ...data, skills: [...skills, ...newSkills] })
     setInput('')
   }
 
