@@ -1,0 +1,352 @@
+{
+  "$schema": "https://javier.design/w3c-design-tokens",
+  "meta": {
+    "name": "Cosmico Signal",
+    "version": "1.0.0",
+    "description": "Design tokens for Cosmico Signal — dark-mode enforced. Brand: signal (violet), trajectory (purple), intent (magenta). Synced with globals.css CSS variables."
+  },
+
+  "color": {
+    "brand": {
+      "signal": {
+        "$value": "hsl(263, 70%, 62%)",
+        "$type": "color",
+        "$description": "Primary brand violet — used for CTAs, active states, highlights"
+      },
+      "signal-light": {
+        "$value": "hsl(263, 70%, 72%)",
+        "$type": "color",
+        "$description": "Lighter signal violet for text on dark backgrounds"
+      },
+      "signal-muted": {
+        "$value": "hsla(263, 70%, 62%, 0.10)",
+        "$type": "color",
+        "$description": "Signal violet at 10% opacity — chip backgrounds, selected states"
+      },
+      "signal-border": {
+        "$value": "hsla(263, 70%, 62%, 0.30)",
+        "$type": "color",
+        "$description": "Signal violet at 30% opacity — selected borders"
+      },
+      "signal-glow": {
+        "$value": "hsla(263, 70%, 62%, 0.20)",
+        "$type": "color",
+        "$description": "Signal violet glow for box-shadow"
+      },
+      "trajectory": {
+        "$value": "hsl(275, 60%, 58%)",
+        "$type": "color",
+        "$description": "Secondary brand purple — trajectory, progress indicators"
+      },
+      "trajectory-muted": {
+        "$value": "hsla(275, 60%, 58%, 0.10)",
+        "$type": "color",
+        "$description": "Trajectory purple at 10% opacity"
+      },
+      "intent": {
+        "$value": "hsl(290, 65%, 60%)",
+        "$type": "color",
+        "$description": "Tertiary brand magenta — goals, intent indicators"
+      },
+      "intent-muted": {
+        "$value": "hsla(290, 65%, 60%, 0.10)",
+        "$type": "color",
+        "$description": "Intent magenta at 10% opacity"
+      }
+    },
+
+    "semantic": {
+      "background": {
+        "$value": "hsl(224, 20%, 6%)",
+        "$type": "color",
+        "$description": "Page background — deep dark navy"
+      },
+      "foreground": {
+        "$value": "hsl(210, 20%, 92%)",
+        "$type": "color",
+        "$description": "Primary text color"
+      },
+      "card": {
+        "$value": "hsl(224, 18%, 9%)",
+        "$type": "color",
+        "$description": "Card / panel surface"
+      },
+      "card-foreground": {
+        "$value": "hsl(210, 20%, 92%)",
+        "$type": "color",
+        "$description": "Text on card surfaces"
+      },
+      "popover": {
+        "$value": "hsl(224, 18%, 9%)",
+        "$type": "color",
+        "$description": "Popover / dropdown surface"
+      },
+      "popover-foreground": {
+        "$value": "hsl(210, 20%, 92%)",
+        "$type": "color",
+        "$description": "Text on popovers"
+      },
+      "primary": {
+        "$value": "hsl(263, 70%, 62%)",
+        "$type": "color",
+        "$description": "Primary interactive color — same as signal"
+      },
+      "primary-foreground": {
+        "$value": "hsl(0, 0%, 100%)",
+        "$type": "color",
+        "$description": "Text on primary backgrounds"
+      },
+      "secondary": {
+        "$value": "hsl(224, 15%, 14%)",
+        "$type": "color",
+        "$description": "Secondary surface — slightly lighter than card"
+      },
+      "secondary-foreground": {
+        "$value": "hsl(210, 20%, 75%)",
+        "$type": "color",
+        "$description": "Text on secondary surfaces"
+      },
+      "muted": {
+        "$value": "hsl(224, 15%, 14%)",
+        "$type": "color",
+        "$description": "Muted background for inactive / disabled areas"
+      },
+      "muted-foreground": {
+        "$value": "hsl(218, 10%, 50%)",
+        "$type": "color",
+        "$description": "Subdued text — labels, hints, placeholders"
+      },
+      "accent": {
+        "$value": "hsl(224, 15%, 16%)",
+        "$type": "color",
+        "$description": "Accent surface — hover states, subtle highlights"
+      },
+      "accent-foreground": {
+        "$value": "hsl(210, 20%, 85%)",
+        "$type": "color",
+        "$description": "Text on accent surfaces"
+      },
+      "destructive": {
+        "$value": "hsl(0, 62%, 50%)",
+        "$type": "color",
+        "$description": "Error / destructive actions"
+      },
+      "destructive-foreground": {
+        "$value": "hsl(0, 0%, 100%)",
+        "$type": "color",
+        "$description": "Text on destructive backgrounds"
+      },
+      "border": {
+        "$value": "hsl(224, 12%, 18%)",
+        "$type": "color",
+        "$description": "Default border color"
+      },
+      "input": {
+        "$value": "hsl(224, 12%, 18%)",
+        "$type": "color",
+        "$description": "Input field border/background"
+      },
+      "ring": {
+        "$value": "hsl(263, 70%, 62%)",
+        "$type": "color",
+        "$description": "Focus ring color"
+      }
+    },
+
+    "status": {
+      "available": {
+        "$value": "hsl(142, 71%, 45%)",
+        "$type": "color",
+        "$description": "Available now — emerald green"
+      },
+      "open": {
+        "$value": "hsl(38, 92%, 50%)",
+        "$type": "color",
+        "$description": "Open to work — amber"
+      },
+      "unavailable": {
+        "$value": "hsl(220, 9%, 46%)",
+        "$type": "color",
+        "$description": "Not available — neutral gray"
+      },
+      "success": {
+        "$value": "hsl(142, 71%, 45%)",
+        "$type": "color",
+        "$description": "Success state"
+      },
+      "warning": {
+        "$value": "hsl(38, 92%, 50%)",
+        "$type": "color",
+        "$description": "Warning state"
+      },
+      "error": {
+        "$value": "hsl(0, 62%, 50%)",
+        "$type": "color",
+        "$description": "Error state"
+      }
+    },
+
+    "glow": {
+      "signal": {
+        "$value": "0 0 40px hsla(263, 70%, 62%, 0.15), 0 0 80px hsla(263, 70%, 62%, 0.05)",
+        "$type": "shadow",
+        "$description": "Signal violet ambient glow"
+      },
+      "trajectory": {
+        "$value": "0 0 40px hsla(275, 60%, 58%, 0.15), 0 0 80px hsla(275, 60%, 58%, 0.05)",
+        "$type": "shadow",
+        "$description": "Trajectory purple ambient glow"
+      },
+      "emerald": {
+        "$value": "0 0 24px hsla(142, 71%, 45%, 0.20)",
+        "$type": "shadow",
+        "$description": "Available status glow"
+      },
+      "card": {
+        "$value": "0 25px 50px -12px hsla(263, 70%, 62%, 0.05)",
+        "$type": "shadow",
+        "$description": "Subtle card shadow with violet tint"
+      }
+    }
+  },
+
+  "typography": {
+    "fontFamily": {
+      "sans": {
+        "$value": "Inter, ui-sans-serif, system-ui, sans-serif",
+        "$type": "fontFamily",
+        "$description": "Primary UI font"
+      },
+      "mono": {
+        "$value": "Geist Mono, ui-monospace, monospace",
+        "$type": "fontFamily",
+        "$description": "Code and numeric display font"
+      }
+    },
+    "fontSize": {
+      "xs":   { "$value": "0.75rem",   "$type": "dimension", "$description": "12px" },
+      "sm":   { "$value": "0.875rem",  "$type": "dimension", "$description": "14px" },
+      "base": { "$value": "1rem",      "$type": "dimension", "$description": "16px" },
+      "lg":   { "$value": "1.125rem",  "$type": "dimension", "$description": "18px" },
+      "xl":   { "$value": "1.25rem",   "$type": "dimension", "$description": "20px" },
+      "2xl":  { "$value": "1.5rem",    "$type": "dimension", "$description": "24px" },
+      "3xl":  { "$value": "1.875rem",  "$type": "dimension", "$description": "30px" },
+      "4xl":  { "$value": "2.25rem",   "$type": "dimension", "$description": "36px" }
+    },
+    "fontWeight": {
+      "normal":   { "$value": "400", "$type": "fontWeight" },
+      "medium":   { "$value": "500", "$type": "fontWeight" },
+      "semibold": { "$value": "600", "$type": "fontWeight" },
+      "bold":     { "$value": "700", "$type": "fontWeight" }
+    },
+    "lineHeight": {
+      "tight":   { "$value": "1.25", "$type": "number" },
+      "snug":    { "$value": "1.375", "$type": "number" },
+      "normal":  { "$value": "1.5", "$type": "number" },
+      "relaxed": { "$value": "1.625", "$type": "number" }
+    },
+    "letterSpacing": {
+      "tighter": { "$value": "-0.05em", "$type": "dimension" },
+      "tight":   { "$value": "-0.025em", "$type": "dimension" },
+      "normal":  { "$value": "0em", "$type": "dimension" },
+      "wide":    { "$value": "0.025em", "$type": "dimension" },
+      "widest":  { "$value": "0.1em", "$type": "dimension" }
+    }
+  },
+
+  "spacing": {
+    "0":  { "$value": "0px",     "$type": "dimension" },
+    "1":  { "$value": "4px",     "$type": "dimension" },
+    "2":  { "$value": "8px",     "$type": "dimension" },
+    "3":  { "$value": "12px",    "$type": "dimension" },
+    "4":  { "$value": "16px",    "$type": "dimension" },
+    "5":  { "$value": "20px",    "$type": "dimension" },
+    "6":  { "$value": "24px",    "$type": "dimension" },
+    "8":  { "$value": "32px",    "$type": "dimension" },
+    "10": { "$value": "40px",    "$type": "dimension" },
+    "12": { "$value": "48px",    "$type": "dimension" },
+    "16": { "$value": "64px",    "$type": "dimension" },
+    "20": { "$value": "80px",    "$type": "dimension" },
+    "24": { "$value": "96px",    "$type": "dimension" }
+  },
+
+  "borderRadius": {
+    "sm":   { "$value": "6px",   "$type": "dimension", "$description": "Small — checkboxes, badges" },
+    "md":   { "$value": "8px",   "$type": "dimension", "$description": "Medium — inputs, small buttons" },
+    "lg":   { "$value": "12px",  "$type": "dimension", "$description": "Default — buttons, chips" },
+    "xl":   { "$value": "16px",  "$type": "dimension", "$description": "Cards, panels" },
+    "2xl":  { "$value": "20px",  "$type": "dimension", "$description": "Large cards, modals" },
+    "full": { "$value": "9999px","$type": "dimension", "$description": "Pills, toggles, avatars" }
+  },
+
+  "animation": {
+    "duration": {
+      "instant":  { "$value": "80ms",   "$type": "duration" },
+      "fast":     { "$value": "150ms",  "$type": "duration" },
+      "normal":   { "$value": "300ms",  "$type": "duration" },
+      "slow":     { "$value": "500ms",  "$type": "duration" },
+      "slower":   { "$value": "800ms",  "$type": "duration" }
+    },
+    "easing": {
+      "ease-out":    { "$value": "cubic-bezier(0.0, 0.0, 0.2, 1)", "$type": "cubicBezier" },
+      "ease-in":     { "$value": "cubic-bezier(0.4, 0.0, 1, 1)",   "$type": "cubicBezier" },
+      "ease-in-out": { "$value": "cubic-bezier(0.4, 0.0, 0.2, 1)", "$type": "cubicBezier" },
+      "spring":      { "$value": "cubic-bezier(0.34, 1.56, 0.64, 1)", "$type": "cubicBezier", "$description": "Overshoot spring — used for step pills, toggles" }
+    }
+  },
+
+  "component": {
+    "input": {
+      "height":         { "$value": "42px",  "$type": "dimension" },
+      "paddingX":       { "$value": "12px",  "$type": "dimension" },
+      "paddingY":       { "$value": "10px",  "$type": "dimension" },
+      "borderRadius":   { "$value": "10px",  "$type": "dimension" },
+      "borderColor":    { "$value": "hsl(224, 12%, 18%)",  "$type": "color" },
+      "background":     { "$value": "hsla(224, 15%, 14%, 0.30)", "$type": "color" },
+      "focusRingColor": { "$value": "hsla(263, 70%, 62%, 0.50)", "$type": "color" }
+    },
+    "button": {
+      "signal": {
+        "background":       { "$value": "hsl(263, 70%, 62%)", "$type": "color" },
+        "backgroundHover":  { "$value": "hsl(263, 70%, 55%)", "$type": "color" },
+        "text":             { "$value": "hsl(0, 0%, 100%)",   "$type": "color" },
+        "glow":             { "$value": "0 4px 20px hsla(263, 70%, 62%, 0.35)", "$type": "shadow" }
+      },
+      "ghost": {
+        "background":       { "$value": "transparent",        "$type": "color" },
+        "backgroundHover":  { "$value": "hsla(224, 15%, 14%, 1)", "$type": "color" },
+        "text":             { "$value": "hsl(218, 10%, 50%)",  "$type": "color" },
+        "textHover":        { "$value": "hsl(210, 20%, 92%)",  "$type": "color" }
+      }
+    },
+    "card": {
+      "background":   { "$value": "hsl(224, 18%, 9%)",     "$type": "color" },
+      "border":       { "$value": "hsl(224, 12%, 18%)",    "$type": "color" },
+      "borderRadius": { "$value": "16px",                  "$type": "dimension" },
+      "padding":      { "$value": "24px",                  "$type": "dimension" },
+      "shadow":       { "$value": "0 25px 50px -12px hsla(0,0%,0%,0.25)", "$type": "shadow" }
+    },
+    "chip": {
+      "selected": {
+        "background": { "$value": "hsla(263, 70%, 62%, 0.10)", "$type": "color" },
+        "border":     { "$value": "hsla(263, 70%, 62%, 0.60)", "$type": "color" },
+        "text":       { "$value": "hsl(263, 80%, 82%)",        "$type": "color" }
+      },
+      "default": {
+        "background": { "$value": "transparent",               "$type": "color" },
+        "border":     { "$value": "hsl(224, 12%, 18%)",        "$type": "color" },
+        "text":       { "$value": "hsl(218, 10%, 50%)",        "$type": "color" }
+      }
+    },
+    "sidebar": {
+      "width":       { "$value": "220px",                  "$type": "dimension" },
+      "background":  { "$value": "hsl(224, 20%, 7%)",      "$type": "color" },
+      "border":      { "$value": "hsl(224, 12%, 14%)",     "$type": "color" },
+      "activeItem": {
+        "background": { "$value": "hsla(263, 70%, 62%, 0.10)", "$type": "color" },
+        "border":     { "$value": "hsl(263, 70%, 62%)",        "$type": "color" },
+        "text":       { "$value": "hsl(263, 80%, 82%)",        "$type": "color" }
+      }
+    }
+  }
+}

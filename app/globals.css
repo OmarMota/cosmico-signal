@@ -1,129 +1,211 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: var(--font-sans);
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-accent: var(--accent);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-secondary: var(--secondary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-primary: var(--primary);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --color-foreground: var(--foreground);
-    --color-background: var(--background);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
-}
+/* =========================================
+   COSMICO SIGNAL — Design System
+   Dark-mode enforced. HSL color tokens
+   synced with figma_design_token.json
+   ========================================= */
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+  /* --- Brand palette --- */
+  --signal:               hsl(263, 70%, 62%);
+  --signal-light:         hsl(263, 70%, 72%);
+  --signal-muted:         hsla(263, 70%, 62%, 0.10);
+  --signal-border:        hsla(263, 70%, 62%, 0.30);
+  --signal-glow:          hsla(263, 70%, 62%, 0.20);
+  --trajectory:           hsl(275, 60%, 58%);
+  --trajectory-muted:     hsla(275, 60%, 58%, 0.10);
+  --intent:               hsl(290, 65%, 60%);
+  --intent-muted:         hsla(290, 65%, 60%, 0.10);
+
+  /* --- Semantic tokens (dark) --- */
+  --background:           hsl(224, 20%, 6%);
+  --foreground:           hsl(210, 20%, 92%);
+  --card:                 hsl(224, 18%, 9%);
+  --card-foreground:      hsl(210, 20%, 92%);
+  --popover:              hsl(224, 18%, 9%);
+  --popover-foreground:   hsl(210, 20%, 92%);
+  --primary:              hsl(263, 70%, 62%);
+  --primary-foreground:   hsl(0, 0%, 100%);
+  --secondary:            hsl(224, 15%, 14%);
+  --secondary-foreground: hsl(210, 20%, 75%);
+  --muted:                hsl(224, 15%, 14%);
+  --muted-foreground:     hsl(218, 10%, 50%);
+  --accent:               hsl(224, 15%, 16%);
+  --accent-foreground:    hsl(210, 20%, 85%);
+  --destructive:          hsl(0, 62%, 50%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border:               hsl(224, 12%, 18%);
+  --input:                hsl(224, 12%, 18%);
+  --ring:                 hsl(263, 70%, 62%);
+  --radius:               0.75rem;
+
+  /* --- Sidebar --- */
+  --sidebar:              hsl(224, 20%, 7%);
+  --sidebar-foreground:   hsl(210, 20%, 92%);
+  --sidebar-primary:      hsl(263, 70%, 62%);
+  --sidebar-primary-foreground: hsl(0, 0%, 100%);
+  --sidebar-accent:       hsl(224, 15%, 14%);
+  --sidebar-accent-foreground: hsl(210, 20%, 85%);
+  --sidebar-border:       hsl(224, 12%, 14%);
+  --sidebar-ring:         hsl(263, 70%, 62%);
+
+  /* --- Status --- */
+  --available:            hsl(142, 71%, 45%);
+  --open-to-work:         hsl(38, 92%, 50%);
+  --unavailable:          hsl(220, 9%, 46%);
 }
 
-.dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+/* =========================================
+   Tailwind v4 theme mapping
+   ========================================= */
+@theme inline {
+  --font-sans:                        var(--font-sans);
+  --font-mono:                        var(--font-mono);
+
+  --color-background:                 var(--background);
+  --color-foreground:                 var(--foreground);
+  --color-card:                       var(--card);
+  --color-card-foreground:            var(--card-foreground);
+  --color-popover:                    var(--popover);
+  --color-popover-foreground:         var(--popover-foreground);
+  --color-primary:                    var(--primary);
+  --color-primary-foreground:         var(--primary-foreground);
+  --color-secondary:                  var(--secondary);
+  --color-secondary-foreground:       var(--secondary-foreground);
+  --color-muted:                      var(--muted);
+  --color-muted-foreground:           var(--muted-foreground);
+  --color-accent:                     var(--accent);
+  --color-accent-foreground:          var(--accent-foreground);
+  --color-destructive:                var(--destructive);
+  --color-destructive-foreground:     var(--destructive-foreground);
+  --color-border:                     var(--border);
+  --color-input:                      var(--input);
+  --color-ring:                       var(--ring);
+
+  --color-signal:                     var(--signal);
+  --color-signal-light:               var(--signal-light);
+  --color-trajectory:                 var(--trajectory);
+  --color-intent:                     var(--intent);
+
+  --color-sidebar:                    var(--sidebar);
+  --color-sidebar-foreground:         var(--sidebar-foreground);
+  --color-sidebar-primary:            var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent:             var(--sidebar-accent);
+  --color-sidebar-accent-foreground:  var(--sidebar-accent-foreground);
+  --color-sidebar-border:             var(--sidebar-border);
+  --color-sidebar-ring:               var(--sidebar-ring);
+
+  --radius-sm:  calc(var(--radius) * 0.5);
+  --radius-md:  calc(var(--radius) * 0.75);
+  --radius-lg:  var(--radius);
+  --radius-xl:  calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.4);
+  --radius-full: 9999px;
+
+  /* Custom keyframes */
+  --animate-glow-pulse:   glow-pulse 3s ease-in-out infinite;
+  --animate-orb-float:    orb-float 8s ease-in-out infinite;
+  --animate-shimmer:      shimmer 2s linear infinite;
+  --animate-fade-up:      fade-up 0.4s cubic-bezier(0.0, 0.0, 0.2, 1) forwards;
+  --animate-scale-in:     scale-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
+/* =========================================
+   Custom keyframes
+   ========================================= */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px hsla(263, 70%, 62%, 0.15), 0 0 40px hsla(263, 70%, 62%, 0.05); }
+  50%       { box-shadow: 0 0 30px hsla(263, 70%, 62%, 0.30), 0 0 60px hsla(263, 70%, 62%, 0.12); }
+}
+
+@keyframes orb-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(30px, -20px) scale(1.04); }
+  66%       { transform: translate(-20px, 15px) scale(0.97); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slide-left {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-24px); }
+}
+
+@keyframes slide-right-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* =========================================
+   Base styles
+   ========================================= */
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    }
-  body {
-    @apply bg-background text-foreground;
-    }
+  }
+
   html {
-    @apply font-sans;
-    }
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar        { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track  { background: transparent; }
+  ::-webkit-scrollbar-thumb  { background: var(--border); border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
+
+  /* Input base style */
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  input[type="url"],
+  input[type="tel"],
+  textarea {
+    @apply w-full rounded-[10px] border border-border/50 bg-muted/30 px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40;
+    @apply transition-all focus:outline-none focus:ring-2 focus:ring-signal/50 focus:border-signal/50;
+  }
+}
+
+/* =========================================
+   Utility classes
+   ========================================= */
+@layer utilities {
+  .glow-signal {
+    box-shadow: 0 0 40px var(--signal-glow), 0 0 80px hsla(263, 70%, 62%, 0.05);
+  }
+  .glow-card {
+    box-shadow: 0 25px 50px -12px hsla(263, 70%, 62%, 0.05);
+  }
+  .text-gradient-signal {
+    background: linear-gradient(135deg, var(--signal-light), var(--trajectory));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .animate-glow-pulse   { animation: var(--animate-glow-pulse); }
+  .animate-orb-float    { animation: var(--animate-orb-float); }
+  .animate-shimmer      { animation: var(--animate-shimmer); }
+  .animate-fade-up      { animation: var(--animate-fade-up); }
+  .animate-scale-in     { animation: var(--animate-scale-in); }
 }
