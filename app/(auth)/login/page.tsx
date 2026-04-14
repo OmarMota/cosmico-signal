@@ -11,7 +11,6 @@ export default function LoginPage() {
   const { userMode, onboardingComplete, loginAsAlex, startNewProfile } = useAuthStore()
   const [loadingDone, setLoadingDone] = useState(false)
 
-  // If already logged in, skip loading screen
   useEffect(() => {
     if (userMode === 'alex' && onboardingComplete) router.replace('/dashboard')
     else if (userMode === 'new' && !onboardingComplete) router.replace('/onboarding')
@@ -31,16 +30,15 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col overflow-hidden">
 
-      {/* Loading screen — exits automatically after ~4s */}
       <LoadingScreen show={!loadingDone} onComplete={() => setLoadingDone(true)} />
 
       {/* Ambient glow */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-violet-600/8 rounded-full blur-3xl" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-600/6 rounded-full blur-3xl" />
+        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-signal/6 rounded-full blur-3xl" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-trajectory/5 rounded-full blur-3xl" />
       </div>
 
-      {/* Header — enters after loading screen exits */}
+      {/* Header */}
       <AnimatePresence>
         {loadingDone && (
           <motion.header
@@ -51,10 +49,10 @@ export default function LoginPage() {
             transition={{ duration: 0.4, ease: 'easeOut' }}
           >
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
-                <Zap className="w-4 h-4 text-white" />
+              <div className="w-7 h-7 rounded-lg bg-foreground flex items-center justify-center">
+                <Zap className="w-3.5 h-3.5 text-background" />
               </div>
-              <span className="font-semibold text-base tracking-tight text-foreground">Cosmico Signal</span>
+              <span className="font-semibold text-sm tracking-tight text-foreground">Cosmico Signal</span>
             </div>
           </motion.header>
         )}
@@ -70,13 +68,13 @@ export default function LoginPage() {
           animate={loadingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/8 px-3 py-1 text-xs text-violet-300 mb-5">
+          <div className="inline-flex items-center gap-2 rounded-full border border-signal/20 bg-signal/8 px-3 py-1 text-xs text-signal-light mb-5">
             <Sparkles className="w-3 h-3" />
             Prototype — no account required
           </div>
           <h1 className="text-4xl font-bold text-foreground tracking-tight leading-tight mb-4">
             Understand who<br />
-            <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="text-gradient-signal">
               you are becoming
             </span>
           </h1>
@@ -92,7 +90,7 @@ export default function LoginPage() {
           {/* Option A — Existing profile */}
           <motion.button
             onClick={handleLoginAsAlex}
-            className="group relative text-left rounded-2xl border border-border bg-card p-6 hover:border-violet-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-violet-500/8 cursor-pointer"
+            className="group relative text-left rounded-2xl border border-border bg-card p-6 hover:border-signal/30 transition-all duration-300 hover:shadow-lg hover:shadow-signal/8 cursor-pointer"
             initial={{ opacity: 0, y: 20 }}
             animate={loadingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ delay: 0.1 }}
@@ -100,9 +98,9 @@ export default function LoginPage() {
           >
             {/* Avatar glow */}
             <div className="relative w-14 h-14 mb-5">
-              <div className="absolute inset-0 rounded-full bg-violet-500/20 blur-md" />
-              <div className="relative w-14 h-14 rounded-full border-2 border-violet-500/40 bg-gradient-to-br from-violet-500/30 to-purple-500/20 flex items-center justify-center">
-                <span className="text-xl font-bold text-violet-300">A</span>
+              <div className="absolute inset-0 rounded-full bg-signal/15 blur-md" />
+              <div className="relative w-14 h-14 rounded-full border-2 border-signal/30 bg-signal/10 flex items-center justify-center">
+                <span className="text-xl font-bold text-signal-light">A</span>
               </div>
               <span className="absolute bottom-0.5 right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-card" />
             </div>
@@ -115,11 +113,11 @@ export default function LoginPage() {
 
             <div className="flex items-center gap-3 mb-5">
               <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-violet-400" />
+                <div className="w-1.5 h-1.5 rounded-full bg-signal" />
                 <span className="text-xs text-muted-foreground">Signal 74.8</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+                <div className="w-1.5 h-1.5 rounded-full bg-trajectory" />
                 <span className="text-xs text-muted-foreground">Specializing</span>
               </div>
               <div className="flex items-center gap-1.5">
@@ -134,7 +132,7 @@ export default function LoginPage() {
               ))}
             </div>
 
-            <div className="flex items-center gap-2 text-sm font-medium text-violet-400 group-hover:text-violet-300 transition-colors">
+            <div className="flex items-center gap-2 text-sm font-medium text-signal-light group-hover:text-signal transition-colors">
               Load full profile
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
@@ -143,14 +141,14 @@ export default function LoginPage() {
           {/* Option B — New profile */}
           <motion.button
             onClick={handleCreateNew}
-            className="group relative text-left rounded-2xl border border-dashed border-border bg-card/50 p-6 hover:border-violet-500/40 hover:bg-card transition-all duration-300 hover:shadow-lg hover:shadow-violet-500/8 cursor-pointer"
+            className="group relative text-left rounded-2xl border border-dashed border-border bg-card/50 p-6 hover:border-signal/30 hover:bg-card transition-all duration-300 hover:shadow-lg hover:shadow-signal/8 cursor-pointer"
             initial={{ opacity: 0, y: 20 }}
             animate={loadingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ delay: 0.18 }}
             whileHover={{ y: -2 }}
           >
-            <div className="w-14 h-14 rounded-full border-2 border-dashed border-border group-hover:border-violet-500/40 bg-accent/50 flex items-center justify-center mb-5 transition-colors">
-              <Sparkles className="w-6 h-6 text-muted-foreground group-hover:text-violet-400 transition-colors" />
+            <div className="w-14 h-14 rounded-full border-2 border-dashed border-border group-hover:border-signal/30 bg-accent/50 flex items-center justify-center mb-5 transition-colors">
+              <Sparkles className="w-6 h-6 text-muted-foreground group-hover:text-signal transition-colors" />
             </div>
 
             <div className="mb-4">
@@ -172,8 +170,8 @@ export default function LoginPage() {
               ))}
             </div>
 
-            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground group-hover:text-violet-400 transition-colors">
-              Start 5-step onboarding
+            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground group-hover:text-signal-light transition-colors">
+              Start 7-step onboarding
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
           </motion.button>

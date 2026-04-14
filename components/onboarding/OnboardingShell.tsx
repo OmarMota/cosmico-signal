@@ -1,104 +1,121 @@
 'use client'
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { useRouter } from 'next/navigation'
-import { Button } from '../ui/button'
+import { useRef, useEffect } from 'react'
 import { Zap } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
+import { TOTAL_STEPS, STEP_META } from '@/lib/stores/onboarding.store'
+import { fadeUpEnter } from '@/lib/gsap/animations'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 
-const STEPS = [
-  { title: 'Your Role', subtitle: 'Who are you professionally?' },
-  { title: 'Your Skills', subtitle: 'What do you bring to the table?' },
-  { title: 'Your Rate', subtitle: 'How do you value your work?' },
-  { title: 'Availability', subtitle: 'When can you work?' },
-  { title: 'Your Goals', subtitle: 'Where are you headed?' },
-]
+gsap.registerPlugin(useGSAP)
 
 interface OnboardingShellProps {
   currentStep: number
-  onStepComplete: (data: Record<string, unknown>) => Promise<void>
+  onNext: () => void
+  onBack: () => void
+  canProceed: boolean
+  isLoading: boolean
   children: React.ReactNode
-  canProceed?: boolean
-  isLoading?: boolean
 }
 
 export function OnboardingShell({
   currentStep,
-  onStepComplete,
+  onNext,
+  onBack,
+  canProceed,
+  isLoading,
   children,
-  canProceed = true,
-  isLoading = false,
 }: OnboardingShellProps) {
-  const router = useRouter()
-  const step = STEPS[currentStep - 1]
-  const isLast = currentStep === STEPS.length
+  const step = STEP_META[currentStep - 1]
+  const isLast = currentStep === TOTAL_STEPS
+  const cardRef = useRef<HTMLDivElement>(null)
+  const prevStep = useRef(currentStep)
+
+  // Animate card on step change
+  useEffect(() => {
+    if (!cardRef.current) return
+    const isForward = currentStep > prevStep.current
+    prevStep.current = currentStep
+
+    gsap.fromTo(
+      cardRef.current,
+      { opacity: 0, x: isForward ? 28 : -28 },
+      { opacity: 1, x: 0, duration: 0.35, ease: 'power2.out', clearProps: 'transform' }
+    )
+  }, [currentStep])
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-      {/* Logo */}
-      <div className="flex items-center gap-2 mb-12">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
-          <Zap className="w-4 h-4 text-white" />
-        </div>
-        <span className="font-semibold text-lg tracking-tight">Cosmico Signal</span>
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden">
+
+      {/* Ambient bg */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-signal/6 rounded-full blur-3xl" />
+        <div className="absolute bottom-[-10%] right-[-5%] w-80 h-80 bg-trajectory/5 rounded-full blur-3xl" />
       </div>
 
-      {/* Progress */}
-      <div className="flex items-center gap-2 mb-10">
-        {STEPS.map((_, i) => (
-          <motion.div
-            key={i}
-            className={cn(
-              'rounded-full transition-all',
-              i + 1 < currentStep
-                ? 'w-6 h-2 bg-violet-500'
-                : i + 1 === currentStep
-                ? 'w-8 h-2 bg-violet-400'
-                : 'w-2 h-2 bg-muted/50'
-            )}
-          />
-        ))}
+      {/* Logo */}
+      <div className="relative z-10 flex items-center gap-2 mb-10">
+        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-signal to-trajectory flex items-center justify-center shadow-lg shadow-signal/20">
+          <Zap className="w-3.5 h-3.5 text-white" />
+        </div>
+        <span className="font-semibold text-sm tracking-tight text-foreground">Cosmico Signal</span>
+      </div>
+
+      {/* Step pills */}
+      <div className="relative z-10 flex items-center gap-2 mb-8">
+        {Array.from({ length: TOTAL_STEPS }).map((_, i) => {
+          const state = i + 1 < currentStep ? 'done' : i + 1 === currentStep ? 'active' : 'future'
+          return (
+            <div
+              key={i}
+              className={cn(
+                'rounded-full transition-all duration-300',
+                state === 'done'   && 'h-2 w-5 bg-signal',
+                state === 'active' && 'h-2 w-8 bg-signal/80',
+                state === 'future' && 'h-2 w-2 bg-muted/40'
+              )}
+            />
+          )
+        })}
       </div>
 
       {/* Card */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentStep}
-          className="w-full max-w-md"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.3 }}
-        >
-          <div className="rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-8 shadow-2xl shadow-violet-500/5">
-            <div className="mb-6">
-              <p className="text-xs text-violet-400/70 uppercase tracking-widest mb-1">
-                Step {currentStep} of {STEPS.length}
-              </p>
-              <h1 className="text-2xl font-bold text-foreground">{step?.title}</h1>
-              <p className="text-sm text-muted-foreground mt-1">{step?.subtitle}</p>
-            </div>
+      <div
+        ref={cardRef}
+        className="relative z-10 w-full max-w-md rounded-2xl border border-border/50 bg-card/90 backdrop-blur-sm p-8 shadow-2xl shadow-black/30"
+      >
+        {/* Step label */}
+        <p className="text-[10px] text-signal/60 uppercase tracking-widest mb-1 font-medium">
+          Step {currentStep} of {TOTAL_STEPS}
+        </p>
+        <h1 className="text-2xl font-bold text-foreground mb-0.5">{step?.title}</h1>
+        <p className="text-sm text-muted-foreground mb-6">{step?.subtitle}</p>
 
-            {children}
+        {/* Step content */}
+        <div>{children}</div>
 
-            <div className="mt-8 flex items-center justify-between">
-              {currentStep > 1 ? (
-                <Button variant="ghost" size="sm" onClick={() => router.back()}>
-                  Back
-                </Button>
-              ) : <div />}
+        {/* Footer actions */}
+        <div className="mt-8 flex items-center justify-between">
+          {currentStep > 1 ? (
+            <button onClick={onBack} className="btn-ghost">
+              ← Back
+            </button>
+          ) : <div />}
 
-              <Button
-                variant="signal"
-                disabled={!canProceed || isLoading}
-                onClick={() => onStepComplete({})}
-              >
-                {isLoading ? 'Saving...' : isLast ? 'Launch My Signal' : 'Continue'}
-              </Button>
-            </div>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+          <button
+            onClick={onNext}
+            disabled={!canProceed || isLoading}
+            className="btn-signal"
+          >
+            {isLoading ? 'Saving…' : isLast ? 'Launch My Signal ✦' : 'Continue →'}
+          </button>
+        </div>
+      </div>
+
+      {/* Sub-footnote */}
+      <p className="relative z-10 mt-6 text-xs text-muted-foreground/40 text-center">
+        Your data is stored locally. Nothing is sent to any server.
+      </p>
     </div>
   )
 }

@@ -1,97 +1,61 @@
 'use client'
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { GlowCard } from '@/components/shared/GlowCard'
-import { Button } from '@/components/ui/button'
-import { useProfileStore } from '@/lib/stores/profile.store'
-import { staggerContainer, staggerItem } from '@/lib/utils/animation-variants'
 import { LogOut } from 'lucide-react'
+import { useAuthStore } from '@/lib/stores/auth.store'
+import { useProfileStore } from '@/lib/stores/profile.store'
+import { ProfileSectionNav } from '@/components/profile/ProfileSectionNav'
+import { SectionAbout } from '@/components/profile/sections/SectionAbout'
+import { SectionBasics } from '@/components/profile/sections/SectionBasics'
+import { SectionExperiences } from '@/components/profile/sections/SectionExperiences'
+import { SectionSpecialties } from '@/components/profile/sections/SectionSpecialties'
+import type { ProfileSection } from '@/lib/stores/profile.store'
 
 export default function SettingsPage() {
-  const { profile, fetchProfile, updateProfile } = useProfileStore()
-  const [bio, setBio] = useState('')
-  const [headline, setHeadline] = useState('')
-  const [saving, setSaving] = useState(false)
   const router = useRouter()
-
-  useEffect(() => {
-    fetchProfile()
-  }, [fetchProfile])
-
-  useEffect(() => {
-    if (profile) {
-      setBio(profile.bio ?? '')
-      setHeadline(profile.headline ?? '')
-    }
-  }, [profile])
-
-  async function handleSave(e: React.FormEvent) {
-    e.preventDefault()
-    setSaving(true)
-    await updateProfile({ bio, headline })
-    setSaving(false)
-  }
+  const { logout } = useAuthStore()
+  const { activeSection, setActiveSection } = useProfileStore()
 
   function handleSignOut() {
+    logout()
     router.push('/login')
   }
 
+  const sectionMap: Record<ProfileSection, React.ReactNode> = {
+    about:       <SectionAbout />,
+    basics:      <SectionBasics />,
+    experiences: <SectionExperiences />,
+    specialties: <SectionSpecialties />,
+  }
+
   return (
-    <motion.div
-      className="space-y-8 max-w-2xl"
-      variants={staggerContainer}
-      initial="hidden"
-      animate="visible"
-    >
-      <motion.div variants={staggerItem}>
-        <h1 className="text-2xl font-bold text-foreground mb-1">Settings</h1>
-        <p className="text-sm text-muted-foreground">Manage your profile and account</p>
-      </motion.div>
+    <div className="flex gap-8 max-w-4xl">
 
-      <motion.div variants={staggerItem}>
-        <GlowCard className="p-6">
-          <h2 className="text-base font-semibold text-foreground mb-4">Profile</h2>
-          <form onSubmit={handleSave} className="space-y-4">
-            <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Headline</label>
-              <input
-                type="text"
-                value={headline}
-                onChange={e => setHeadline(e.target.value)}
-                className="w-full rounded-lg border border-border/50 bg-muted/30 px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all"
-                placeholder="e.g. Building great products at the intersection of design and code"
-                maxLength={120}
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Bio</label>
-              <textarea
-                value={bio}
-                onChange={e => setBio(e.target.value)}
-                rows={4}
-                className="w-full rounded-lg border border-border/50 bg-muted/30 px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all resize-none"
-                placeholder="Tell people what you're about..."
-                maxLength={500}
-              />
-            </div>
-            <Button type="submit" variant="signal" disabled={saving}>
-              {saving ? 'Saving...' : 'Save Changes'}
-            </Button>
-          </form>
-        </GlowCard>
-      </motion.div>
+      {/* Left sidebar — section nav */}
+      <div className="w-52 flex-none">
+        <div className="mb-6">
+          <h1 className="text-lg font-semibold text-foreground">Profile</h1>
+          <p className="text-xs text-muted-foreground mt-0.5">Edit your professional signal</p>
+        </div>
+        <ProfileSectionNav active={activeSection} onSelect={setActiveSection} />
 
-      <motion.div variants={staggerItem}>
-        <GlowCard className="p-6">
-          <h2 className="text-base font-semibold text-foreground mb-1">Account</h2>
-          <p className="text-xs text-muted-foreground mb-4">Manage your session</p>
-          <Button variant="outline" onClick={handleSignOut} className="flex items-center gap-2">
-            <LogOut className="w-4 h-4" />
-            Sign Out
-          </Button>
-        </GlowCard>
-      </motion.div>
-    </motion.div>
+        {/* Account section */}
+        <div className="mt-8 pt-6 border-t border-border/40">
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground/50 mb-3 px-1">Account</p>
+          <button
+            onClick={handleSignOut}
+            className="w-full flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-all"
+          >
+            <LogOut className="w-4 h-4 flex-none" />
+            Sign out
+          </button>
+        </div>
+      </div>
+
+      {/* Right content */}
+      <div className="flex-1 min-w-0 rounded-2xl border border-border bg-card p-6">
+        {sectionMap[activeSection]}
+      </div>
+    </div>
   )
 }
