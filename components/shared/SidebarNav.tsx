@@ -10,9 +10,12 @@ import {
   Settings,
   Zap,
   LogOut,
+  Sun,
+  Moon,
 } from 'lucide-react'
 import { useAuthStore } from '@/lib/stores/auth.store'
 import { useRouter } from 'next/navigation'
+import { useTheme } from 'next-themes'
 
 const NAV_ITEMS = [
   { href: '/dashboard',     label: 'Dashboard',     icon: LayoutDashboard },
@@ -23,23 +26,41 @@ const NAV_ITEMS = [
 ]
 
 export function SidebarNav() {
-  const pathname  = usePathname()
-  const router    = useRouter()
-  const { logout, userMode } = useAuthStore()
+  const pathname = usePathname()
+  const router   = useRouter()
+  const { logout, userMode, partialProfile } = useAuthStore()
+  const { resolvedTheme, setTheme } = useTheme()
+
+  const displayName = partialProfile?.display_name
+    ?? (partialProfile?.first_name ? `${partialProfile.first_name} ${partialProfile.last_name ?? ''}`.trim() : null)
+    ?? (userMode === 'alex' ? 'Alex Chen' : 'New Profile')
+
+  const displayTitle = partialProfile?.job_title
+    ?? (userMode === 'alex' ? 'Sr. Frontend Eng.' : 'Setting up…')
+
+  const initials = displayName
+    .split(' ')
+    .slice(0, 2)
+    .map((n: string) => n[0] ?? '')
+    .join('')
+    .toUpperCase() || '?'
 
   function handleLogout() {
     logout()
     router.push('/login')
   }
 
+  function toggleTheme() {
+    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
+  }
+
   return (
-    /* Not fixed — takes up its own column in the flex parent */
-    <aside className="w-60 flex-none h-full flex flex-col border-r border-border bg-background overflow-y-auto">
+    <aside className="w-60 flex-none h-full flex flex-col border-r border-border bg-sidebar overflow-y-auto">
 
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-6 py-5 border-b border-border flex-none">
-        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
-          <Zap className="w-4 h-4 text-white" />
+      <div className="flex items-center gap-2.5 px-5 py-5 border-b border-border flex-none">
+        <div className="w-7 h-7 rounded-lg bg-foreground flex items-center justify-center">
+          <Zap className="w-3.5 h-3.5 text-background" />
         </div>
         <span className="font-semibold text-sm tracking-tight text-foreground">Cosmico Signal</span>
       </div>
@@ -47,19 +68,13 @@ export function SidebarNav() {
       {/* User badge */}
       {userMode && (
         <div className="px-4 py-3 border-b border-border flex-none">
-          <div className="flex items-center gap-2 px-2">
-            <div className="w-6 h-6 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center flex-none">
-              <span className="text-xs text-violet-300 font-medium">
-                {userMode === 'alex' ? 'A' : '?'}
-              </span>
+          <div className="flex items-center gap-2.5 px-1">
+            <div className="w-7 h-7 rounded-full bg-signal/15 border border-signal/25 flex items-center justify-center flex-none">
+              <span className="text-xs text-signal-light font-semibold">{initials}</span>
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-medium text-foreground truncate">
-                {userMode === 'alex' ? 'Alex Chen' : 'New Profile'}
-              </p>
-              <p className="text-xs text-muted-foreground truncate">
-                {userMode === 'alex' ? 'Sr. Frontend Eng.' : 'Setting up…'}
-              </p>
+              <p className="text-xs font-medium text-foreground truncate">{displayName}</p>
+              <p className="text-[11px] text-muted-foreground truncate">{displayTitle}</p>
             </div>
           </div>
         </div>
@@ -76,11 +91,11 @@ export function SidebarNav() {
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all',
                 active
-                  ? 'bg-violet-500/15 text-violet-300 shadow-sm'
+                  ? 'bg-foreground/8 text-foreground'
                   : 'text-muted-foreground hover:bg-accent hover:text-foreground'
               )}
             >
-              <item.icon className={cn('w-4 h-4 flex-none', active ? 'text-violet-400' : '')} />
+              <item.icon className={cn('w-4 h-4 flex-none', active ? 'text-foreground' : 'text-muted-foreground')} />
               {item.label}
             </Link>
           )
@@ -89,18 +104,34 @@ export function SidebarNav() {
 
       {/* Bottom */}
       <div className="px-3 py-4 border-t border-border flex-none space-y-0.5">
+        {/* Settings */}
         <Link
           href="/settings"
           className={cn(
             'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all',
             pathname === '/settings'
-              ? 'bg-violet-500/15 text-violet-300'
+              ? 'bg-foreground/8 text-foreground'
               : 'text-muted-foreground hover:bg-accent hover:text-foreground'
           )}
         >
           <Settings className="w-4 h-4 flex-none" />
           Settings
         </Link>
+
+        {/* Theme toggle */}
+        <button
+          onClick={toggleTheme}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-all"
+        >
+          {resolvedTheme === 'dark' ? (
+            <Sun className="w-4 h-4 flex-none" />
+          ) : (
+            <Moon className="w-4 h-4 flex-none" />
+          )}
+          {resolvedTheme === 'dark' ? 'Light mode' : 'Dark mode'}
+        </button>
+
+        {/* Sign out */}
         <button
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-all"

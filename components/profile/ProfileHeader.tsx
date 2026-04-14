@@ -79,10 +79,10 @@ export function ProfileHeader({ profile, signalProfile }: ProfileHeaderProps) {
           )}
 
           {/* Hours */}
-          {profile.availability_hours_per_week && (
+          {profile.hours_per_week && (
             <Badge variant="muted" className="flex items-center gap-1">
               <Clock className="w-3 h-3" />
-              {profile.availability_hours_per_week}h/wk
+              {profile.hours_per_week}h/wk
             </Badge>
           )}
         </motion.div>

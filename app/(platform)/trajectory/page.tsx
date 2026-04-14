@@ -124,7 +124,7 @@ export default function TrajectoryPage() {
                 <h2 className="text-sm font-semibold text-foreground mb-4">Role Evolution</h2>
                 <RoleEvolutionMap
                   predictions={latestSnapshot.role_predictions}
-                  currentRole={profile.primary_role}
+                  currentRole={profile.primary_role ?? profile.job_title ?? ''}
                 />
               </GlowCard>
             </motion.div>
