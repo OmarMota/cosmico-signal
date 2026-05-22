@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils/cn'
 import {
   LayoutDashboard,
@@ -30,6 +31,8 @@ export function SidebarNav() {
   const router   = useRouter()
   const { logout, userMode, partialProfile } = useAuthStore()
   const { resolvedTheme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
   const displayName = partialProfile?.display_name
     ?? (partialProfile?.first_name ? `${partialProfile.first_name} ${partialProfile.last_name ?? ''}`.trim() : null)
@@ -118,17 +121,17 @@ export function SidebarNav() {
           Settings
         </Link>
 
-        {/* Theme toggle */}
+        {/* Theme toggle — only render icon after mount to avoid hydration mismatch */}
         <button
           onClick={toggleTheme}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-all"
         >
-          {resolvedTheme === 'dark' ? (
+          {mounted && resolvedTheme === 'dark' ? (
             <Sun className="w-4 h-4 flex-none" />
           ) : (
             <Moon className="w-4 h-4 flex-none" />
           )}
-          {resolvedTheme === 'dark' ? 'Light mode' : 'Dark mode'}
+          {mounted ? (resolvedTheme === 'dark' ? 'Light mode' : 'Dark mode') : 'Toggle theme'}
         </button>
 
         {/* Sign out */}
