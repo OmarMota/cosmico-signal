@@ -9,6 +9,9 @@ import { SectionAbout } from '@/components/profile/sections/SectionAbout'
 import { SectionBasics } from '@/components/profile/sections/SectionBasics'
 import { SectionExperiences } from '@/components/profile/sections/SectionExperiences'
 import { SectionSpecialties } from '@/components/profile/sections/SectionSpecialties'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import type { ProfileSection } from '@/lib/stores/profile.store'
 
 export default function SettingsPage() {
@@ -31,31 +34,49 @@ export default function SettingsPage() {
   return (
     <div className="flex gap-8 max-w-4xl">
 
-      {/* Left sidebar — section nav */}
+      {/* Left sidebar */}
       <div className="w-52 flex-none">
-        <div className="mb-6">
+        <div className="mb-5">
           <h1 className="text-lg font-semibold text-foreground">Profile</h1>
           <p className="text-xs text-muted-foreground mt-0.5">Edit your professional signal</p>
         </div>
+
         <ProfileSectionNav active={activeSection} onSelect={setActiveSection} />
 
-        {/* Account section */}
-        <div className="mt-8 pt-6 border-t border-border/40">
-          <p className="text-[10px] uppercase tracking-widest text-muted-foreground/50 mb-3 px-1">Account</p>
-          <button
+        <Separator className="my-6" />
+
+        <div>
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground/50 mb-2 px-1">
+            Account
+          </p>
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={handleSignOut}
-            className="w-full flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-all"
+            className="w-full justify-start gap-2.5 text-muted-foreground"
           >
             <LogOut className="w-4 h-4 flex-none" />
             Sign out
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Right content */}
-      <div className="flex-1 min-w-0 rounded-2xl border border-border bg-card p-6">
-        {sectionMap[activeSection]}
-      </div>
+      <Card className="flex-1 min-w-0">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base capitalize">{activeSection}</CardTitle>
+          <CardDescription>
+            {activeSection === 'about'       && 'Your bio and professional identity'}
+            {activeSection === 'basics'      && 'Core role and location info'}
+            {activeSection === 'experiences' && 'Work history and achievements'}
+            {activeSection === 'specialties' && 'Skills and areas of expertise'}
+          </CardDescription>
+        </CardHeader>
+        <Separator />
+        <CardContent className="pt-6">
+          {sectionMap[activeSection]}
+        </CardContent>
+      </Card>
     </div>
   )
 }

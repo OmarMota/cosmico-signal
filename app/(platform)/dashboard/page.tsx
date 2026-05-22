@@ -9,11 +9,14 @@ import { SignalTimeline } from '@/components/signal/SignalTimeline'
 import { SignalDimensionCard } from '@/components/signal/SignalDimensionCard'
 import { TrajectoryPhaseCard } from '@/components/trajectory/TrajectoryPhaseCard'
 import { NextStepsPanel } from '@/components/dashboard/NextStepsPanel'
-import { DashboardSkeleton } from '@/components/shared/LoadingSkeleton'
 import { AnimatedNumber } from '@/components/shared/AnimatedNumber'
 import { GlowCard } from '@/components/shared/GlowCard'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Separator } from '@/components/ui/separator'
 import { getTrendColor, getTrendLabel, formatPercentile } from '@/lib/utils/score-formatters'
-import { DIMENSION_LABELS } from '@/lib/types/signal.types'
 import { staggerContainer, staggerItem } from '@/lib/utils/animation-variants'
 import type { SignalDimension } from '@/lib/types/signal.types'
 import Link from 'next/link'
@@ -34,7 +37,24 @@ export default function DashboardPage() {
   }, [fetchSignalProfile, fetchHistory, fetchTrajectory, fetchIntents, fetchProfile])
 
   if (signalLoading || !signalProfile) {
-    return <DashboardSkeleton />
+    return (
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-8 w-56" />
+        </div>
+        <Skeleton className="h-56 rounded-xl" />
+        <div className="grid grid-cols-2 gap-4">
+          <Skeleton className="h-40 rounded-xl" />
+          <Skeleton className="h-40 rounded-xl" />
+        </div>
+        <div className="grid grid-cols-5 gap-3">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Skeleton key={i} className="h-24 rounded-xl" />
+          ))}
+        </div>
+      </div>
+    )
   }
 
   const greeting = (() => {
@@ -63,7 +83,7 @@ export default function DashboardPage() {
 
       {/* Signal Score Hero */}
       <motion.div variants={staggerItem}>
-        <GlowCard className="p-6">
+        <GlowCard variant="signal" glow className="p-6">
           <div className="flex items-start justify-between mb-4">
             <div>
               <p className="text-xs text-muted-foreground mb-1">Composite Signal</p>
@@ -72,10 +92,13 @@ export default function DashboardPage() {
                   value={signalProfile.composite_score}
                   className="text-5xl font-bold text-foreground"
                 />
-                <div className="mb-1.5">
-                  <p className={`text-sm font-medium ${getTrendColor(signalProfile.score_trend)}`}>
+                <div className="mb-1.5 space-y-0.5">
+                  <Badge
+                    variant={signalProfile.score_trend === 'rising' ? 'success' : signalProfile.score_trend === 'falling' ? 'warning' : 'muted'}
+                    className="text-xs"
+                  >
                     {getTrendLabel(signalProfile.score_trend)}
-                  </p>
+                  </Badge>
                   {signalProfile.percentile_rank && (
                     <p className="text-xs text-muted-foreground">
                       {formatPercentile(signalProfile.percentile_rank)}
@@ -84,15 +107,13 @@ export default function DashboardPage() {
                 </div>
               </div>
             </div>
-            <Link
-              href="/profile"
-              className="flex items-center gap-1.5 text-xs text-violet-400/70 hover:text-violet-300 transition-colors"
-            >
-              View Profile <ArrowRight className="w-3 h-3" />
-            </Link>
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/profile" className="flex items-center gap-1.5">
+                View Profile <ArrowRight className="w-3 h-3" />
+              </Link>
+            </Button>
           </div>
 
-          {/* Timeline chart */}
           {weeklyHistory.length > 0 && (
             <SignalTimeline aggregates={weeklyHistory} showDimensions height={160} />
           )}
@@ -101,33 +122,36 @@ export default function DashboardPage() {
 
       {/* Two-column layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Trajectory */}
         <motion.div variants={staggerItem}>
           {latestSnapshot ? (
             <TrajectoryPhaseCard snapshot={latestSnapshot} className="h-full" />
           ) : (
-            <GlowCard className="p-5 h-full flex flex-col items-center justify-center gap-3 text-center">
-              <TrendingUp className="w-8 h-8 text-muted-foreground/30" />
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Trajectory not computed yet</p>
-                <p className="text-xs text-muted-foreground/60 mt-0.5">Log more activity to see your trajectory</p>
-              </div>
-            </GlowCard>
+            <Card className="h-full">
+              <CardContent className="p-5 h-full flex flex-col items-center justify-center gap-3 text-center">
+                <TrendingUp className="w-8 h-8 text-muted-foreground/30" />
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Trajectory not computed yet</p>
+                  <p className="text-xs text-muted-foreground/60 mt-0.5">Log more activity to see your trajectory</p>
+                </div>
+              </CardContent>
+            </Card>
           )}
         </motion.div>
 
-        {/* Next Steps */}
         <motion.div variants={staggerItem}>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-foreground">Next Steps</h2>
-            </div>
-            <NextStepsPanel
-              signalProfile={signalProfile}
-              trajectory={latestSnapshot}
-              intents={declaredIntents}
-            />
-          </div>
+          <Card className="h-full">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm">Next Steps</CardTitle>
+            </CardHeader>
+            <Separator />
+            <CardContent className="pt-4">
+              <NextStepsPanel
+                signalProfile={signalProfile}
+                trajectory={latestSnapshot}
+                intents={declaredIntents}
+              />
+            </CardContent>
+          </Card>
         </motion.div>
       </div>
 
@@ -152,34 +176,38 @@ export default function DashboardPage() {
       <motion.div variants={staggerItem}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Link href="/learn">
-            <GlowCard className="p-4 hover:border-violet-500/30 transition-all cursor-pointer group">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-violet-500/10 border border-violet-500/20 flex items-center justify-center">
-                  <BookOpen className="w-4 h-4 text-violet-400" />
+            <Card className="hover:border-signal/30 transition-all cursor-pointer group">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-signal/10 border border-signal/20 flex items-center justify-center">
+                    <BookOpen className="w-4 h-4 text-signal" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground group-hover:text-signal transition-colors">
+                      Learning Feed
+                    </p>
+                    <p className="text-xs text-muted-foreground">Personalized for your trajectory</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-foreground group-hover:text-violet-300 transition-colors">
-                    Learning Feed
-                  </p>
-                  <p className="text-xs text-muted-foreground">Personalized for your trajectory</p>
-                </div>
-              </div>
-            </GlowCard>
+              </CardContent>
+            </Card>
           </Link>
           <Link href="/opportunities">
-            <GlowCard className="p-4 hover:border-purple-500/30 transition-all cursor-pointer group">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
-                  <TrendingUp className="w-4 h-4 text-purple-400" />
+            <Card className="hover:border-trajectory/30 transition-all cursor-pointer group">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-trajectory/10 border border-trajectory/20 flex items-center justify-center">
+                    <TrendingUp className="w-4 h-4 text-trajectory" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground group-hover:text-trajectory transition-colors">
+                      Opportunities
+                    </p>
+                    <p className="text-xs text-muted-foreground">Matched to your signal + trajectory</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-foreground group-hover:text-purple-300 transition-colors">
-                    Opportunities
-                  </p>
-                  <p className="text-xs text-muted-foreground">Matched to your signal + trajectory</p>
-                </div>
-              </div>
-            </GlowCard>
+              </CardContent>
+            </Card>
           </Link>
         </div>
       </motion.div>
