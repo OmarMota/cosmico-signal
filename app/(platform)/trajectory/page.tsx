@@ -36,10 +36,10 @@ export default function TrajectoryPage() {
           </div>
           <Skeleton className="h-8 w-28" />
         </div>
-        <Skeleton className="h-48 rounded-xl" />
+        <Skeleton className="h-48 rounded-none" />
         <div className="grid grid-cols-2 gap-6">
-          <Skeleton className="h-56 rounded-xl" />
-          <Skeleton className="h-56 rounded-xl" />
+          <Skeleton className="h-56 rounded-none" />
+          <Skeleton className="h-56 rounded-none" />
         </div>
       </div>
     )
@@ -79,7 +79,7 @@ export default function TrajectoryPage() {
               <p className="text-muted-foreground">
                 Not enough signal data yet to compute your trajectory.
               </p>
-              <Button variant="signal" onClick={triggerDetection} disabled={isComputing}>
+              <Button variant="outline" onClick={triggerDetection} disabled={isComputing}>
                 Compute My Trajectory
               </Button>
             </CardContent>
@@ -89,10 +89,10 @@ export default function TrajectoryPage() {
         <>
           {/* Arc Visualization */}
           <motion.div variants={staggerItem}>
-            <GlowCard variant="trajectory" className="p-6 overflow-hidden">
+            <GlowCard variant="default" className="p-6 overflow-hidden">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-sm font-semibold text-foreground">Trajectory Arc</h2>
-                <Badge variant="trajectory">
+                <Badge variant="outline">
                   {latestSnapshot.current_phase}
                 </Badge>
               </div>
@@ -121,7 +121,7 @@ export default function TrajectoryPage() {
                       {latestSnapshot.detected_patterns.map((pattern, i) => (
                         <motion.div
                           key={i}
-                          className="rounded-lg border border-border/40 bg-muted/20 p-3"
+                          className="rounded-none border border-border/40 bg-muted/20 p-3"
                           initial={{ opacity: 0, x: 8 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: i * 0.08 }}
@@ -130,7 +130,7 @@ export default function TrajectoryPage() {
                             <p className="text-sm font-medium text-foreground capitalize">
                               {pattern.type.replace(/_/g, ' ')}
                             </p>
-                            <Badge variant="trajectory">
+                            <Badge variant="secondary">
                               {Math.round(pattern.confidence * 100)}%
                             </Badge>
                           </div>
@@ -175,7 +175,7 @@ export default function TrajectoryPage() {
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-sm">Milestones</CardTitle>
-                    <Badge variant="muted">{milestones.length}</Badge>
+                    <Badge variant="secondary">{milestones.length}</Badge>
                   </div>
                 </CardHeader>
                 <Separator />
@@ -184,7 +184,7 @@ export default function TrajectoryPage() {
                     {milestones.map((m, i) => (
                       <div key={m.id}>
                         <div className="flex items-start gap-3 py-2.5">
-                          <CheckCircle2 className="w-4 h-4 text-signal mt-0.5 flex-shrink-0" />
+                          <CheckCircle2 className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-foreground">{m.title}</p>
                             {m.description && (

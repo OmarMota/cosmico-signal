@@ -43,7 +43,7 @@ export function AvailabilityToggle({ value, onChange }: AvailabilityToggleProps)
   return (
     <button
       onClick={handleClick}
-      className="flex items-center gap-2 rounded-full border border-border/50 bg-card/60 hover:border-signal/30 transition-all px-3 py-1.5 group"
+      className="flex items-center gap-2 rounded-none border border-border bg-card hover:bg-muted/30 transition-all px-3 py-1.5 group"
       title="Click to cycle availability"
     >
       <span ref={dotRef} className={cn('w-2 h-2 rounded-full flex-none transition-all duration-300', colorMap[value])} />

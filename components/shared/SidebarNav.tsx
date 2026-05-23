@@ -62,7 +62,7 @@ export function SidebarNav() {
 
       {/* Logo */}
       <div className="flex items-center gap-2.5 px-5 py-5 border-b border-border flex-none">
-        <div className="w-7 h-7 rounded-lg bg-foreground flex items-center justify-center">
+        <div className="w-7 h-7 rounded-none bg-foreground flex items-center justify-center">
           <Zap className="w-3.5 h-3.5 text-background" />
         </div>
         <span className="font-semibold text-sm tracking-tight text-foreground">Cosmico Signal</span>
@@ -72,8 +72,8 @@ export function SidebarNav() {
       {userMode && (
         <div className="px-4 py-3 border-b border-border flex-none">
           <div className="flex items-center gap-2.5 px-1">
-            <div className="w-7 h-7 rounded-full bg-signal/15 border border-signal/25 flex items-center justify-center flex-none">
-              <span className="text-xs text-signal-light font-semibold">{initials}</span>
+            <div className="w-7 h-7 rounded-full bg-primary/10 border border-border flex items-center justify-center flex-none">
+              <span className="text-xs text-primary font-semibold">{initials}</span>
             </div>
             <div className="min-w-0">
               <p className="text-xs font-medium text-foreground truncate">{displayName}</p>
@@ -92,7 +92,7 @@ export function SidebarNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all',
+                'flex items-center gap-3 px-3 py-2.5 rounded-none text-sm font-medium transition-all',
                 active
                   ? 'bg-foreground/8 text-foreground'
                   : 'text-muted-foreground hover:bg-accent hover:text-foreground'
@@ -111,7 +111,7 @@ export function SidebarNav() {
         <Link
           href="/settings"
           className={cn(
-            'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all',
+            'flex items-center gap-3 px-3 py-2.5 rounded-none text-sm font-medium transition-all',
             pathname === '/settings'
               ? 'bg-foreground/8 text-foreground'
               : 'text-muted-foreground hover:bg-accent hover:text-foreground'
@@ -124,7 +124,7 @@ export function SidebarNav() {
         {/* Theme toggle — only render icon after mount to avoid hydration mismatch */}
         <button
           onClick={toggleTheme}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-all"
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-none text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-all"
         >
           {mounted && resolvedTheme === 'dark' ? (
             <Sun className="w-4 h-4 flex-none" />
@@ -137,7 +137,7 @@ export function SidebarNav() {
         {/* Sign out */}
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-all"
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-none text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-all"
         >
           <LogOut className="w-4 h-4 flex-none" />
           Sign Out

@@ -37,7 +37,7 @@ export default function LearnPage() {
         <Skeleton className="h-10 w-64" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-48 rounded-xl" />
+            <Skeleton key={i} className="h-48 rounded-none" />
           ))}
         </div>
       </div>
@@ -55,7 +55,7 @@ export default function LearnPage() {
       <motion.div variants={staggerItem}>
         <div className="flex items-center gap-3 mb-1">
           <h1 className="text-2xl font-bold text-foreground">Learning Feed</h1>
-          <Badge variant="signal">{recommendations.length} curated</Badge>
+          <Badge variant="outline">{recommendations.length} curated</Badge>
         </div>
         <p className="text-sm text-muted-foreground">
           Curated for your trajectory — not a catalog, a direction
@@ -67,13 +67,13 @@ export default function LearnPage() {
         <Tabs defaultValue="all">
           <TabsList>
             <TabsTrigger value="all">
-              All <Badge variant="muted" className="ml-1.5">{recommendations.length}</Badge>
+              All <Badge variant="secondary" className="ml-1.5">{recommendations.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="free">
-              Free <Badge variant="muted" className="ml-1.5">{free.length}</Badge>
+              Free <Badge variant="secondary" className="ml-1.5">{free.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="paid">
-              Paid <Badge variant="muted" className="ml-1.5">{paid.length}</Badge>
+              Paid <Badge variant="secondary" className="ml-1.5">{paid.length}</Badge>
             </TabsTrigger>
           </TabsList>
 

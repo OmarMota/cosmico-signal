@@ -48,7 +48,7 @@ export default function OpportunitiesPage() {
         <Skeleton className="h-10 w-80" />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-48 rounded-xl" />
+            <Skeleton key={i} className="h-48 rounded-none" />
           ))}
         </div>
       </div>
@@ -66,7 +66,7 @@ export default function OpportunitiesPage() {
       <motion.div variants={staggerItem}>
         <div className="flex items-center gap-3 mb-1">
           <h1 className="text-2xl font-bold text-foreground">Opportunities</h1>
-          <Badge variant="signal">{opportunities.length} matched</Badge>
+          <Badge variant="outline">{opportunities.length} matched</Badge>
         </div>
         <p className="text-sm text-muted-foreground">
           Ranked by your signal match — not by recency
@@ -80,7 +80,7 @@ export default function OpportunitiesPage() {
             {tabs.map(t => (
               <TabsTrigger key={t.value} value={t.value}>
                 {t.label}
-                <Badge variant="muted" className="ml-1.5">{t.items.length}</Badge>
+                <Badge variant="secondary" className="ml-1.5">{t.items.length}</Badge>
               </TabsTrigger>
             ))}
           </TabsList>

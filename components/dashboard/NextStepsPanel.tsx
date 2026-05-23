@@ -87,7 +87,7 @@ function deriveNextSteps(
 
 const IMPACT_COLORS = {
   high: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
-  medium: 'text-violet-400 bg-violet-500/10 border-violet-500/20',
+  medium: 'text-foreground bg-muted/10 border-border',
   low: 'text-slate-400 bg-slate-500/10 border-slate-500/20',
 }
 
@@ -99,13 +99,13 @@ export function NextStepsPanel({ signalProfile, trajectory, intents }: NextSteps
       {steps.map((step, i) => (
         <motion.div
           key={i}
-          className="rounded-xl border border-border/50 bg-card/60 p-4 flex items-start gap-3 group cursor-pointer hover:border-border transition-all"
+          className="rounded-none border border-border bg-card p-4 flex items-start gap-3 group cursor-pointer hover:bg-muted/30 transition-all"
           initial={{ opacity: 0, x: -8 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: i * 0.08 }}
         >
           <div className="flex-shrink-0 mt-0.5">
-            <span className={cn('text-xs px-2 py-0.5 rounded-full border font-medium', IMPACT_COLORS[step.impact])}>
+            <span className={cn('text-xs px-2 py-0.5 border font-medium', IMPACT_COLORS[step.impact])}>
               {step.impact}
             </span>
           </div>

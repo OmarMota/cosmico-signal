@@ -29,13 +29,13 @@ export default function ProfilePage() {
   if (isLoading || !profile) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-40 rounded-xl" />
+        <Skeleton className="h-40 rounded-none" />
         <div className="grid grid-cols-2 gap-6">
-          <Skeleton className="h-56 rounded-xl" />
-          <Skeleton className="h-56 rounded-xl" />
+          <Skeleton className="h-56 rounded-none" />
+          <Skeleton className="h-56 rounded-none" />
         </div>
         <div className="grid grid-cols-5 gap-3">
-          {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-24 rounded-xl" />)}
+          {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-24 rounded-none" />)}
         </div>
       </div>
     )
@@ -52,7 +52,7 @@ export default function ProfilePage() {
     >
       {/* Profile Header */}
       <motion.div variants={staggerItem}>
-        <GlowCard variant="signal" className="p-6">
+        <GlowCard variant="default" className="p-6">
           <ProfileHeader profile={profile} signalProfile={signalProfile} />
         </GlowCard>
       </motion.div>
@@ -97,7 +97,7 @@ export default function ProfilePage() {
         <motion.div variants={staggerItem}>
           <div className="flex items-center gap-3 mb-3">
             <h2 className="text-sm font-semibold text-foreground">Dimension Breakdown</h2>
-            <Badge variant="muted">{dimensions.length} signals</Badge>
+            <Badge variant="secondary">{dimensions.length} signals</Badge>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {dimensions.map(dim => (
@@ -119,7 +119,7 @@ export default function ProfilePage() {
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm">Skills</CardTitle>
-                <Badge variant="muted">{skills.length}</Badge>
+                <Badge variant="secondary">{skills.length}</Badge>
               </div>
             </CardHeader>
             <Separator />

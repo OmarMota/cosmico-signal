@@ -43,14 +43,14 @@ export default function DashboardPage() {
           <Skeleton className="h-4 w-32" />
           <Skeleton className="h-8 w-56" />
         </div>
-        <Skeleton className="h-56 rounded-xl" />
+        <Skeleton className="h-56 rounded-none" />
         <div className="grid grid-cols-2 gap-4">
-          <Skeleton className="h-40 rounded-xl" />
-          <Skeleton className="h-40 rounded-xl" />
+          <Skeleton className="h-40 rounded-none" />
+          <Skeleton className="h-40 rounded-none" />
         </div>
         <div className="grid grid-cols-5 gap-3">
           {Array.from({ length: 5 }).map((_, i) => (
-            <Skeleton key={i} className="h-24 rounded-xl" />
+            <Skeleton key={i} className="h-24 rounded-none" />
           ))}
         </div>
       </div>
@@ -83,7 +83,7 @@ export default function DashboardPage() {
 
       {/* Signal Score Hero */}
       <motion.div variants={staggerItem}>
-        <GlowCard variant="signal" glow className="p-6">
+        <GlowCard variant="default" glow className="p-6">
           <div className="flex items-start justify-between mb-4">
             <div>
               <p className="text-xs text-muted-foreground mb-1">Composite Signal</p>
@@ -94,7 +94,7 @@ export default function DashboardPage() {
                 />
                 <div className="mb-1.5 space-y-0.5">
                   <Badge
-                    variant={signalProfile.score_trend === 'rising' ? 'success' : signalProfile.score_trend === 'falling' ? 'warning' : 'muted'}
+                    variant="secondary"
                     className="text-xs"
                   >
                     {getTrendLabel(signalProfile.score_trend)}
@@ -176,14 +176,14 @@ export default function DashboardPage() {
       <motion.div variants={staggerItem}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Link href="/learn">
-            <Card className="hover:border-signal/30 transition-all cursor-pointer group">
+            <Card className="hover:border-border transition-all cursor-pointer group">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-signal/10 border border-signal/20 flex items-center justify-center">
-                    <BookOpen className="w-4 h-4 text-signal" />
+                  <div className="w-8 h-8 rounded-none bg-primary/10 border border-border flex items-center justify-center">
+                    <BookOpen className="w-4 h-4 text-muted-foreground" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground group-hover:text-signal transition-colors">
+                    <p className="text-sm font-medium text-foreground group-hover:text-foreground transition-colors">
                       Learning Feed
                     </p>
                     <p className="text-xs text-muted-foreground">Personalized for your trajectory</p>
@@ -193,14 +193,14 @@ export default function DashboardPage() {
             </Card>
           </Link>
           <Link href="/opportunities">
-            <Card className="hover:border-trajectory/30 transition-all cursor-pointer group">
+            <Card className="hover:border-border transition-all cursor-pointer group">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-trajectory/10 border border-trajectory/20 flex items-center justify-center">
-                    <TrendingUp className="w-4 h-4 text-trajectory" />
+                  <div className="w-8 h-8 rounded-none bg-muted/40 border border-border flex items-center justify-center">
+                    <TrendingUp className="w-4 h-4 text-muted-foreground" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground group-hover:text-trajectory transition-colors">
+                    <p className="text-sm font-medium text-foreground group-hover:text-foreground transition-colors">
                       Opportunities
                     </p>
                     <p className="text-xs text-muted-foreground">Matched to your signal + trajectory</p>

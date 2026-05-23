@@ -17,7 +17,6 @@ interface TrajectoryPhaseCardProps {
 export function TrajectoryPhaseCard({ snapshot, className }: TrajectoryPhaseCardProps) {
   const { current_phase, growth_velocity, role_predictions } = snapshot
   const phaseIndex = PHASE_ORDER.indexOf(current_phase)
-  const phaseColor = PHASE_COLORS[current_phase]
   const topPrediction = role_predictions?.[0]
 
   const velocityLabel =
@@ -33,7 +32,7 @@ export function TrajectoryPhaseCard({ snapshot, className }: TrajectoryPhaseCard
     growth_velocity > 0.3
       ? 'text-emerald-400'
       : growth_velocity > 0
-      ? 'text-violet-400'
+      ? 'text-foreground'
       : growth_velocity < -0.1
       ? 'text-red-400'
       : 'text-slate-400'
@@ -41,7 +40,7 @@ export function TrajectoryPhaseCard({ snapshot, className }: TrajectoryPhaseCard
   return (
     <motion.div
       className={cn(
-        'rounded-xl border border-border/50 bg-card/60 p-5',
+        'rounded-none border border-border bg-card p-5',
         className
       )}
       initial={{ opacity: 0, y: 8 }}
@@ -51,7 +50,7 @@ export function TrajectoryPhaseCard({ snapshot, className }: TrajectoryPhaseCard
       <div className="flex items-center justify-between mb-3">
         <div>
           <p className="text-xs text-muted-foreground mb-0.5">Current Phase</p>
-          <h3 className="text-lg font-bold" style={{ color: phaseColor }}>
+          <h3 className="text-lg font-bold text-foreground">
             {PHASE_LABELS[current_phase]}
           </h3>
         </div>
@@ -70,11 +69,11 @@ export function TrajectoryPhaseCard({ snapshot, className }: TrajectoryPhaseCard
           <div key={phase} className="flex items-center">
             <motion.div
               className={cn(
-                'rounded-full transition-all',
+                'transition-all',
                 i <= phaseIndex ? 'w-2.5 h-2.5' : 'w-2 h-2 opacity-30'
               )}
               style={{
-                background: i <= phaseIndex ? PHASE_COLORS[phase] : '#334155',
+                background: i <= phaseIndex ? PHASE_COLORS[phase] : 'oklch(0.35 0 0)',
               }}
               animate={i === phaseIndex ? { scale: [1, 1.3, 1] } : {}}
               transition={{ duration: 2, repeat: Infinity }}
@@ -94,21 +93,21 @@ export function TrajectoryPhaseCard({ snapshot, className }: TrajectoryPhaseCard
 
       {/* Next role prediction */}
       {topPrediction && (
-        <div className="rounded-lg bg-violet-500/8 border border-violet-500/15 px-3 py-2">
-          <p className="text-xs text-violet-300/70 mb-0.5">Next predicted role</p>
+        <div className="rounded-none bg-muted/10 border border-border px-3 py-2">
+          <p className="text-xs text-muted-foreground mb-0.5">Next predicted role</p>
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-violet-200">{topPrediction.role}</span>
+            <span className="text-sm font-medium text-foreground">{topPrediction.role}</span>
             <span className="text-xs text-muted-foreground">~{topPrediction.timeframe_months}mo</span>
           </div>
-          <div className="mt-1.5 h-1 rounded-full bg-violet-500/10 overflow-hidden">
+          <div className="mt-1.5 h-1 rounded-none bg-muted/10 overflow-hidden">
             <motion.div
-              className="h-full rounded-full bg-violet-500/50"
+              className="h-full bg-muted-foreground/50"
               initial={{ width: 0 }}
               animate={{ width: `${topPrediction.confidence * 100}%` }}
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             />
           </div>
-          <p className="text-right text-xs text-violet-400/60 mt-0.5">
+          <p className="text-right text-xs text-muted-foreground mt-0.5">
             {Math.round(topPrediction.confidence * 100)}% confidence
           </p>
         </div>

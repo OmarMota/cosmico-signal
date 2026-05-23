@@ -1,7 +1,15 @@
 'use client'
 import { useEffect, useRef } from 'react'
 import type { TrajectorySnapshot } from '@/lib/types/trajectory.types'
-import { PHASE_ORDER, PHASE_LABELS, PHASE_COLORS } from '@/lib/types/trajectory.types'
+import { PHASE_ORDER, PHASE_LABELS } from '@/lib/types/trajectory.types'
+
+const ARC_PHASE_COLORS: Record<string, string> = {
+  establishing: 'rgba(180,180,180,1)',
+  building:     'rgba(155,155,155,1)',
+  specializing: 'rgba(120,120,120,1)',
+  leading:      'rgba(90,90,90,1)',
+  pioneering:   'rgba(60,60,60,1)',
+}
 
 interface TrajectoryArcProps {
   snapshot: TrajectorySnapshot
@@ -36,7 +44,7 @@ export function TrajectoryArc({ snapshot, width = 600, height = 200 }: Trajector
     // Draw background arc track
     ctx.beginPath()
     ctx.arc(cx, cy, radius, startAngle, endAngle, false)
-    ctx.strokeStyle = 'rgba(139,92,246,0.1)'
+    ctx.strokeStyle = 'rgba(120,120,120,0.15)'
     ctx.lineWidth = 2
     ctx.stroke()
 
@@ -44,13 +52,13 @@ export function TrajectoryArc({ snapshot, width = 600, height = 200 }: Trajector
     for (let i = 0; i < PHASE_ORDER.length; i++) {
       const segStart = Math.PI - (i / PHASE_ORDER.length) * Math.PI
       const segEnd = Math.PI - ((i + 1) / PHASE_ORDER.length) * Math.PI
+      const base = ARC_PHASE_COLORS[PHASE_ORDER[i]]
 
       ctx.beginPath()
       ctx.arc(cx, cy, radius, segStart, segEnd, false)
-      ctx.strokeStyle =
-        i <= phaseIndex
-          ? PHASE_COLORS[PHASE_ORDER[i]] + (i === phaseIndex ? 'ff' : '80')
-          : 'rgba(51,65,85,0.4)'
+      ctx.strokeStyle = i <= phaseIndex
+        ? base.replace(',1)', i === phaseIndex ? ',1)' : ',0.5)')
+        : 'rgba(100,100,100,0.25)'
       ctx.lineWidth = i === phaseIndex ? 3 : 1.5
       ctx.stroke()
 
@@ -61,7 +69,7 @@ export function TrajectoryArc({ snapshot, width = 600, height = 200 }: Trajector
       const ly = cy + Math.sin(midAngle) * labelRadius
 
       ctx.font = '9px system-ui, sans-serif'
-      ctx.fillStyle = i <= phaseIndex ? PHASE_COLORS[PHASE_ORDER[i]] : 'rgba(148,163,184,0.4)'
+      ctx.fillStyle = i <= phaseIndex ? base : 'rgba(120,120,120,0.4)'
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       ctx.fillText(PHASE_LABELS[PHASE_ORDER[i]], lx, ly)
@@ -72,21 +80,21 @@ export function TrajectoryArc({ snapshot, width = 600, height = 200 }: Trajector
     const dotX = cx + Math.cos(currentAngle) * radius
     const dotY = cy + Math.sin(currentAngle) * radius
 
-    // Outer glow
-    const gradient = ctx.createRadialGradient(dotX, dotY, 0, dotX, dotY, 16)
-    gradient.addColorStop(0, 'rgba(167,139,250,0.5)')
+    // Outer halo
+    const gradient = ctx.createRadialGradient(dotX, dotY, 0, dotX, dotY, 14)
+    gradient.addColorStop(0, 'rgba(150,150,150,0.4)')
     gradient.addColorStop(1, 'transparent')
     ctx.beginPath()
-    ctx.arc(dotX, dotY, 16, 0, Math.PI * 2)
+    ctx.arc(dotX, dotY, 14, 0, Math.PI * 2)
     ctx.fillStyle = gradient
     ctx.fill()
 
     // Dot
     ctx.beginPath()
     ctx.arc(dotX, dotY, 5, 0, Math.PI * 2)
-    ctx.fillStyle = '#a78bfa'
+    ctx.fillStyle = 'rgba(180,180,180,1)'
     ctx.fill()
-    ctx.strokeStyle = 'rgba(255,255,255,0.8)'
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)'
     ctx.lineWidth = 1.5
     ctx.stroke()
 

@@ -24,7 +24,7 @@ export function ContentCard({ recommendation, index = 0 }: ContentCardProps) {
   return (
     <Link href={`/learn/${recommendation.id}`} className="block">
       <motion.div
-        className="rounded-xl border border-border/50 bg-card/60 p-4 hover:border-violet-500/30 hover:bg-card transition-all group cursor-pointer"
+        className="rounded-none border border-border bg-card p-4 hover:bg-muted/30 transition-all group cursor-pointer"
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.06 }}
@@ -32,16 +32,16 @@ export function ContentCard({ recommendation, index = 0 }: ContentCardProps) {
       >
         <div className="flex items-start justify-between gap-2 mb-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <Badge variant={isFree ? 'free' : 'paid'}>{isFree ? 'Free' : `$${content.price_usd}`}</Badge>
-            <Badge variant="muted">{typeLabel}</Badge>
+            <Badge variant={isFree ? 'secondary' : 'outline'}>{isFree ? 'Free' : `$${content.price_usd}`}</Badge>
+            <Badge variant="secondary">{typeLabel}</Badge>
             {content.duration_minutes && (
-              <Badge variant="muted">{formatDuration(content.duration_minutes)}</Badge>
+              <Badge variant="secondary">{formatDuration(content.duration_minutes)}</Badge>
             )}
           </div>
-          <ArrowRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-violet-400 flex-shrink-0 transition-colors" />
+          <ArrowRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-foreground flex-shrink-0 transition-colors" />
         </div>
 
-        <h3 className="text-sm font-semibold text-foreground mb-1.5 leading-tight group-hover:text-violet-300 transition-colors">{content.title}</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-1.5 leading-tight group-hover:text-foreground transition-colors">{content.title}</h3>
 
         {content.short_description && (
           <p className="text-xs text-muted-foreground leading-relaxed mb-3">{content.short_description}</p>
@@ -50,8 +50,8 @@ export function ContentCard({ recommendation, index = 0 }: ContentCardProps) {
         {/* Reason chip */}
         {reasonLabel && (
           <div className="flex items-center gap-1.5 mb-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-400/60 flex-shrink-0" />
-            <span className="text-xs text-violet-300/70">{reasonLabel}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-muted/60 flex-shrink-0" />
+            <span className="text-xs text-muted-foreground">{reasonLabel}</span>
           </div>
         )}
 
@@ -59,7 +59,7 @@ export function ContentCard({ recommendation, index = 0 }: ContentCardProps) {
         {content.skill_tags?.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-2">
             {content.skill_tags.slice(0, 3).map(skill => (
-              <span key={skill} className="text-xs text-muted-foreground/60 bg-muted/30 rounded px-1.5 py-0.5">
+              <span key={skill} className="text-xs text-muted-foreground/60 bg-muted/30 px-1.5 py-0.5">
                 {skill}
               </span>
             ))}

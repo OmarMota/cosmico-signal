@@ -17,9 +17,9 @@ function Chip({ label, selected, onClick }: { label: string; selected: boolean; 
       type="button"
       onClick={onClick}
       className={cn(
-        'rounded-xl border px-3 py-2 text-sm text-left transition-all duration-150',
+        'rounded-none border px-3 py-2 text-sm text-left transition-all duration-150',
         selected
-          ? 'border-signal/60 bg-signal/10 text-signal-light font-medium'
+          ? 'border-primary/40 bg-primary/10 text-primary font-medium'
           : 'border-border/60 text-muted-foreground hover:border-border hover:text-foreground'
       )}
     >
@@ -82,13 +82,13 @@ export function SectionSpecialties() {
                   type="button"
                   onClick={() => setForm(f => ({ ...f, main_specialization: spec }))}
                   className={cn(
-                    'rounded-xl border px-4 py-3 text-sm text-left transition-all',
+                    'rounded-none border px-4 py-3 text-sm text-left transition-all',
                     isSelected
-                      ? 'border-signal/60 bg-signal/10'
+                      ? 'border-primary/40 bg-primary/10'
                       : 'border-border/60 hover:border-border hover:bg-accent/30'
                   )}
                 >
-                  <p className={cn('font-medium', isSelected ? 'text-signal-light' : 'text-foreground')}>{spec}</p>
+                  <p className={cn('font-medium', isSelected ? 'text-primary' : 'text-foreground')}>{spec}</p>
                 </button>
               )
             })}
@@ -125,24 +125,24 @@ export function SectionSpecialties() {
       {form.skill_trajectory.length > 0 && (
         <div>
           <label className="block text-xs font-medium text-muted-foreground mb-3">Your growth trajectory</label>
-          <div className="space-y-3 rounded-xl border border-border/40 bg-card/40 p-4">
+          <div className="space-y-3 rounded-none border border-border/40 bg-card/40 p-4">
             {form.skill_trajectory.map(skill => (
               <div key={skill}>
                 <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-medium text-foreground">{form.main_specialization || 'Current'}</span>
                     <ArrowRight className="w-3 h-3 text-muted-foreground/50" />
-                    <span className="text-xs font-medium text-signal-light">{skill}</span>
+                    <span className="text-xs font-medium text-primary">{skill}</span>
                   </div>
                   <span className="text-[10px] text-muted-foreground/40">Goal</span>
                 </div>
-                <div className="relative h-1.5 bg-muted/40 rounded-full overflow-hidden">
+                <div className="relative h-1.5 bg-muted/40 rounded-none overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-signal/60 to-signal/30 rounded-full"
+                    className="h-full bg-foreground/40"
                     style={{ width: '35%' }}
                   />
                   <div
-                    className="absolute top-0 h-full w-0.5 bg-signal-light/80"
+                    className="absolute top-0 h-full w-0.5 bg-primary/60"
                     style={{ left: '35%' }}
                   />
                 </div>
@@ -157,7 +157,7 @@ export function SectionSpecialties() {
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="btn-signal"
+          className="px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-none hover:bg-primary/90 disabled:opacity-50 transition-colors"
         >
           {isSaving ? 'Saving…' : 'Save changes'}
         </button>

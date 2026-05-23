@@ -70,9 +70,9 @@ export const PHASE_DESCRIPTIONS: Record<TrajectoryPhase, string> = {
 export const PHASE_ORDER: TrajectoryPhase[] = ['establishing', 'building', 'specializing', 'leading', 'pioneering']
 
 export const PHASE_COLORS: Record<TrajectoryPhase, string> = {
-  establishing: '#64748b',
-  building: '#6366f1',
-  specializing: '#8b5cf6',
-  leading: '#a78bfa',
-  pioneering: '#e879f9',
+  establishing: 'oklch(0.75 0 0)',
+  building:     'oklch(0.65 0 0)',
+  specializing: 'oklch(0.55 0 0)',
+  leading:      'oklch(0.4 0 0)',
+  pioneering:   'oklch(0.25 0 0)',
 }

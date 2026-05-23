@@ -56,7 +56,7 @@ export function SectionAbout() {
         <label className="group relative w-20 h-20 rounded-full cursor-pointer">
           <div className={cn(
             'w-20 h-20 rounded-full border-2 flex items-center justify-center overflow-hidden transition-all',
-            form.avatar_url ? 'border-signal/50' : 'border-dashed border-border/60 group-hover:border-signal/40'
+            form.avatar_url ? 'border-primary/30' : 'border-dashed border-border/60 group-hover:border-primary/30'
           )}>
             {form.avatar_url ? (
               <img src={form.avatar_url} alt="avatar" className="w-full h-full object-cover" />
@@ -64,7 +64,7 @@ export function SectionAbout() {
               <span className="text-xl font-bold text-muted-foreground">{initials}</span>
             )}
           </div>
-          <div className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-signal flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-primary flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
             <Camera className="w-3 h-3 text-white" />
           </div>
           <input type="file" accept="image/*" className="sr-only" onChange={handleAvatarChange} />
@@ -107,9 +107,9 @@ export function SectionAbout() {
               type="button"
               onClick={() => setForm(f => ({ ...f, professional_situation: key }))}
               className={cn(
-                'rounded-xl border px-3 py-2.5 text-sm text-left transition-all',
+                'rounded-none border px-3 py-2.5 text-sm text-left transition-all',
                 form.professional_situation === key
-                  ? 'border-signal/60 bg-signal/10 text-signal-light font-medium'
+                  ? 'border-primary/40 bg-primary/10 text-primary font-medium'
                   : 'border-border/60 text-muted-foreground hover:border-border hover:text-foreground'
               )}
             >
@@ -140,7 +140,7 @@ export function SectionAbout() {
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="btn-signal"
+          className="px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-none hover:bg-primary/90 disabled:opacity-50 transition-colors"
         >
           {isSaving ? 'Saving…' : 'Save changes'}
         </button>
