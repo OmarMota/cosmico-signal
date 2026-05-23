@@ -5,7 +5,12 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Zap } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Separator } from '@/components/ui/separator'
+import { Zap, AlertCircle } from 'lucide-react'
 
 export default function SignupPage() {
   const [email, setEmail] = useState('')
@@ -42,18 +47,18 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-violet-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-signal/5 rounded-full blur-3xl" />
       </div>
 
       <motion.div
-        className="flex items-center gap-2 mb-10"
+        className="flex items-center gap-2.5 mb-10"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
-          <Zap className="w-4 h-4 text-white" />
+        <div className="w-8 h-8 rounded-lg bg-foreground flex items-center justify-center">
+          <Zap className="w-4 h-4 text-background" />
         </div>
-        <span className="font-semibold text-lg tracking-tight">Cosmico Signal</span>
+        <span className="font-semibold text-base tracking-tight text-foreground">Cosmico Signal</span>
       </motion.div>
 
       <motion.div
@@ -62,68 +67,78 @@ export default function SignupPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <div className="rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-8 shadow-2xl shadow-violet-500/5">
-          <h1 className="text-xl font-bold text-foreground mb-1">Begin your signal</h1>
-          <p className="text-sm text-muted-foreground mb-6">
-            Join the platform that tracks how you grow
-          </p>
+        <Card className="shadow-xl shadow-signal/5 border-border/60 backdrop-blur-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-xl">Begin your signal</CardTitle>
+            <CardDescription>Join the platform that tracks how you grow</CardDescription>
+          </CardHeader>
 
-          <form onSubmit={handleSignup} className="space-y-4">
-            <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">
-                Display Name
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={e => setName(e.target.value)}
-                className="w-full rounded-lg border border-border/50 bg-muted/30 px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500/50 transition-all"
-                placeholder="Alex Chen"
-                required
-              />
-            </div>
+          <CardContent>
+            <form onSubmit={handleSignup} className="space-y-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="name">Display Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  placeholder="Alex Chen"
+                  required
+                />
+              </div>
 
-            <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                className="w-full rounded-lg border border-border/50 bg-muted/30 px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500/50 transition-all"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
 
-            <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                className="w-full rounded-lg border border-border/50 bg-muted/30 px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500/50 transition-all"
-                placeholder="8+ characters"
-                minLength={8}
-                required
-              />
-            </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="8+ characters"
+                  minLength={8}
+                  required
+                />
+              </div>
 
-            {error && (
-              <p className="text-xs text-red-400 bg-red-500/10 rounded-lg px-3 py-2">{error}</p>
-            )}
+              {error && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
 
-            <Button type="submit" variant="signal" className="w-full" disabled={loading}>
-              {loading ? 'Creating account...' : 'Create Account'}
-            </Button>
-          </form>
+              <Button
+                type="submit"
+                variant="signal"
+                className="w-full"
+                disabled={loading}
+              >
+                {loading ? 'Creating account…' : 'Create Account'}
+              </Button>
+            </form>
 
-          <p className="text-xs text-center text-muted-foreground mt-4">
-            Already have an account?{' '}
-            <Link href="/login" className="text-violet-400 hover:text-violet-300 transition-colors">
-              Sign in
-            </Link>
-          </p>
-        </div>
+            <Separator className="my-4" />
+
+            <p className="text-xs text-center text-muted-foreground">
+              Already have an account?{' '}
+              <Link href="/login" className="text-signal hover:text-signal-light transition-colors font-medium">
+                Sign in
+              </Link>
+            </p>
+          </CardContent>
+        </Card>
       </motion.div>
     </div>
   )

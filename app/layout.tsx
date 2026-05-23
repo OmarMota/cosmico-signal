@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
+
+const geistHeading = Geist({subsets:['latin'],variable:'--font-heading'});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +30,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, geistHeading.variable)}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
@@ -37,6 +41,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <Toaster richColors position="bottom-right" />
         </ThemeProvider>
       </body>
     </html>

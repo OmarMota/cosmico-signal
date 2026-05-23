@@ -2,8 +2,10 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ContentCard } from '@/components/learning/ContentCard'
-import { GlowCard } from '@/components/shared/GlowCard'
-import { DashboardSkeleton } from '@/components/shared/LoadingSkeleton'
+import { Card, CardContent } from '@/components/ui/card'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Badge } from '@/components/ui/badge'
 import { staggerContainer, staggerItem } from '@/lib/utils/animation-variants'
 import type { LearningRecommendation } from '@/lib/types/learning.types'
 import { BookOpen } from 'lucide-react'
@@ -11,7 +13,6 @@ import { BookOpen } from 'lucide-react'
 export default function LearnPage() {
   const [recommendations, setRecommendations] = useState<LearningRecommendation[]>([])
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState<'all' | 'free' | 'paid'>('all')
 
   useEffect(() => {
     fetch('/api/learning/recommendations')
@@ -23,13 +24,25 @@ export default function LearnPage() {
       .catch(() => setLoading(false))
   }, [])
 
-  if (loading) return <DashboardSkeleton />
+  const free = recommendations.filter(r => r.content?.price_usd === 0)
+  const paid = recommendations.filter(r => (r.content?.price_usd ?? 0) > 0)
 
-  const filtered = recommendations.filter(r => {
-    if (filter === 'free') return r.content?.price_usd === 0
-    if (filter === 'paid') return (r.content?.price_usd ?? 0) > 0
-    return true
-  })
+  if (loading) {
+    return (
+      <div className="space-y-8">
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-4 w-72" />
+        </div>
+        <Skeleton className="h-10 w-64" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-48 rounded-none" />
+          ))}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <motion.div
@@ -40,50 +53,58 @@ export default function LearnPage() {
     >
       {/* Header */}
       <motion.div variants={staggerItem}>
-        <h1 className="text-2xl font-bold text-foreground mb-1">Learning Feed</h1>
+        <div className="flex items-center gap-3 mb-1">
+          <h1 className="text-2xl font-bold text-foreground">Learning Feed</h1>
+          <Badge variant="outline">{recommendations.length} curated</Badge>
+        </div>
         <p className="text-sm text-muted-foreground">
           Curated for your trajectory — not a catalog, a direction
         </p>
       </motion.div>
 
-      {/* Filter tabs */}
-      <motion.div variants={staggerItem} className="flex gap-2">
-        {(['all', 'free', 'paid'] as const).map(f => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-all capitalize ${
-              filter === f
-                ? 'bg-violet-500/20 text-violet-200 border border-violet-500/30'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            {f}
-          </button>
-        ))}
-      </motion.div>
+      {/* Tabs */}
+      <motion.div variants={staggerItem}>
+        <Tabs defaultValue="all">
+          <TabsList>
+            <TabsTrigger value="all">
+              All <Badge variant="secondary" className="ml-1.5">{recommendations.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="free">
+              Free <Badge variant="secondary" className="ml-1.5">{free.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="paid">
+              Paid <Badge variant="secondary" className="ml-1.5">{paid.length}</Badge>
+            </TabsTrigger>
+          </TabsList>
 
-      {filtered.length === 0 ? (
-        <motion.div variants={staggerItem}>
-          <GlowCard className="p-12 text-center">
-            <BookOpen className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
-            <p className="text-muted-foreground">
-              {recommendations.length === 0
-                ? 'Complete your profile to get personalized recommendations'
-                : 'No content matches this filter'}
-            </p>
-          </GlowCard>
-        </motion.div>
-      ) : (
-        <motion.div
-          variants={staggerItem}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-        >
-          {filtered.map((rec, i) => (
-            <ContentCard key={rec.id} recommendation={rec} index={i} />
+          {[
+            { value: 'all',  items: recommendations },
+            { value: 'free', items: free },
+            { value: 'paid', items: paid },
+          ].map(({ value, items }) => (
+            <TabsContent key={value} value={value} className="mt-6">
+              {items.length === 0 ? (
+                <Card>
+                  <CardContent className="p-12 flex flex-col items-center text-center gap-3">
+                    <BookOpen className="w-10 h-10 text-muted-foreground/30" />
+                    <p className="text-sm text-muted-foreground">
+                      {recommendations.length === 0
+                        ? 'Complete your profile to get personalized recommendations'
+                        : 'No content matches this filter'}
+                    </p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {items.map((rec, i) => (
+                    <ContentCard key={rec.id} recommendation={rec} index={i} />
+                  ))}
+                </div>
+              )}
+            </TabsContent>
           ))}
-        </motion.div>
-      )}
+        </Tabs>
+      </motion.div>
     </motion.div>
   )
 }

@@ -2,8 +2,10 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { OpportunityCard } from '@/components/opportunities/OpportunityCard'
-import { GlowCard } from '@/components/shared/GlowCard'
-import { DashboardSkeleton } from '@/components/shared/LoadingSkeleton'
+import { Card, CardContent } from '@/components/ui/card'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { Badge } from '@/components/ui/badge'
+import { Skeleton } from '@/components/ui/skeleton'
 import { staggerContainer, staggerItem } from '@/lib/utils/animation-variants'
 import type { OpportunityWithFit } from '@/lib/types/opportunity.types'
 import { Briefcase } from 'lucide-react'
@@ -11,13 +13,11 @@ import { Briefcase } from 'lucide-react'
 export default function OpportunitiesPage() {
   const [opportunities, setOpportunities] = useState<OpportunityWithFit[]>([])
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState<'all' | 'full_time' | 'contract' | 'freelance'>('all')
 
   useEffect(() => {
     fetch('/api/opportunities')
       .then(r => r.json())
       .then(d => {
-        // Sort by fit score
         const sorted = (d.opportunities ?? []).sort(
           (a: OpportunityWithFit, b: OpportunityWithFit) =>
             (b.fit?.fit_score ?? 0) - (a.fit?.fit_score ?? 0)
@@ -28,12 +28,32 @@ export default function OpportunitiesPage() {
       .catch(() => setLoading(false))
   }, [])
 
-  if (loading) return <DashboardSkeleton />
+  const byType = (type: string) =>
+    opportunities.filter(o => o.opportunity_type === type)
 
-  const filtered =
-    filter === 'all'
-      ? opportunities
-      : opportunities.filter(o => o.opportunity_type === filter)
+  const tabs = [
+    { value: 'all',       label: 'All',       items: opportunities },
+    { value: 'full_time', label: 'Full-time',  items: byType('full_time') },
+    { value: 'contract',  label: 'Contract',   items: byType('contract') },
+    { value: 'freelance', label: 'Freelance',  items: byType('freelance') },
+  ]
+
+  if (loading) {
+    return (
+      <div className="space-y-8">
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-4 w-72" />
+        </div>
+        <Skeleton className="h-10 w-80" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-48 rounded-none" />
+          ))}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <motion.div
@@ -44,43 +64,49 @@ export default function OpportunitiesPage() {
     >
       {/* Header */}
       <motion.div variants={staggerItem}>
-        <h1 className="text-2xl font-bold text-foreground mb-1">Opportunities</h1>
+        <div className="flex items-center gap-3 mb-1">
+          <h1 className="text-2xl font-bold text-foreground">Opportunities</h1>
+          <Badge variant="outline">{opportunities.length} matched</Badge>
+        </div>
         <p className="text-sm text-muted-foreground">
           Ranked by your signal match — not by recency
         </p>
       </motion.div>
 
-      {/* Filters */}
-      <motion.div variants={staggerItem} className="flex gap-2 flex-wrap">
-        {(['all', 'full_time', 'contract', 'freelance'] as const).map(f => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-all capitalize ${
-              filter === f
-                ? 'bg-violet-500/20 text-violet-200 border border-violet-500/30'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            {f.replace('_', ' ')}
-          </button>
-        ))}
-      </motion.div>
+      {/* Tabs */}
+      <motion.div variants={staggerItem}>
+        <Tabs defaultValue="all">
+          <TabsList>
+            {tabs.map(t => (
+              <TabsTrigger key={t.value} value={t.value}>
+                {t.label}
+                <Badge variant="secondary" className="ml-1.5">{t.items.length}</Badge>
+              </TabsTrigger>
+            ))}
+          </TabsList>
 
-      {filtered.length === 0 ? (
-        <motion.div variants={staggerItem}>
-          <GlowCard className="p-12 text-center">
-            <Briefcase className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
-            <p className="text-muted-foreground">No opportunities match this filter</p>
-          </GlowCard>
-        </motion.div>
-      ) : (
-        <motion.div variants={staggerItem} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {filtered.map((opp, i) => (
-            <OpportunityCard key={opp.id} opportunity={opp} index={i} />
+          {tabs.map(({ value, items }) => (
+            <TabsContent key={value} value={value} className="mt-6">
+              {items.length === 0 ? (
+                <Card>
+                  <CardContent className="p-12 flex flex-col items-center text-center gap-3">
+                    <Briefcase className="w-10 h-10 text-muted-foreground/30" />
+                    <p className="text-sm text-muted-foreground">
+                      No opportunities match this filter
+                    </p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {items.map((opp, i) => (
+                    <OpportunityCard key={opp.id} opportunity={opp} index={i} />
+                  ))}
+                </div>
+              )}
+            </TabsContent>
           ))}
-        </motion.div>
-      )}
+        </Tabs>
+      </motion.div>
     </motion.div>
   )
 }

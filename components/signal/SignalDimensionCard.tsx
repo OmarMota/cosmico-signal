@@ -21,7 +21,7 @@ export function SignalDimensionCard({ dimension, score, trend = 'stable', classN
 
   return (
     <motion.div
-      className={cn('rounded-xl border border-border/50 bg-card/60 p-4', className)}
+      className={cn('rounded-none border border-border bg-card p-4', className)}
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -34,9 +34,9 @@ export function SignalDimensionCard({ dimension, score, trend = 'stable', classN
         <AnimatedNumber value={score} className="text-2xl font-bold text-foreground" />
         <span className="text-xs text-muted-foreground mb-1">/100</span>
       </div>
-      <div className="relative h-1.5 rounded-full bg-muted/50 overflow-hidden">
+      <div className="relative h-1.5 rounded-none bg-muted/50 overflow-hidden">
         <motion.div
-          className="absolute inset-y-0 left-0 rounded-full"
+          className="absolute inset-y-0 left-0"
           style={{ background: color }}
           initial={{ width: 0 }}
           animate={{ width: `${score}%` }}

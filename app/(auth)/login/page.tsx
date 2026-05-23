@@ -3,8 +3,11 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuthStore } from '@/lib/stores/auth.store'
-import { Zap, ArrowRight, Sparkles, TrendingUp, BookOpen, BarChart2 } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { LoadingScreen } from '@/components/loading/LoadingScreen'
+import { Zap, ArrowRight, Sparkles, TrendingUp, BookOpen, BarChart2 } from 'lucide-react'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -29,13 +32,12 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col overflow-hidden">
-
       <LoadingScreen show={!loadingDone} onComplete={() => setLoadingDone(true)} />
 
       {/* Ambient glow */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-signal/6 rounded-full blur-3xl" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-trajectory/5 rounded-full blur-3xl" />
+        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-signal/[0.06] rounded-full blur-3xl" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-trajectory/[0.05] rounded-full blur-3xl" />
       </div>
 
       {/* Header */}
@@ -61,22 +63,20 @@ export default function LoginPage() {
       {/* Main */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 py-12">
 
-        {/* Hero text */}
+        {/* Hero */}
         <motion.div
           className="text-center max-w-xl mb-14"
           initial={{ opacity: 0, y: 20 }}
           animate={loadingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-signal/20 bg-signal/8 px-3 py-1 text-xs text-signal-light mb-5">
+          <Badge variant="outline" className="mb-5 border-signal/20 bg-signal/8 text-signal-light gap-1.5">
             <Sparkles className="w-3 h-3" />
             Prototype — no account required
-          </div>
+          </Badge>
           <h1 className="text-4xl font-bold text-foreground tracking-tight leading-tight mb-4">
             Understand who<br />
-            <span className="text-gradient-signal">
-              you are becoming
-            </span>
+            <span className="text-gradient-signal">you are becoming</span>
           </h1>
           <p className="text-base text-muted-foreground leading-relaxed">
             Cosmico Signal observes how you work, tracks how you evolve,
@@ -88,93 +88,98 @@ export default function LoginPage() {
         <div className="w-full max-w-2xl grid grid-cols-1 sm:grid-cols-2 gap-5">
 
           {/* Option A — Existing profile */}
-          <motion.button
-            onClick={handleLoginAsAlex}
-            className="group relative text-left rounded-2xl border border-border bg-card p-6 hover:border-signal/30 transition-all duration-300 hover:shadow-lg hover:shadow-signal/8 cursor-pointer"
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={loadingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ delay: 0.1 }}
             whileHover={{ y: -2 }}
           >
-            {/* Avatar glow */}
-            <div className="relative w-14 h-14 mb-5">
-              <div className="absolute inset-0 rounded-full bg-signal/15 blur-md" />
-              <div className="relative w-14 h-14 rounded-full border-2 border-signal/30 bg-signal/10 flex items-center justify-center">
-                <span className="text-xl font-bold text-signal-light">A</span>
-              </div>
-              <span className="absolute bottom-0.5 right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-card" />
-            </div>
+            <Card
+              onClick={handleLoginAsAlex}
+              className="group cursor-pointer h-full hover:border-signal/30 hover:shadow-lg hover:shadow-signal/8 transition-all duration-300"
+            >
+              <CardContent className="p-6 flex flex-col h-full">
+                {/* Avatar */}
+                <div className="relative w-14 h-14 mb-5">
+                  <div className="absolute inset-0 rounded-full bg-signal/15 blur-md" />
+                  <div className="relative w-14 h-14 rounded-full border-2 border-signal/30 bg-signal/10 flex items-center justify-center">
+                    <span className="text-xl font-bold text-signal-light">A</span>
+                  </div>
+                  <span className="absolute bottom-0.5 right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-card" />
+                </div>
 
-            <div className="mb-4">
-              <p className="text-xs text-muted-foreground mb-0.5">Continue as</p>
-              <h3 className="text-lg font-bold text-foreground">Alex Chen</h3>
-              <p className="text-sm text-muted-foreground">Sr. Frontend Engineer</p>
-            </div>
+                <div className="mb-4">
+                  <p className="text-xs text-muted-foreground mb-0.5">Continue as</p>
+                  <h3 className="text-lg font-bold text-foreground">Alex Chen</h3>
+                  <p className="text-sm text-muted-foreground">Sr. Frontend Engineer</p>
+                </div>
 
-            <div className="flex items-center gap-3 mb-5">
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-signal" />
-                <span className="text-xs text-muted-foreground">Signal 74.8</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-trajectory" />
-                <span className="text-xs text-muted-foreground">Specializing</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                <span className="text-xs text-muted-foreground">Rising ↑</span>
-              </div>
-            </div>
+                <div className="flex items-center gap-3 mb-4">
+                  <Badge variant="signal" className="gap-1">
+                    <span className="w-1 h-1 rounded-full bg-signal inline-block" />
+                    Signal 74.8
+                  </Badge>
+                  <Badge variant="success" className="gap-1">Rising ↑</Badge>
+                </div>
 
-            <div className="flex flex-wrap gap-1.5 mb-5">
-              {['12wk history', 'Trajectory', 'Learning recs', 'Opportunities'].map(f => (
-                <span key={f} className="text-xs rounded-md bg-accent px-2 py-0.5 text-muted-foreground">{f}</span>
-              ))}
-            </div>
+                <div className="flex flex-wrap gap-1.5 mb-5">
+                  {['12wk history', 'Trajectory', 'Learning', 'Opportunities'].map(f => (
+                    <Badge key={f} variant="muted">{f}</Badge>
+                  ))}
+                </div>
 
-            <div className="flex items-center gap-2 text-sm font-medium text-signal-light group-hover:text-signal transition-colors">
-              Load full profile
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </motion.button>
+                <div className="mt-auto flex items-center gap-2 text-sm font-medium text-signal-light group-hover:text-signal transition-colors">
+                  Load full profile
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
 
           {/* Option B — New profile */}
-          <motion.button
-            onClick={handleCreateNew}
-            className="group relative text-left rounded-2xl border border-dashed border-border bg-card/50 p-6 hover:border-signal/30 hover:bg-card transition-all duration-300 hover:shadow-lg hover:shadow-signal/8 cursor-pointer"
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={loadingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ delay: 0.18 }}
             whileHover={{ y: -2 }}
           >
-            <div className="w-14 h-14 rounded-full border-2 border-dashed border-border group-hover:border-signal/30 bg-accent/50 flex items-center justify-center mb-5 transition-colors">
-              <Sparkles className="w-6 h-6 text-muted-foreground group-hover:text-signal transition-colors" />
-            </div>
-
-            <div className="mb-4">
-              <p className="text-xs text-muted-foreground mb-0.5">Start fresh</p>
-              <h3 className="text-lg font-bold text-foreground">New Profile</h3>
-              <p className="text-sm text-muted-foreground">Build your signal from scratch</p>
-            </div>
-
-            <div className="space-y-2 mb-5">
-              {[
-                { icon: BarChart2, text: 'Define your role and skills' },
-                { icon: TrendingUp, text: 'Set your trajectory goals' },
-                { icon: BookOpen, text: 'Get personalized learning' },
-              ].map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-center gap-2">
-                  <Icon className="w-3.5 h-3.5 text-muted-foreground flex-none" />
-                  <span className="text-xs text-muted-foreground">{text}</span>
+            <Card
+              onClick={handleCreateNew}
+              className="group cursor-pointer h-full border-dashed hover:border-signal/30 hover:bg-card transition-all duration-300 hover:shadow-lg hover:shadow-signal/8 bg-card/50"
+            >
+              <CardContent className="p-6 flex flex-col h-full">
+                <div className="w-14 h-14 rounded-full border-2 border-dashed border-border group-hover:border-signal/30 bg-accent/50 flex items-center justify-center mb-5 transition-colors">
+                  <Sparkles className="w-6 h-6 text-muted-foreground group-hover:text-signal transition-colors" />
                 </div>
-              ))}
-            </div>
 
-            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground group-hover:text-signal-light transition-colors">
-              Start 7-step onboarding
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </motion.button>
+                <div className="mb-4">
+                  <p className="text-xs text-muted-foreground mb-0.5">Start fresh</p>
+                  <h3 className="text-lg font-bold text-foreground">New Profile</h3>
+                  <p className="text-sm text-muted-foreground">Build your signal from scratch</p>
+                </div>
+
+                <Separator className="my-4" />
+
+                <div className="space-y-2 mb-5">
+                  {[
+                    { icon: BarChart2,  text: 'Define your role and skills' },
+                    { icon: TrendingUp, text: 'Set your trajectory goals' },
+                    { icon: BookOpen,   text: 'Get personalized learning' },
+                  ].map(({ icon: Icon, text }) => (
+                    <div key={text} className="flex items-center gap-2">
+                      <Icon className="w-3.5 h-3.5 text-muted-foreground flex-none" />
+                      <span className="text-xs text-muted-foreground">{text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-auto flex items-center gap-2 text-sm font-medium text-muted-foreground group-hover:text-signal-light transition-colors">
+                  Start 7-step onboarding
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
 
         <motion.p

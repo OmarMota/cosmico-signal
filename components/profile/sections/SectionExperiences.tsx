@@ -20,9 +20,9 @@ function Chip({
       type="button"
       onClick={onClick}
       className={cn(
-        'rounded-xl border px-3 py-2 text-sm text-left transition-all duration-150',
+        'rounded-none border px-3 py-2 text-sm text-left transition-all duration-150',
         selected
-          ? 'border-signal/60 bg-signal/10 text-signal-light font-medium'
+          ? 'border-primary/40 bg-primary/10 text-primary font-medium'
           : 'border-border/60 text-muted-foreground hover:border-border hover:text-foreground'
       )}
     >
@@ -87,9 +87,9 @@ export function SectionExperiences() {
               type="button"
               onClick={() => setForm(f => ({ ...f, experience_years: key }))}
               className={cn(
-                'rounded-xl border py-3 text-sm font-medium text-center transition-all',
+                'rounded-none border py-3 text-sm font-medium text-center transition-all',
                 form.experience_years === key
-                  ? 'border-signal/60 bg-signal/10 text-signal-light'
+                  ? 'border-primary/40 bg-primary/10 text-primary'
                   : 'border-border/60 text-muted-foreground hover:border-border hover:text-foreground'
               )}
             >
@@ -104,7 +104,7 @@ export function SectionExperiences() {
         <label className="block text-xs font-medium text-muted-foreground mb-2">
           Company types you've worked at
           {form.company_types.length > 0 && (
-            <span className="ml-2 text-signal-light text-[11px]">{form.company_types.length} selected</span>
+            <span className="ml-2 text-primary text-[11px]">{form.company_types.length} selected</span>
           )}
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -119,7 +119,7 @@ export function SectionExperiences() {
         <label className="block text-xs font-medium text-muted-foreground mb-2">
           Industries you've worked in
           {form.industries.length > 0 && (
-            <span className="ml-2 text-signal-light text-[11px]">{form.industries.length} selected</span>
+            <span className="ml-2 text-primary text-[11px]">{form.industries.length} selected</span>
           )}
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -140,7 +140,7 @@ export function SectionExperiences() {
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="btn-signal"
+          className="px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-none hover:bg-primary/90 disabled:opacity-50 transition-colors"
         >
           {isSaving ? 'Saving…' : 'Save changes'}
         </button>

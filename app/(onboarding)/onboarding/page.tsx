@@ -45,9 +45,9 @@ function Chip({
       type="button"
       onClick={onClick}
       className={cn(
-        'rounded-xl border px-3 py-2 text-sm text-left transition-all duration-150',
+        'rounded-none border px-3 py-2 text-sm text-left transition-all duration-150',
         selected
-          ? 'border-signal/60 bg-signal/10 text-signal-light font-medium'
+          ? 'border-primary/40 bg-primary/10 text-primary font-medium'
           : 'border-border/60 text-muted-foreground hover:border-border hover:text-foreground'
       )}
     >
@@ -83,16 +83,16 @@ function StepWelcome({ data, onChange }: { data: any; onChange: (d: any) => void
           <div className={cn(
             'w-20 h-20 rounded-full border-2 border-dashed flex items-center justify-center transition-all',
             data.avatar_url
-              ? 'border-signal/60'
-              : 'border-border/60 group-hover:border-signal/40'
+              ? 'border-primary/40'
+              : 'border-border/60 group-hover:border-primary/30'
           )}>
             {data.avatar_url ? (
               <img src={data.avatar_url} alt="avatar" className="w-full h-full rounded-full object-cover" />
             ) : (
-              <Camera className="w-6 h-6 text-muted-foreground group-hover:text-signal transition-colors" />
+              <Camera className="w-6 h-6 text-muted-foreground group-hover:text-foreground transition-colors" />
             )}
           </div>
-          <div className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-signal flex items-center justify-center shadow-md">
+          <div className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-primary flex items-center justify-center shadow-md">
             <Plus className="w-3 h-3 text-white" />
           </div>
           <input type="file" accept="image/*" className="sr-only" onChange={handleAvatarChange} />
@@ -122,7 +122,7 @@ function StepWelcome({ data, onChange }: { data: any; onChange: (d: any) => void
       </div>
 
       {firstName && (
-        <p ref={greetRef} className="text-sm text-signal-light/80 text-center pt-1">
+        <p ref={greetRef} className="text-sm text-primary/80 text-center pt-1">
           ✦ Nice to meet you, {firstName}
         </p>
       )}
@@ -168,9 +168,9 @@ function StepRole({ data, onChange }: { data: any; onChange: (d: any) => void })
               type="button"
               onClick={() => onChange({ ...data, seniority_level: key })}
               className={cn(
-                'flex-1 rounded-lg border px-2 py-1.5 text-xs transition-all',
+                'flex-1 rounded-none border px-2 py-1.5 text-xs transition-all',
                 data.seniority_level === key
-                  ? 'border-signal/60 bg-signal/10 text-signal-light font-medium'
+                  ? 'border-primary/40 bg-primary/10 text-primary font-medium'
                   : 'border-border/60 text-muted-foreground hover:border-border'
               )}
             >
@@ -204,13 +204,13 @@ function StepSituation({ data, onChange }: { data: any; onChange: (d: any) => vo
           type="button"
           onClick={() => onChange({ ...data, professional_situation: key })}
           className={cn(
-            'w-full rounded-xl border p-4 text-left transition-all',
+            'w-full rounded-none border p-4 text-left transition-all',
             data.professional_situation === key
-              ? 'border-signal/60 bg-signal/10'
+              ? 'border-primary/40 bg-primary/10'
               : 'border-border/50 hover:border-border'
           )}
         >
-          <p className={cn('text-sm font-medium mb-0.5', data.professional_situation === key ? 'text-signal-light' : 'text-foreground')}>
+          <p className={cn('text-sm font-medium mb-0.5', data.professional_situation === key ? 'text-primary' : 'text-foreground')}>
             {label}
           </p>
           <p className="text-xs text-muted-foreground">{SITUATION_DESCRIPTIONS[key]}</p>
@@ -268,7 +268,7 @@ function StepSkills({ data, onChange }: { data: any; onChange: (d: any) => void 
         <button
           type="button"
           onClick={addSkill}
-          className="rounded-xl bg-signal/15 border border-signal/30 px-3 py-2 text-sm text-signal-light hover:bg-signal/25 transition-all"
+          className="rounded-none bg-primary/10 border border-border px-3 py-2 text-sm text-primary hover:bg-primary/15 transition-all"
         >
           Add
         </button>
@@ -278,10 +278,10 @@ function StepSkills({ data, onChange }: { data: any; onChange: (d: any) => void 
         {skills.map(skill => (
           <span
             key={skill.name}
-            className="flex items-center gap-1.5 rounded-full border border-signal/30 bg-signal/10 px-3 py-1 text-xs text-signal-light"
+            className="flex items-center gap-1.5 rounded-full border border-border bg-primary/10 px-3 py-1 text-xs text-primary"
           >
             {skill.name}
-            <button type="button" onClick={() => removeSkill(skill.name)} className="text-signal/50 hover:text-signal-light transition-colors">
+            <button type="button" onClick={() => removeSkill(skill.name)} className="text-primary/60 hover:text-primary transition-colors">
               <X className="w-3 h-3" />
             </button>
           </span>
@@ -332,9 +332,9 @@ function StepExperience({ data, onChange }: { data: any; onChange: (d: any) => v
               type="button"
               onClick={() => onChange({ ...data, experience_years: key })}
               className={cn(
-                'rounded-xl border py-2.5 text-xs font-medium text-center transition-all',
+                'rounded-none border py-2.5 text-xs font-medium text-center transition-all',
                 data.experience_years === key
-                  ? 'border-signal/60 bg-signal/10 text-signal-light'
+                  ? 'border-primary/40 bg-primary/10 text-primary'
                   : 'border-border/60 text-muted-foreground hover:border-border'
               )}
             >
@@ -377,13 +377,13 @@ function StepAvailabilityRate({ data, onChange }: { data: any; onChange: (d: any
             type="button"
             onClick={() => onChange({ ...data, availability: opt })}
             className={cn(
-              'w-full rounded-xl border p-4 text-left transition-all',
+              'w-full rounded-none border p-4 text-left transition-all',
               data.availability === opt
-                ? 'border-signal/60 bg-signal/10'
+                ? 'border-primary/40 bg-primary/10'
                 : 'border-border/50 hover:border-border'
             )}
           >
-            <p className={cn('text-sm font-medium mb-0.5', data.availability === opt ? 'text-signal-light' : 'text-foreground')}>
+            <p className={cn('text-sm font-medium mb-0.5', data.availability === opt ? 'text-primary' : 'text-foreground')}>
               {AVAILABILITY_LABELS[opt]}
             </p>
             <p className="text-xs text-muted-foreground">{AVAILABILITY_DESCRIPTIONS[opt]}</p>
@@ -501,13 +501,13 @@ function StepGoalsSpecialties({ data, onChange }: { data: any; onChange: (d: any
               type="button"
               onClick={() => toggleGoal(key)}
               className={cn(
-                'w-full rounded-lg border px-4 py-3 text-sm text-left flex items-center gap-3 transition-all',
+                'w-full rounded-none border px-4 py-3 text-sm text-left flex items-center gap-3 transition-all',
                 selectedGoals.includes(key)
-                  ? 'border-signal/60 bg-signal/10 text-signal-light'
+                  ? 'border-primary/40 bg-primary/10 text-primary'
                   : 'border-border/50 text-muted-foreground hover:border-border hover:text-foreground'
               )}
             >
-              {selectedGoals.includes(key) && <CheckCircle2 className="w-4 h-4 text-signal flex-none" />}
+              {selectedGoals.includes(key) && <CheckCircle2 className="w-4 h-4 text-primary flex-none" />}
               {label}
             </button>
           ))}
@@ -525,8 +525,8 @@ function SuccessScreen() {
   }, { scope: ref })
   return (
     <div ref={ref} className="min-h-screen bg-background flex flex-col items-center justify-center p-6 opacity-0">
-      <div className="w-20 h-20 rounded-full bg-signal/20 flex items-center justify-center mb-6 shadow-[0_0_40px_hsla(263,70%,62%,0.30)]">
-        <CheckCircle2 className="w-10 h-10 text-signal" />
+      <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+        <CheckCircle2 className="w-10 h-10 text-primary" />
       </div>
       <h1 className="text-3xl font-bold text-foreground mb-2 text-center">Your signal is live.</h1>
       <p className="text-muted-foreground text-center text-sm">Redirecting you to your dashboard…</p>

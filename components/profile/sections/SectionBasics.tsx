@@ -133,7 +133,7 @@ export function SectionBasics() {
         <label className="block text-xs font-medium text-muted-foreground mb-2">Links</label>
         <div className="space-y-2 mb-3">
           {form.links.map((link, idx) => (
-            <div key={idx} className="flex items-center gap-2 rounded-xl border border-border/50 bg-card/40 px-3 py-2">
+            <div key={idx} className="flex items-center gap-2 rounded-none border border-border/50 bg-card/40 px-3 py-2">
               <span className="text-xs font-medium text-muted-foreground w-20 flex-none">{LINK_PLATFORM_LABELS[link.platform]}</span>
               <span className="text-xs text-foreground flex-1 truncate">{link.url}</span>
               <button onClick={() => removeLink(idx)} className="text-muted-foreground/40 hover:text-destructive transition-colors">
@@ -146,7 +146,7 @@ export function SectionBasics() {
           <select
             value={newLink.platform}
             onChange={e => setNewLink(n => ({ ...n, platform: e.target.value as ProfileLink['platform'] }))}
-            className="rounded-[10px] border border-border/50 bg-muted/30 px-2 py-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-signal/50 w-32"
+            className="rounded-none border border-border/50 bg-muted/30 px-2 py-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 w-32"
           >
             {LINK_PLATFORMS.map(p => (
               <option key={p} value={p}>{LINK_PLATFORM_LABELS[p]}</option>
@@ -158,11 +158,11 @@ export function SectionBasics() {
             onChange={e => setNewLink(n => ({ ...n, url: e.target.value }))}
             onKeyDown={e => e.key === 'Enter' && addLink()}
             placeholder="https://…"
-            className="flex-1 rounded-[10px] border border-border/50 bg-muted/30 px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-signal/50"
+            className="flex-1 rounded-none border border-border/50 bg-muted/30 px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50"
           />
           <button
             onClick={addLink}
-            className="rounded-xl bg-signal/15 border border-signal/30 px-3 py-2 text-xs text-signal-light hover:bg-signal/25 transition-all"
+            className="rounded-none bg-primary/10 border border-border px-3 py-2 text-xs text-primary hover:bg-primary/15 transition-all"
           >
             <Plus className="w-4 h-4" />
           </button>
@@ -179,9 +179,9 @@ export function SectionBasics() {
               type="button"
               onClick={() => setForm(f => ({ ...f, workplace: { ...f.workplace, type } }))}
               className={cn(
-                'flex-1 rounded-xl border py-2 text-xs font-medium transition-all capitalize',
+                'flex-1 rounded-none border py-2 text-xs font-medium transition-all capitalize',
                 form.workplace.type === type
-                  ? 'border-signal/60 bg-signal/10 text-signal-light'
+                  ? 'border-primary/40 bg-primary/10 text-primary'
                   : 'border-border/60 text-muted-foreground hover:border-border'
               )}
             >
@@ -204,7 +204,7 @@ export function SectionBasics() {
         <label className="block text-xs font-medium text-muted-foreground mb-2">Languages</label>
         <div className="space-y-2 mb-3">
           {form.languages.map((lang, idx) => (
-            <div key={idx} className="flex items-center gap-2 rounded-xl border border-border/50 bg-card/40 px-3 py-2">
+            <div key={idx} className="flex items-center gap-2 rounded-none border border-border/50 bg-card/40 px-3 py-2">
               <span className="text-sm text-foreground flex-1">{lang.name}</span>
               <span className="text-xs text-muted-foreground">{LANGUAGE_LEVEL_LABELS[lang.level]}</span>
               <button onClick={() => removeLang(idx)} className="text-muted-foreground/40 hover:text-destructive transition-colors ml-1">
@@ -220,12 +220,12 @@ export function SectionBasics() {
             onChange={e => setNewLang(n => ({ ...n, name: e.target.value }))}
             onKeyDown={e => e.key === 'Enter' && addLanguage()}
             placeholder="Language (e.g. Italian)"
-            className="flex-1 rounded-[10px] border border-border/50 bg-muted/30 px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-signal/50"
+            className="flex-1 rounded-none border border-border/50 bg-muted/30 px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50"
           />
           <select
             value={newLang.level}
             onChange={e => setNewLang(n => ({ ...n, level: e.target.value as LanguageLevel }))}
-            className="rounded-[10px] border border-border/50 bg-muted/30 px-2 py-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-signal/50 w-28"
+            className="rounded-none border border-border/50 bg-muted/30 px-2 py-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50 w-28"
           >
             {LANGUAGE_LEVELS.map(l => (
               <option key={l} value={l}>{LANGUAGE_LEVEL_LABELS[l]}</option>
@@ -233,7 +233,7 @@ export function SectionBasics() {
           </select>
           <button
             onClick={addLanguage}
-            className="rounded-xl bg-signal/15 border border-signal/30 px-3 py-2 text-xs text-signal-light hover:bg-signal/25 transition-all"
+            className="rounded-none bg-primary/10 border border-border px-3 py-2 text-xs text-primary hover:bg-primary/15 transition-all"
           >
             <Plus className="w-4 h-4" />
           </button>
@@ -243,12 +243,12 @@ export function SectionBasics() {
       {/* Referral */}
       <div>
         <label className="block text-xs font-medium text-muted-foreground mb-2">Referral program</label>
-        <div className="rounded-xl border border-border/50 bg-card/40 p-4">
+        <div className="rounded-none border border-border/50 bg-card/40 p-4">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs text-muted-foreground">Your referral code</p>
             <button
               onClick={copyReferral}
-              className="flex items-center gap-1.5 text-xs text-signal-light hover:text-signal transition-colors"
+              className="flex items-center gap-1.5 text-xs text-primary hover:text-foreground transition-colors"
             >
               {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
               {copied ? 'Copied!' : 'Copy link'}
@@ -266,7 +266,7 @@ export function SectionBasics() {
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="btn-signal"
+          className="px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-none hover:bg-primary/90 disabled:opacity-50 transition-colors"
         >
           {isSaving ? 'Saving…' : 'Save changes'}
         </button>

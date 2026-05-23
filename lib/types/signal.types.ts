@@ -86,9 +86,9 @@ export const DIMENSION_LABELS: Record<SignalDimension, string> = {
 }
 
 export const DIMENSION_COLORS: Record<SignalDimension, string> = {
-  reliability: '#6366f1',
-  performance: '#8b5cf6',
-  responsiveness: '#a78bfa',
-  feedback: '#c084fc',
-  growth: '#e879f9',
+  reliability:    'oklch(0.65 0 0)',
+  performance:    'oklch(0.55 0 0)',
+  responsiveness: 'oklch(0.45 0 0)',
+  feedback:       'oklch(0.35 0 0)',
+  growth:         'oklch(0.25 0 0)',
 }

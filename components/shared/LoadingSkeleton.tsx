@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { cn } from '@/lib/utils/cn'
 
 interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -20,13 +21,13 @@ export function DashboardSkeleton() {
       <Skeleton className="h-8 w-48" />
       <div className="grid grid-cols-3 gap-4">
         {Array.from({ length: 3 }).map((_, i) => (
-          <Skeleton key={i} className="h-32 rounded-xl" />
+          <Skeleton key={i} className="h-32 rounded-none" />
         ))}
       </div>
-      <Skeleton className="h-64 rounded-xl" />
+      <Skeleton className="h-64 rounded-none" />
       <div className="grid grid-cols-2 gap-4">
-        <Skeleton className="h-48 rounded-xl" />
-        <Skeleton className="h-48 rounded-xl" />
+        <Skeleton className="h-48 rounded-none" />
+        <Skeleton className="h-48 rounded-none" />
       </div>
     </div>
   )
@@ -34,7 +35,7 @@ export function DashboardSkeleton() {
 
 export function CardSkeleton() {
   return (
-    <div className="rounded-xl border border-border p-6 space-y-3">
+    <div className="rounded-none border border-border p-6 space-y-3">
       <Skeleton className="h-4 w-32" />
       <Skeleton className="h-8 w-20" />
       <Skeleton className="h-2 w-full" />
