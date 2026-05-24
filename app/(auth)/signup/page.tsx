@@ -47,7 +47,7 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-signal/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-muted/50 rounded-full blur-3xl" />
       </div>
 
       <motion.div
@@ -67,7 +67,7 @@ export default function SignupPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <Card className="shadow-xl shadow-signal/5 border-border/60 backdrop-blur-sm">
+        <Card className="shadow-xl shadow-black/5 border-border/60 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-xl">Begin your signal</CardTitle>
             <CardDescription>Join the platform that tracks how you grow</CardDescription>
@@ -121,7 +121,7 @@ export default function SignupPage() {
 
               <Button
                 type="submit"
-                variant="signal"
+                variant="outline"
                 className="w-full"
                 disabled={loading}
               >
@@ -133,7 +133,7 @@ export default function SignupPage() {
 
             <p className="text-xs text-center text-muted-foreground">
               Already have an account?{' '}
-              <Link href="/login" className="text-signal hover:text-signal-light transition-colors font-medium">
+              <Link href="/login" className="text-foreground hover:text-primary transition-colors font-medium">
                 Sign in
               </Link>
             </p>

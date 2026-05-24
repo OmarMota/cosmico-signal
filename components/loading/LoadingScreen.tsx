@@ -106,19 +106,35 @@ void main() {
 `
 
 // ── WebGL canvas clipped to the Cosmico logo shape ────────────────────────
+// CSS clip-path / mask-image on a WebGL canvas can cache the first composited
+// frame and never update. Instead: render the shader to an offscreen WebGL
+// canvas, then blit into a visible 2D canvas every frame using a Path2D clip.
+// The 2D drawImage path always reads the latest GPU frame.
 function LiquidMetalLogo({ size = 120 }: { size?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const rafRef    = useRef<number>(0)
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
+    const display = canvasRef.current
+    if (!display) return
 
     const dpr = window.devicePixelRatio || 1
-    canvas.width  = size * dpr
-    canvas.height = size * dpr
+    const w = size * dpr
+    const h = size * dpr
+    display.width  = w
+    display.height = h
 
-    const gl = canvas.getContext('webgl', { alpha: false, antialias: false })
+    // Offscreen canvas for WebGL — never inserted into the DOM
+    const glCanvas = document.createElement('canvas')
+    glCanvas.width  = w
+    glCanvas.height = h
+
+    // preserveDrawingBuffer is required so drawImage() can read the WebGL surface
+    const gl = glCanvas.getContext('webgl', {
+      alpha: false,
+      antialias: false,
+      preserveDrawingBuffer: true,
+    })
     if (!gl) return
 
     const compile = (type: number, src: string) => {
@@ -146,13 +162,33 @@ function LiquidMetalLogo({ size = 120 }: { size?: number }) {
 
     const uT   = gl.getUniformLocation(prog, 'u_t')
     const uRes = gl.getUniformLocation(prog, 'u_res')
-    gl.viewport(0, 0, canvas.width, canvas.height)
-    gl.uniform2f(uRes, canvas.width, canvas.height)
+    gl.viewport(0, 0, w, h)
+    gl.uniform2f(uRes, w, h)
+
+    // 2D context that composites the shader output with the logo shape clip
+    const ctx = display.getContext('2d')
+    if (!ctx) return
+
+    // Build the logo clip path scaled to canvas pixel dimensions
+    const xf = { a: w / 30, b: 0, c: 0, d: h / 30, e: 0, f: 0 }
+    const logoClip = new Path2D()
+    logoClip.addPath(new Path2D('M8.68667 14.9977C8.68667 11.5524 11.4682 8.75162 14.8858 8.75162V5.83398C9.86326 5.83398 5.79102 9.93714 5.79102 14.9977C5.79102 20.0584 9.86326 24.1615 14.8858 24.1615V21.2439C11.4664 21.2439 8.68667 18.4412 8.68667 14.9977Z'), xf)
+    logoClip.addPath(new Path2D('M21.0878 15.0001C21.0878 11.5509 18.3118 8.75391 14.8887 8.75391V21.2481C18.3118 21.2481 21.0878 18.4511 21.0878 15.002V15.0001Z'), xf)
+    logoClip.addPath(new Path2D('M2.89565 14.9991C2.89565 8.32695 8.26421 2.91763 14.8861 2.91763V0C6.67796 0 0 6.72865 0 14.9991C0 23.2695 6.67796 29.9981 14.8861 29.9981V27.0805C8.26421 27.0805 2.89378 21.6712 2.89378 14.9972L2.89565 14.9991Z'), xf)
 
     const t0 = performance.now()
     const render = () => {
+      // 1. Advance the shader
       gl.uniform1f(uT, (performance.now() - t0) * 0.001)
       gl.drawArrays(gl.TRIANGLES, 0, 6)
+
+      // 2. Blit the WebGL frame to the 2D canvas, clipped to the logo shape
+      ctx.clearRect(0, 0, w, h)
+      ctx.save()
+      ctx.clip(logoClip)
+      ctx.drawImage(glCanvas, 0, 0)
+      ctx.restore()
+
       rafRef.current = requestAnimationFrame(render)
     }
     render()
@@ -160,39 +196,11 @@ function LiquidMetalLogo({ size = 120 }: { size?: number }) {
     return () => cancelAnimationFrame(rafRef.current)
   }, [size])
 
-  // SVG logo paths are in a 30×30 viewBox — scale to canvas CSS size
-  const s = size / 30
-
   return (
-    <div style={{ position: 'relative', width: size, height: size }}>
-      {/* Hidden SVG defines the clip path using the logo paths */}
-      <svg
-        width={0}
-        height={0}
-        aria-hidden
-        style={{ position: 'absolute', overflow: 'visible', pointerEvents: 'none' }}
-      >
-        <defs>
-          <clipPath id="cosmico-logo-clip" clipPathUnits="userSpaceOnUse">
-            <g transform={`scale(${s})`}>
-              <path d="M8.68667 14.9977C8.68667 11.5524 11.4682 8.75162 14.8858 8.75162V5.83398C9.86326 5.83398 5.79102 9.93714 5.79102 14.9977C5.79102 20.0584 9.86326 24.1615 14.8858 24.1615V21.2439C11.4664 21.2439 8.68667 18.4412 8.68667 14.9977Z" />
-              <path d="M21.0878 15.0001C21.0878 11.5509 18.3118 8.75391 14.8887 8.75391V21.2481C18.3118 21.2481 21.0878 18.4511 21.0878 15.002V15.0001Z" />
-              <path d="M2.89565 14.9991C2.89565 8.32695 8.26421 2.91763 14.8861 2.91763V0C6.67796 0 0 6.72865 0 14.9991C0 23.2695 6.67796 29.9981 14.8861 29.9981V27.0805C8.26421 27.0805 2.89378 21.6712 2.89378 14.9972L2.89565 14.9991Z" />
-            </g>
-          </clipPath>
-        </defs>
-      </svg>
-
-      <canvas
-        ref={canvasRef}
-        style={{
-          width: size,
-          height: size,
-          display: 'block',
-          clipPath: 'url(#cosmico-logo-clip)',
-        }}
-      />
-    </div>
+    <canvas
+      ref={canvasRef}
+      style={{ width: size, height: size, display: 'block' }}
+    />
   )
 }
 

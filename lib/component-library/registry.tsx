@@ -37,6 +37,85 @@ import { AvailabilityToggle } from '@/components/profile/AvailabilityToggle'
 import { ProfileHeader } from '@/components/profile/ProfileHeader'
 import { TrajectoryPhaseCard } from '@/components/trajectory/TrajectoryPhaseCard'
 import { OpportunityCard } from '@/components/opportunities/OpportunityCard'
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion'
+import {
+  AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader,
+  AlertDialogTitle, AlertDialogDescription, AlertDialogFooter,
+  AlertDialogAction, AlertDialogCancel, AlertDialogMedia,
+} from '@/components/ui/alert-dialog'
+import { Checkbox } from '@/components/ui/checkbox'
+import {
+  Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle,
+  DialogDescription, DialogFooter,
+} from '@/components/ui/dialog'
+import {
+  DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut,
+  DropdownMenuGroup, DropdownMenuCheckboxItem, DropdownMenuSub,
+  DropdownMenuSubTrigger, DropdownMenuSubContent,
+} from '@/components/ui/dropdown-menu'
+import {
+  Select, SelectTrigger, SelectValue, SelectContent, SelectItem,
+  SelectGroup, SelectLabel, SelectSeparator,
+} from '@/components/ui/select'
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip'
+import { Slider } from '@/components/ui/slider'
+import { Kbd, KbdGroup } from '@/components/ui/kbd'
+import { Spinner } from '@/components/ui/spinner'
+import { Skeleton as UiSkeleton } from '@/components/ui/skeleton'
+import { Label } from '@/components/ui/label'
+import {
+  Table, TableHeader, TableBody, TableFooter as TableFoot,
+  TableHead, TableRow, TableCell, TableCaption,
+} from '@/components/ui/table'
+import { Toggle } from '@/components/ui/toggle'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import {
+  Popover, PopoverTrigger, PopoverContent, PopoverHeader,
+  PopoverTitle, PopoverDescription,
+} from '@/components/ui/popover'
+import {
+  Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle,
+  SheetDescription, SheetFooter,
+} from '@/components/ui/sheet'
+import {
+  Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink,
+  BreadcrumbPage, BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
+import {
+  Pagination, PaginationContent, PaginationItem, PaginationLink,
+  PaginationNext, PaginationPrevious, PaginationEllipsis,
+} from '@/components/ui/pagination'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible'
+import {
+  Empty, EmptyHeader, EmptyTitle, EmptyDescription, EmptyContent, EmptyMedia,
+} from '@/components/ui/empty'
+import {
+  Item, ItemMedia, ItemContent, ItemActions, ItemGroup,
+  ItemTitle, ItemDescription,
+} from '@/components/ui/item'
+import {
+  Field, FieldLabel, FieldDescription, FieldError, FieldGroup,
+  FieldSet, FieldContent, FieldTitle, FieldLegend,
+} from '@/components/ui/field'
+import { ButtonGroup, ButtonGroupText, ButtonGroupSeparator } from '@/components/ui/button-group'
+import {
+  InputGroup, InputGroupAddon, InputGroupButton,
+  InputGroupText as InputGroupTxt, InputGroupInput,
+} from '@/components/ui/input-group'
+import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card'
+import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
+import { FormField } from '@/components/ui/form-field'
+import { SidebarNav } from '@/components/shared/SidebarNav'
+import { NextStepsPanel } from '@/components/dashboard/NextStepsPanel'
+import { ContentCard } from '@/components/learning/ContentCard'
+import { ProfileSectionNav } from '@/components/profile/ProfileSectionNav'
+import { RoleEvolutionMap } from '@/components/trajectory/RoleEvolutionMap'
+import { TrajectoryArc } from '@/components/trajectory/TrajectoryArc'
+import { OnboardingShell } from '@/components/onboarding/OnboardingShell'
 import type { ComponentMeta } from './types'
 
 // ─── Mock data ──────────────────────────────────────────────────────────────
@@ -2878,30 +2957,2613 @@ const opportunityCardMeta: ComponentMeta = {
   },
 }
 
+// ─── Accordion ───────────────────────────────────────────────────────────────
+
+const accordionMeta: ComponentMeta = {
+  id: 'ui-accordion',
+  name: 'Accordion',
+  category: 'ui',
+  filePath: 'components/ui/accordion.tsx',
+  description:
+    'Vertically stacked collapsible sections built on Radix Accordion. Supports single and multiple open items. Trigger includes a rotate-180 ChevronDown icon on open.',
+  guidelines: [
+    'Use type="single" when only one section should be open at a time (default).',
+    'Use type="multiple" for independent expandable sections.',
+    'Keep trigger labels short and scannable — they act as section headings.',
+    'Use collapsible={true} with type="single" so the open item can be closed.',
+    'Do not nest Accordions — use Collapsible for simpler expand/collapse patterns.',
+  ],
+  variations: [
+    { name: 'single', description: 'Only one item open at a time. Default pattern.' },
+    { name: 'multiple', description: 'Multiple items can be open simultaneously.' },
+  ],
+  behavior: [
+    'ChevronDown icon rotates 180° when item is open via data-open selector.',
+    'Content animates open/closed via data-open:animate-in / data-closed:animate-out.',
+    'Focus-visible: ring on AccordionTrigger.',
+    'AccordionContent uses overflow-hidden + max-height animation.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Default',
+      render: () => (
+        <Accordion type="single" collapsible className="w-80">
+          <AccordionItem value="skills">
+            <AccordionTrigger>Skills & Expertise</AccordionTrigger>
+            <AccordionContent>
+              <p className="text-xs text-muted-foreground">Manage your technical and soft skill inventory here.</p>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="signal">
+            <AccordionTrigger>Signal Breakdown</AccordionTrigger>
+            <AccordionContent>
+              <p className="text-xs text-muted-foreground">Detailed view of reliability, performance, and growth dimensions.</p>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="history">
+            <AccordionTrigger>Work History</AccordionTrigger>
+            <AccordionContent>
+              <p className="text-xs text-muted-foreground">Your recorded engagements and verified outcomes.</p>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--border', usage: 'border-b (AccordionItem)', category: 'color', description: 'Item divider' },
+      { token: '--foreground', usage: 'text-foreground', category: 'color', description: 'Trigger text' },
+      { token: '--muted-foreground', usage: 'text-muted-foreground (content)', category: 'color', description: 'Content text' },
+    ],
+    outOfToken: [
+      { property: 'rotate-180', category: 'animation', note: 'Icon rotation is a fixed Tailwind class, not an animation token', suggestion: 'Define --accordion-icon-rotate token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion'
+
+<Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Section Title</AccordionTrigger>
+    <AccordionContent>Section content goes here.</AccordionContent>
+  </AccordionItem>
+</Accordion>
+
+// Multiple open items
+<Accordion type="multiple">
+  <AccordionItem value="a"><AccordionTrigger>A</AccordionTrigger><AccordionContent>...</AccordionContent></AccordionItem>
+  <AccordionItem value="b"><AccordionTrigger>B</AccordionTrigger><AccordionContent>...</AccordionContent></AccordionItem>
+</Accordion>`,
+    html: `<div data-slot="accordion">
+  <div data-slot="accordion-item">
+    <button data-slot="accordion-trigger" aria-expanded="false">Section Title</button>
+    <div data-slot="accordion-content" hidden>Content</div>
+  </div>
+</div>`,
+    css: `:root { --border: oklch(0.922 0 0); }`,
+  },
+}
+
+// ─── AlertDialog ─────────────────────────────────────────────────────────────
+
+const alertDialogMeta: ComponentMeta = {
+  id: 'ui-alert-dialog',
+  name: 'AlertDialog',
+  category: 'ui',
+  filePath: 'components/ui/alert-dialog.tsx',
+  description:
+    'Blocking confirmation modal for destructive or irreversible actions. Built on Radix AlertDialog. Unlike Dialog, it traps focus and requires an explicit user decision — Cancel or Confirm.',
+  guidelines: [
+    'Use only for irreversible actions (delete, revoke, submit).',
+    'AlertDialogAction should be variant="destructive" when the action is dangerous.',
+    'Keep title and description concise — one sentence each.',
+    'AlertDialogCancel always cancels — do not use it for secondary actions.',
+    'Never auto-open an AlertDialog — it must be user-triggered.',
+  ],
+  variations: [
+    { name: 'default', description: 'Standard confirmation with cancel + action buttons.' },
+    { name: 'with media', description: 'Optional AlertDialogMedia slot above header for illustrative content.' },
+  ],
+  behavior: [
+    'Blocks background interaction — pointer-events-none on overlay.',
+    'Focus is trapped within the dialog until dismissed.',
+    'Escape key triggers AlertDialogCancel.',
+    'Overlay animates fade-in/out; content slides in from bottom.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Default',
+      render: () => (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive" size="sm">Delete Account</Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. Your profile, signal history, and opportunities will be permanently deleted.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction>Delete Account</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--background', usage: 'bg-background (content)', category: 'color', description: 'Dialog background' },
+      { token: '--foreground', usage: 'text-foreground', category: 'color', description: 'Title text' },
+      { token: '--muted-foreground', usage: 'text-muted-foreground', category: 'color', description: 'Description text' },
+      { token: '--border', usage: 'border-border', category: 'color', description: 'Dialog border' },
+    ],
+    outOfToken: [
+      { property: 'bg-black/80 (overlay)', category: 'color', note: 'Overlay darkness is hardcoded, not a token', suggestion: 'Define --overlay-backdrop token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import {
+  AlertDialog, AlertDialogTrigger, AlertDialogContent,
+  AlertDialogHeader, AlertDialogTitle, AlertDialogDescription,
+  AlertDialogFooter, AlertDialogAction, AlertDialogCancel
+} from '@/components/ui/alert-dialog'
+
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button variant="destructive">Delete</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+      <AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Confirm</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`,
+    html: `<button aria-haspopup="dialog">Delete</button>
+<div role="alertdialog" aria-modal="true">
+  <h2>Are you sure?</h2>
+  <p>This cannot be undone.</p>
+  <button>Cancel</button>
+  <button>Confirm</button>
+</div>`,
+    css: `:root { --background: oklch(1 0 0); --border: oklch(0.922 0 0); }`,
+  },
+}
+
+// ─── Checkbox ────────────────────────────────────────────────────────────────
+
+const checkboxMeta: ComponentMeta = {
+  id: 'ui-checkbox',
+  name: 'Checkbox',
+  category: 'ui',
+  filePath: 'components/ui/checkbox.tsx',
+  description:
+    'Accessible checkbox built on Radix Checkbox. 16px square, rounded-none. Shows a CheckIcon when checked, a MinusIcon when indeterminate. Always pair with a Label.',
+  guidelines: [
+    'Always pair with a Label — do not use placeholder text as a label.',
+    'Use indeterminate state for "select all" controls when sub-items are mixed.',
+    'Wrap multiple checkboxes in a FieldSet with FieldLegend for grouping.',
+    'Controlled: use checked + onCheckedChange. Uncontrolled: use defaultChecked.',
+  ],
+  variations: [
+    { name: 'unchecked', description: 'Empty. border-input background.' },
+    { name: 'checked', description: 'Filled bg-primary with white CheckIcon.' },
+    { name: 'indeterminate', description: 'bg-primary with MinusIcon.' },
+  ],
+  behavior: [
+    'data-checked: bg-primary border-primary text-primary-foreground.',
+    'data-indeterminate: bg-primary with MinusIcon.',
+    'Focus-visible: ring-ring/50.',
+    'Disabled: opacity-50, pointer-events-none.',
+  ],
+  knobs: [
+    { name: 'disabled', type: 'boolean', defaultValue: false },
+  ],
+  stories: [
+    {
+      id: 'default',
+      name: 'States',
+      render: () => (
+        <div className="flex flex-col gap-3">
+          {[
+            { id: 'c1', label: 'Unchecked' },
+            { id: 'c2', label: 'Checked', defaultChecked: true },
+            { id: 'c3', label: 'Disabled', disabled: true },
+          ].map(({ id, label, ...props }) => (
+            <div key={id} className="flex items-center gap-2">
+              <Checkbox id={id} {...props} />
+              <Label htmlFor={id}>{label}</Label>
+            </div>
+          ))}
+        </div>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--primary', usage: 'data-checked:bg-primary', category: 'color', description: 'Checked fill' },
+      { token: '--primary-foreground', usage: 'text-primary-foreground', category: 'color', description: 'Check icon color' },
+      { token: '--input', usage: 'border-input', category: 'color', description: 'Unchecked border' },
+      { token: '--ring', usage: 'focus-visible:ring-ring/50', category: 'color', description: 'Focus ring' },
+    ],
+    outOfToken: [
+      { property: 'size-4', category: 'spacing', note: '16px size is hardcoded, not from componentSizes token', suggestion: 'Define componentSizes.checkbox token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import { Checkbox } from '@/components/ui/checkbox'
+import { Label } from '@/components/ui/label'
+
+<div className="flex items-center gap-2">
+  <Checkbox id="agree" onCheckedChange={(v) => console.log(v)} />
+  <Label htmlFor="agree">I agree to the terms</Label>
+</div>
+
+// Controlled
+<Checkbox checked={isChecked} onCheckedChange={setIsChecked} />
+
+// Indeterminate
+<Checkbox checked="indeterminate" />`,
+    html: `<button role="checkbox" aria-checked="false" data-slot="checkbox"></button>`,
+    css: `:root { --primary: oklch(0.205 0 0); --input: oklch(0.922 0 0); }`,
+  },
+}
+
+// ─── Dialog ──────────────────────────────────────────────────────────────────
+
+const dialogMeta: ComponentMeta = {
+  id: 'ui-dialog',
+  name: 'Dialog',
+  category: 'ui',
+  filePath: 'components/ui/dialog.tsx',
+  description:
+    'Modal dialog built on Radix Dialog. Use for focused tasks that require user attention without navigating away. Includes header, footer, and optional close button. Use AlertDialog for destructive confirmations.',
+  guidelines: [
+    'Use Dialog for forms, detail views, and multi-step flows.',
+    'Use AlertDialog for irreversible actions — Dialog dismiss is too easy.',
+    'Keep dialog width under 600px. Use className to control max-w.',
+    'DialogFooter should contain the primary action (right) and cancel (left).',
+    'Include a DialogTitle for accessibility — use sr-only if visually hidden.',
+  ],
+  variations: [
+    { name: 'default', description: 'Standard modal with overlay.' },
+  ],
+  behavior: [
+    'Overlay: bg-black/50, backdrop-blur-sm.',
+    'Content: slides in from top, fades out on close.',
+    'Close button top-right: absolutely positioned X icon.',
+    'Escape key and overlay click both close the dialog.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Default',
+      render: () => (
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" size="sm">Edit Profile</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Edit Profile</DialogTitle>
+              <DialogDescription>Update your display name and headline.</DialogDescription>
+            </DialogHeader>
+            <div className="flex flex-col gap-3 py-2">
+              <Input placeholder="Display name" />
+              <Textarea placeholder="Professional headline..." rows={2} />
+            </div>
+            <DialogFooter>
+              <Button variant="outline" size="sm">Cancel</Button>
+              <Button size="sm">Save Changes</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--background', usage: 'bg-background', category: 'color', description: 'Dialog surface' },
+      { token: '--border', usage: 'border (implicit via ring)', category: 'color', description: 'Dialog outline' },
+      { token: '--foreground', usage: 'text-foreground', category: 'color', description: 'Title' },
+      { token: '--muted-foreground', usage: 'text-muted-foreground', category: 'color', description: 'Description' },
+    ],
+    outOfToken: [
+      { property: 'bg-black/50 (overlay)', category: 'color', note: 'Overlay uses hardcoded opacity, not a token', suggestion: 'Define --overlay-bg token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import {
+  Dialog, DialogTrigger, DialogContent,
+  DialogHeader, DialogTitle, DialogDescription, DialogFooter
+} from '@/components/ui/dialog'
+
+<Dialog>
+  <DialogTrigger asChild>
+    <Button>Open</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Title</DialogTitle>
+      <DialogDescription>Description here.</DialogDescription>
+    </DialogHeader>
+    {/* form content */}
+    <DialogFooter>
+      <Button variant="outline">Cancel</Button>
+      <Button>Save</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>`,
+    html: `<div role="dialog" aria-modal="true" data-slot="dialog-content">
+  <div data-slot="dialog-header">
+    <h2 data-slot="dialog-title">Title</h2>
+  </div>
+</div>`,
+    css: `:root { --background: oklch(1 0 0); }`,
+  },
+}
+
+// ─── DropdownMenu ─────────────────────────────────────────────────────────────
+
+const dropdownMenuMeta: ComponentMeta = {
+  id: 'ui-dropdown-menu',
+  name: 'DropdownMenu',
+  category: 'ui',
+  filePath: 'components/ui/dropdown-menu.tsx',
+  description:
+    'Context menu built on Radix DropdownMenu. Supports items, labels, separators, checkboxes, radio groups, and submenus. Renders in a Portal for safe z-index stacking.',
+  guidelines: [
+    'Trigger should be a button (use asChild with Button component).',
+    'Keep item labels short — 1–4 words.',
+    'Use DropdownMenuSeparator to group related actions.',
+    'Use DropdownMenuCheckboxItem / RadioItem for stateful menu options.',
+    'Show keyboard shortcuts with DropdownMenuShortcut — right-aligned.',
+    'Use DropdownMenuSub for nested actions — limit to one level of nesting.',
+  ],
+  variations: [
+    { name: 'items', description: 'Basic list of clickable actions.' },
+    { name: 'with labels & separators', description: 'Grouped actions with section labels.' },
+    { name: 'checkbox items', description: 'Toggle-state items inside the menu.' },
+    { name: 'sub menu', description: 'Nested submenu via DropdownMenuSub.' },
+  ],
+  behavior: [
+    'Opens on trigger click, closes on item select or Escape.',
+    'Arrow keys navigate items; Enter/Space activates.',
+    'Content appears at sideOffset=4 from trigger.',
+    'Portal renders outside the DOM tree for proper z-index.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Default',
+      render: () => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm">Actions</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-48">
+            <DropdownMenuLabel>Profile</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Edit Profile</DropdownMenuItem>
+            <DropdownMenuItem>View Signal</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="text-destructive">Sign Out</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--popover', usage: 'bg-popover', category: 'color', description: 'Menu background' },
+      { token: '--popover-foreground', usage: 'text-popover-foreground', category: 'color', description: 'Menu text' },
+      { token: '--muted', usage: 'hover:bg-muted', category: 'color', description: 'Item hover' },
+      { token: '--foreground', usage: 'ring-foreground/10', category: 'color', description: 'Subtle border via ring' },
+      { token: '--destructive', usage: 'text-destructive (destructive items)', category: 'color', description: 'Danger action color' },
+    ],
+    outOfToken: [
+      { property: 'sideOffset=4', category: 'spacing', note: 'Offset from trigger is hardcoded', suggestion: 'Define --menu-offset spacing token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import {
+  DropdownMenu, DropdownMenuTrigger, DropdownMenuContent,
+  DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
+  DropdownMenuShortcut
+} from '@/components/ui/dropdown-menu'
+
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Options</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>Account</DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem>
+      Settings <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+    </DropdownMenuItem>
+    <DropdownMenuItem className="text-destructive">Log out</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>`,
+    html: `<div role="menu" data-slot="dropdown-menu-content">
+  <div role="menuitem" data-slot="dropdown-menu-item">Settings</div>
+</div>`,
+    css: `:root { --popover: oklch(1 0 0); --muted: oklch(0.97 0 0); }`,
+  },
+}
+
+// ─── Select ──────────────────────────────────────────────────────────────────
+
+const selectMeta: ComponentMeta = {
+  id: 'ui-select',
+  name: 'Select',
+  category: 'ui',
+  filePath: 'components/ui/select.tsx',
+  description:
+    'Accessible select dropdown built on Radix Select. Shows selected value in trigger, opens a styled floating list with search support. Use NativeSelect for simpler single-value dropdowns without the custom UI.',
+  guidelines: [
+    'Always pair with a Label for accessibility.',
+    'Use placeholder via SelectValue placeholder prop.',
+    'Group related options with SelectGroup and SelectLabel.',
+    'Use NativeSelect when mobile performance matters — Radix Select uses a custom portal.',
+    'Keep option labels concise — they appear in the trigger after selection.',
+  ],
+  variations: [
+    { name: 'default', description: 'Custom Radix dropdown with styled list.' },
+    { name: 'with groups', description: 'Options grouped by SelectGroup and SelectLabel.' },
+  ],
+  behavior: [
+    'SelectTrigger shows SelectValue placeholder until an option is selected.',
+    'ChevronDown icon rotates when open.',
+    'Keyboard: arrow keys navigate, Enter selects, Escape closes.',
+    'ScrollUpButton / ScrollDownButton appear when list overflows.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Default',
+      render: () => (
+        <div className="flex flex-col gap-1.5 w-48">
+          <Label>Availability</Label>
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Select status..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="available">Available</SelectItem>
+              <SelectItem value="open">Open to work</SelectItem>
+              <SelectItem value="unavailable">Unavailable</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--background', usage: 'bg-background (content)', category: 'color', description: 'Dropdown panel background' },
+      { token: '--input', usage: 'border-input (trigger)', category: 'color', description: 'Trigger border' },
+      { token: '--muted', usage: 'hover:bg-muted', category: 'color', description: 'Item hover' },
+      { token: '--primary', usage: 'data-selected:bg-primary/10', category: 'color', description: 'Selected item highlight' },
+      { token: '--ring', usage: 'focus-visible:ring-ring/50', category: 'color', description: 'Trigger focus ring' },
+    ],
+    outOfToken: [
+      { property: 'sideOffset=4', category: 'spacing', note: 'Dropdown offset hardcoded', suggestion: 'Define --select-offset token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import {
+  Select, SelectTrigger, SelectValue, SelectContent, SelectItem
+} from '@/components/ui/select'
+import { Label } from '@/components/ui/label'
+
+<div className="flex flex-col gap-1.5">
+  <Label>Role</Label>
+  <Select onValueChange={(v) => console.log(v)}>
+    <SelectTrigger>
+      <SelectValue placeholder="Choose a role..." />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="engineer">Engineer</SelectItem>
+      <SelectItem value="designer">Designer</SelectItem>
+      <SelectItem value="pm">Product Manager</SelectItem>
+    </SelectContent>
+  </Select>
+</div>`,
+    html: `<button role="combobox" aria-expanded="false" data-slot="select-trigger">
+  <span>Choose a role...</span>
+</button>`,
+    css: `:root { --background: oklch(1 0 0); --input: oklch(0.922 0 0); }`,
+  },
+}
+
+// ─── Tooltip ─────────────────────────────────────────────────────────────────
+
+const tooltipMeta: ComponentMeta = {
+  id: 'ui-tooltip',
+  name: 'Tooltip',
+  category: 'ui',
+  filePath: 'components/ui/tooltip.tsx',
+  description:
+    'Non-interactive hover label built on Radix Tooltip. Shows on hover/focus after a short delay. Wrap the root app in TooltipProvider once — do not nest providers. Use for icon-only button labels and dense UI explanations.',
+  guidelines: [
+    'Wrap your app root in <TooltipProvider> once — not per tooltip.',
+    'Only put text in tooltips — no buttons, links, or interactive content.',
+    'Use for icon-only buttons where the label would be too long inline.',
+    'Do not use tooltips for required information — they are not accessible on mobile.',
+    'Prefer side="bottom" for toolbar icons, side="right" for sidebar items.',
+  ],
+  variations: [
+    { name: 'default', description: 'Appears above trigger by default.' },
+    { name: 'with Kbd', description: 'Keyboard shortcut displayed inside tooltip content.' },
+  ],
+  behavior: [
+    'Default delay: 200ms open, 0ms close.',
+    'TooltipContent renders in a Portal for proper stacking.',
+    'Focus-visible on trigger also opens tooltip.',
+    'Kbd components auto-invert inside tooltip-content via in-data-[slot=tooltip-content] selector.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Default',
+      render: () => (
+        <TooltipProvider>
+          <div className="flex items-center gap-4">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon"><span className="text-base">⚙</span></Button>
+              </TooltipTrigger>
+              <TooltipContent>Settings</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon"><span className="text-base">↗</span></Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <span>Share profile</span>
+                <Kbd className="ml-1.5">⌘K</Kbd>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--popover', usage: 'bg-popover', category: 'color', description: 'Tooltip background' },
+      { token: '--popover-foreground', usage: 'text-popover-foreground', category: 'color', description: 'Tooltip text' },
+    ],
+    outOfToken: [
+      { property: 'delayDuration=200', category: 'animation', note: 'Open delay hardcoded in TooltipProvider', suggestion: 'Define --tooltip-delay token' },
+      { property: 'sideOffset=4', category: 'spacing', note: 'Offset from trigger is hardcoded', suggestion: 'Define --tooltip-offset token' },
+    ],
+  },
+  codeSnippet: {
+    react: `// 1. Wrap app root once
+import { TooltipProvider } from '@/components/ui/tooltip'
+<TooltipProvider><App /></TooltipProvider>
+
+// 2. Use per tooltip
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
+
+<Tooltip>
+  <TooltipTrigger asChild>
+    <Button variant="ghost" size="icon"><Icon /></Button>
+  </TooltipTrigger>
+  <TooltipContent>Delete item</TooltipContent>
+</Tooltip>`,
+    html: `<div role="tooltip" data-slot="tooltip-content">Settings</div>`,
+    css: `:root { --popover: oklch(1 0 0); --popover-foreground: oklch(0.145 0 0); }`,
+  },
+}
+
+// ─── Slider ───────────────────────────────────────────────────────────────────
+
+const sliderMeta: ComponentMeta = {
+  id: 'ui-slider',
+  name: 'Slider',
+  category: 'ui',
+  filePath: 'components/ui/slider.tsx',
+  description:
+    'Range input built on Radix Slider. 4px track, 16px thumb. Supports single value and range (two thumbs). Full keyboard control with arrow keys. Use for numeric ranges like hourly rate, score thresholds, or experience years.',
+  guidelines: [
+    'Always show the current value numerically near the slider — the position alone is not readable.',
+    'Use min, max, step props for all bounded ranges.',
+    'For rate ranges, use two thumbs: value={[min, max]} onValueChange={([a,b]) => ...}.',
+    'Pair with a Label for accessibility.',
+    'Avoid for precise numeric entry — use Input type="number" instead.',
+  ],
+  variations: [
+    { name: 'single', description: 'One thumb, single value.' },
+    { name: 'range', description: 'Two thumbs, min/max value pair.' },
+  ],
+  behavior: [
+    'Arrow keys: ±step. Shift+Arrow: ±10×step.',
+    'Thumb: focus-visible ring-ring/50.',
+    'Track fill (range) uses bg-primary.',
+    'Track unfilled uses bg-input.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Single Value',
+      render: () => (
+        <div className="w-64 flex flex-col gap-2">
+          <div className="flex justify-between text-xs text-muted-foreground">
+            <Label>Score threshold</Label>
+            <span>65</span>
+          </div>
+          <Slider defaultValue={[65]} min={0} max={100} step={1} />
+        </div>
+      ),
+      defaultProps: {},
+    },
+    {
+      id: 'range',
+      name: 'Range',
+      render: () => (
+        <div className="w-64 flex flex-col gap-2">
+          <div className="flex justify-between text-xs text-muted-foreground">
+            <Label>Rate range</Label>
+            <span>$90 – $140/hr</span>
+          </div>
+          <Slider defaultValue={[90, 140]} min={50} max={300} step={10} />
+        </div>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--primary', usage: 'bg-primary (range fill, thumb)', category: 'color', description: 'Active track and thumb' },
+      { token: '--input', usage: 'bg-input (track)', category: 'color', description: 'Inactive track' },
+      { token: '--ring', usage: 'focus-visible:ring-ring/50', category: 'color', description: 'Thumb focus ring' },
+      { token: '--background', usage: 'bg-background (thumb center)', category: 'color', description: 'Thumb inner color' },
+    ],
+    outOfToken: [
+      { property: 'h-1 track / size-4 thumb', category: 'spacing', note: 'Hardcoded dimensions, not from component size tokens', suggestion: 'Define componentSizes.slider in tokens.ts' },
+    ],
+  },
+  codeSnippet: {
+    react: `import { Slider } from '@/components/ui/slider'
+
+// Single value
+const [score, setScore] = useState([65])
+<Slider value={score} onValueChange={setScore} min={0} max={100} step={1} />
+
+// Range (two thumbs)
+const [range, setRange] = useState([90, 140])
+<Slider value={range} onValueChange={setRange} min={50} max={300} step={10} />`,
+    html: `<span role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="65" data-slot="slider-thumb"></span>`,
+    css: `:root { --primary: oklch(0.205 0 0); --input: oklch(0.922 0 0); }`,
+  },
+}
+
+// ─── Kbd ─────────────────────────────────────────────────────────────────────
+
+const kbdMeta: ComponentMeta = {
+  id: 'ui-kbd',
+  name: 'Kbd',
+  category: 'ui',
+  filePath: 'components/ui/kbd.tsx',
+  description:
+    'Keyboard shortcut display. Uses the semantic <kbd> element. h-5 with bg-muted background. Auto-inverts inside Tooltip content via in-data-[slot=tooltip-content] selector. KbdGroup wraps multiple keys in a sequence.',
+  guidelines: [
+    'Use for displaying keyboard shortcuts inline or in tooltips.',
+    'Use KbdGroup to group modifier + key sequences (⌘ + K).',
+    'Keep content to a single key or symbol — use KbdGroup for combos.',
+    'Inside Tooltip, Kbd auto-styles itself — no class override needed.',
+  ],
+  variations: [
+    { name: 'single', description: 'Single key: ⌘, K, Enter, ⇧.' },
+    { name: 'group', description: 'KbdGroup wrapping multiple Kbd elements.' },
+  ],
+  behavior: [
+    'Inside tooltip-content: bg changes to bg-background/20 for contrast.',
+    'SVG children auto-size to 12px via [&_svg:not([class*=size-])]:size-3.',
+    'select-none prevents accidental text selection.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Keys & Groups',
+      render: () => (
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-2">
+            <Kbd>⌘</Kbd>
+            <Kbd>K</Kbd>
+            <Kbd>Enter</Kbd>
+            <Kbd>⇧</Kbd>
+          </div>
+          <div className="flex items-center gap-3">
+            <KbdGroup><Kbd>⌘</Kbd><Kbd>K</Kbd></KbdGroup>
+            <KbdGroup><Kbd>⌘</Kbd><Kbd>⇧</Kbd><Kbd>P</Kbd></KbdGroup>
+          </div>
+        </div>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--muted', usage: 'bg-muted', category: 'color', description: 'Key background' },
+      { token: '--muted-foreground', usage: 'text-muted-foreground', category: 'color', description: 'Key text' },
+    ],
+    outOfToken: [
+      { property: 'h-5 min-w-5', category: 'spacing', note: 'Fixed size not from token', suggestion: 'Define componentSizes.kbd token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import { Kbd, KbdGroup } from '@/components/ui/kbd'
+
+// Single key
+<Kbd>⌘</Kbd>
+
+// Key sequence
+<KbdGroup>
+  <Kbd>⌘</Kbd>
+  <Kbd>K</Kbd>
+</KbdGroup>
+
+// Inside Tooltip (auto-inverts)
+<TooltipContent>
+  Search <Kbd className="ml-1.5">⌘K</Kbd>
+</TooltipContent>`,
+    html: `<kbd data-slot="kbd">⌘</kbd>`,
+    css: `:root { --muted: oklch(0.97 0 0); --muted-foreground: oklch(0.556 0 0); }`,
+  },
+}
+
+// ─── Spinner ──────────────────────────────────────────────────────────────────
+
+const spinnerMeta: ComponentMeta = {
+  id: 'ui-spinner',
+  name: 'Spinner',
+  category: 'ui',
+  filePath: 'components/ui/spinner.tsx',
+  description:
+    'Loading indicator using Lucide Loader2Icon with animate-spin. size-4 by default. Passes all SVG props through — use className to override size and color. Provides role="status" and aria-label="Loading" for accessibility.',
+  guidelines: [
+    'Use for async operations with unknown duration (data loading, form submit).',
+    'Show alongside text: <Spinner /> Loading… — do not use alone in context.',
+    'Override size with className="size-5" or "size-6" — do not set width/height directly.',
+    'For page-level loading use LoadingScreen, not Spinner.',
+    'Pair with aria-live="polite" on a container for screen reader announcements.',
+  ],
+  variations: [
+    { name: 'default', description: 'size-4 (16px). Inline loading indicator.' },
+    { name: 'large', description: 'className="size-6" for button or card loading states.' },
+  ],
+  behavior: [
+    'animate-spin: Tailwind CSS keyframe, 1s linear infinite.',
+    'role="status" + aria-label="Loading" — accessible by default.',
+    'Inherits text color from parent.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Sizes & Colors',
+      render: () => (
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <Spinner />
+            <span className="text-xs text-muted-foreground">Default (size-4)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Spinner className="size-5 text-primary" />
+            <span className="text-xs text-muted-foreground">size-5, primary</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Spinner className="size-6 text-muted-foreground" />
+            <span className="text-xs text-muted-foreground">size-6, muted</span>
+          </div>
+        </div>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [],
+    outOfToken: [
+      { property: 'size-4', category: 'spacing', note: 'Default size is hardcoded in component', suggestion: 'Accept size prop or define componentSizes.spinner token' },
+      { property: 'animate-spin', category: 'animation', note: 'Uses Tailwind default 1s linear spin, not a custom animation token', suggestion: 'Define --duration-spin token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import { Spinner } from '@/components/ui/spinner'
+
+// Inline
+<Button disabled>
+  <Spinner /> Saving...
+</Button>
+
+// Custom size + color
+<Spinner className="size-6 text-primary" />
+
+// Accessible container
+<div aria-live="polite" aria-busy={isLoading}>
+  {isLoading && <Spinner />}
+</div>`,
+    html: `<svg role="status" aria-label="Loading" class="size-4 animate-spin lucide lucide-loader-2"></svg>`,
+    css: `/* animate-spin: Tailwind keyframe (1s linear infinite) */`,
+  },
+}
+
+// ─── Label ────────────────────────────────────────────────────────────────────
+
+const labelMeta: ComponentMeta = {
+  id: 'ui-label',
+  name: 'Label',
+  category: 'ui',
+  filePath: 'components/ui/label.tsx',
+  description:
+    'Accessible form label built on Radix Label. Always use with form inputs via htmlFor. Automatically dims when the associated control is disabled via group-data-[disabled] or peer-disabled. text-xs font-medium.',
+  guidelines: [
+    'Always use htmlFor matching the input id — do not wrap the input in Label without htmlFor.',
+    'Keep label text concise — one noun phrase, no punctuation.',
+    'For required fields, add an asterisk or "(required)" text inside the Label.',
+    'Do not use as a heading substitute — use h2/h3 for section titles.',
+  ],
+  variations: [
+    { name: 'default', description: 'text-xs font-medium, inherits color from context.' },
+    { name: 'disabled', description: 'opacity-50 when peer control is disabled.' },
+  ],
+  behavior: [
+    'peer-disabled:opacity-50 dims automatically when input is disabled.',
+    'cursor-pointer by default.',
+    'group-data-[disabled=true]:opacity-50 for form groups.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'With Inputs',
+      render: () => (
+        <div className="flex flex-col gap-4 w-56">
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="email-demo">Email address</Label>
+            <Input id="email-demo" type="email" placeholder="you@example.com" />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="disabled-demo">Disabled field</Label>
+            <Input id="disabled-demo" disabled placeholder="Not editable" />
+          </div>
+        </div>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--foreground', usage: 'text-foreground (inherited)', category: 'color', description: 'Label text' },
+    ],
+    outOfToken: [
+      { property: 'text-xs', category: 'typography', note: 'Font size hardcoded, not from typography token', suggestion: 'Use typography.scale.xs token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+
+<div className="flex flex-col gap-1.5">
+  <Label htmlFor="name">Display Name</Label>
+  <Input id="name" placeholder="Alex Rivera" />
+</div>
+
+// Required marker
+<Label htmlFor="rate">
+  Hourly Rate <span className="text-destructive ml-0.5">*</span>
+</Label>`,
+    html: `<label data-slot="label" for="input-id">Field Label</label>`,
+    css: `[data-slot="label"] { font-size: 0.75rem; font-weight: 500; }`,
+  },
+}
+
+// ─── Table ────────────────────────────────────────────────────────────────────
+
+const tableMeta: ComponentMeta = {
+  id: 'ui-table',
+  name: 'Table',
+  category: 'ui',
+  filePath: 'components/ui/table.tsx',
+  description:
+    'Semantic HTML table with styled sub-components. Wrapped in a scroll container for overflow. text-xs throughout. TableHead uses text-muted-foreground; TableCell uses text-foreground. Last column right-aligns via [&:has([role=checkbox])]:pr-0.',
+  guidelines: [
+    'Use for tabular data with column headers — not for layout.',
+    'Wrap in a fixed-height container with overflow-auto for large datasets.',
+    'Use TableCaption for screen reader context.',
+    'Align numeric columns right via className="text-right".',
+    'Sort indicators belong in TableHead — not TableCell.',
+  ],
+  variations: [
+    { name: 'default', description: 'Full-width table with header, body, and footer.' },
+    { name: 'compact', description: 'Smaller row padding via className overrides.' },
+  ],
+  behavior: [
+    'Table is wrapped in a relative w-full overflow-auto div.',
+    'TableRow hover: bg-muted/50.',
+    'TableRow data-selected: bg-muted.',
+    'TableHead: h-10, text-left, text-muted-foreground.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Default',
+      render: () => (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead className="text-right">Score</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {[
+              { name: 'Alex Rivera', role: 'Engineer', score: 82 },
+              { name: 'Sam Chen', role: 'Designer', score: 74 },
+              { name: 'Jordan Kim', role: 'PM', score: 91 },
+            ].map((row) => (
+              <TableRow key={row.name}>
+                <TableCell className="font-medium">{row.name}</TableCell>
+                <TableCell>{row.role}</TableCell>
+                <TableCell className="text-right">{row.score}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--border', usage: 'border-b (TableRow)', category: 'color', description: 'Row divider' },
+      { token: '--muted', usage: 'hover:bg-muted/50, data-selected:bg-muted', category: 'color', description: 'Row hover and selected state' },
+      { token: '--muted-foreground', usage: 'text-muted-foreground (TableHead)', category: 'color', description: 'Header text' },
+    ],
+    outOfToken: [
+      { property: 'h-10 (head) / h-12 (cell)', category: 'spacing', note: 'Row heights hardcoded', suggestion: 'Define componentSizes.table.row.height tokens' },
+      { property: 'px-4', category: 'spacing', note: 'Cell padding uses Tailwind default', suggestion: 'Map to --space-4 token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import {
+  Table, TableHeader, TableBody, TableRow,
+  TableHead, TableCell, TableCaption
+} from '@/components/ui/table'
+
+<Table>
+  <TableCaption>Recent engagements</TableCaption>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Client</TableHead>
+      <TableHead className="text-right">Score</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {rows.map((r) => (
+      <TableRow key={r.id}>
+        <TableCell>{r.client}</TableCell>
+        <TableCell className="text-right">{r.score}</TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>`,
+    html: `<div class="overflow-auto">
+  <table data-slot="table">
+    <thead data-slot="table-header">
+      <tr data-slot="table-row">
+        <th data-slot="table-head">Name</th>
+      </tr>
+    </thead>
+    <tbody data-slot="table-body">
+      <tr data-slot="table-row">
+        <td data-slot="table-cell">Alex Rivera</td>
+      </tr>
+    </tbody>
+  </table>
+</div>`,
+    css: `:root { --border: oklch(0.922 0 0); --muted: oklch(0.97 0 0); }`,
+  },
+}
+
+// ─── Toggle ───────────────────────────────────────────────────────────────────
+
+const toggleMeta: ComponentMeta = {
+  id: 'ui-toggle',
+  name: 'Toggle',
+  category: 'ui',
+  filePath: 'components/ui/toggle.tsx',
+  description:
+    'Single on/off button built on Radix Toggle. Pressed state uses data-state="on". Three variants (default, outline, ghost) and three sizes. Use for formatting controls, filter chips, or feature flags.',
+  guidelines: [
+    'Use Toggle for binary on/off state — one toggle per concept.',
+    'Use ToggleGroup for mutually exclusive or multi-select grouped options.',
+    'Always provide aria-label when the toggle has no visible text.',
+    'Use variant="outline" for toggles inside forms or toolbars.',
+  ],
+  variations: [
+    { name: 'default', description: 'No background until pressed.' },
+    { name: 'outline', description: 'border-input resting, bg-muted on press.' },
+  ],
+  behavior: [
+    'data-state="on": bg-muted text-foreground.',
+    'Focus-visible: ring-ring/50.',
+    'Disabled: opacity-50, pointer-events-none.',
+  ],
+  knobs: [
+    { name: 'variant', type: 'select', options: ['default', 'outline'], defaultValue: 'default' },
+    { name: 'size', type: 'select', options: ['sm', 'default', 'lg'], defaultValue: 'default' },
+  ],
+  stories: [
+    {
+      id: 'default',
+      name: 'Variants',
+      render: () => (
+        <div className="flex items-center gap-3">
+          {(['default', 'outline'] as const).map((v) => (
+            <Toggle key={v} variant={v}>
+              {v.charAt(0).toUpperCase() + v.slice(1)}
+            </Toggle>
+          ))}
+        </div>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--accent', usage: 'data-[state=on]:bg-accent', category: 'color', description: 'Pressed background' },
+      { token: '--accent-foreground', usage: 'data-[state=on]:text-accent-foreground', category: 'color', description: 'Pressed text' },
+      { token: '--ring', usage: 'focus-visible:ring-ring/50', category: 'color', description: 'Focus ring' },
+    ],
+    outOfToken: [],
+  },
+  codeSnippet: {
+    react: `import { Toggle } from '@/components/ui/toggle'
+
+const [bold, setBold] = useState(false)
+
+<Toggle
+  pressed={bold}
+  onPressedChange={setBold}
+  aria-label="Toggle bold"
+>
+  B
+</Toggle>`,
+    html: `<button role="button" data-state="on" data-slot="toggle" aria-pressed="true">B</button>`,
+    css: `:root { --accent: oklch(0.97 0 0); --accent-foreground: oklch(0.21 0 0); }`,
+  },
+}
+
+// ─── ToggleGroup ──────────────────────────────────────────────────────────────
+
+const toggleGroupMeta: ComponentMeta = {
+  id: 'ui-toggle-group',
+  name: 'ToggleGroup',
+  category: 'ui',
+  filePath: 'components/ui/toggle-group.tsx',
+  description:
+    'Group of Toggle buttons with shared state. type="single" for mutually exclusive selection; type="multiple" for multi-select. Built on Radix ToggleGroup — manages keyboard navigation across items.',
+  guidelines: [
+    'Use type="single" for mutually exclusive options (view mode, sort order).',
+    'Use type="multiple" for filter combinations (tags, skills).',
+    'Keep labels short — 1–2 words per item.',
+    'Provide aria-label on the ToggleGroup root describing the group.',
+  ],
+  variations: [
+    { name: 'single', description: 'Only one item active at a time.' },
+    { name: 'multiple', description: 'Multiple items can be active simultaneously.' },
+  ],
+  behavior: [
+    'Arrow keys navigate between items.',
+    'Each ToggleGroupItem inherits variant/size from parent ToggleGroup context.',
+    'data-state="on" on active items.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Single Select',
+      render: () => (
+        <ToggleGroup type="single" defaultValue="month" aria-label="View period">
+          <ToggleGroupItem value="week">Week</ToggleGroupItem>
+          <ToggleGroupItem value="month">Month</ToggleGroupItem>
+          <ToggleGroupItem value="quarter">Quarter</ToggleGroupItem>
+        </ToggleGroup>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--accent', usage: 'data-[state=on]:bg-accent (via Toggle)', category: 'color', description: 'Active item background' },
+    ],
+    outOfToken: [],
+  },
+  codeSnippet: {
+    react: `import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+
+// Single select
+<ToggleGroup type="single" value={view} onValueChange={setView}>
+  <ToggleGroupItem value="grid">Grid</ToggleGroupItem>
+  <ToggleGroupItem value="list">List</ToggleGroupItem>
+</ToggleGroup>
+
+// Multi-select
+<ToggleGroup type="multiple" value={filters} onValueChange={setFilters}>
+  <ToggleGroupItem value="remote">Remote</ToggleGroupItem>
+  <ToggleGroupItem value="fulltime">Full-time</ToggleGroupItem>
+</ToggleGroup>`,
+    html: `<div role="group" data-slot="toggle-group">
+  <button role="button" data-state="on">Grid</button>
+  <button role="button" data-state="off">List</button>
+</div>`,
+    css: `:root { --accent: oklch(0.97 0 0); }`,
+  },
+}
+
+// ─── RadioGroup ───────────────────────────────────────────────────────────────
+
+const radioGroupMeta: ComponentMeta = {
+  id: 'ui-radio-group',
+  name: 'RadioGroup',
+  category: 'ui',
+  filePath: 'components/ui/radio-group.tsx',
+  description:
+    'Accessible radio button group built on Radix RadioGroup. RadioGroupItem shows a filled circle when selected. Always wrap in a FieldSet with FieldLegend for proper semantics. Use for mutually exclusive options (availability status, role type, etc.).',
+  guidelines: [
+    'Always provide a visible group label via FieldLegend or aria-label on RadioGroup.',
+    'Always pair each RadioGroupItem with a Label using the same htmlFor/id.',
+    'Use when 2–6 options are present — more than 6 should use Select instead.',
+    'Controlled: use value + onValueChange.',
+  ],
+  variations: [
+    { name: 'default', description: 'Vertical list of radio + label pairs.' },
+    { name: 'horizontal', description: 'className="flex-row" on RadioGroup.' },
+  ],
+  behavior: [
+    'data-state="checked": bg-primary fill circle.',
+    'Arrow keys navigate within group.',
+    'Focus-visible: ring-ring/50 on RadioGroupItem.',
+    'Disabled: opacity-50, pointer-events-none.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Availability',
+      render: () => (
+        <RadioGroup defaultValue="available" className="gap-2">
+          {[
+            { value: 'available', label: 'Available now' },
+            { value: 'open', label: 'Open to work' },
+            { value: 'unavailable', label: 'Unavailable' },
+          ].map(({ value, label }) => (
+            <div key={value} className="flex items-center gap-2">
+              <RadioGroupItem value={value} id={`rg-${value}`} />
+              <Label htmlFor={`rg-${value}`}>{label}</Label>
+            </div>
+          ))}
+        </RadioGroup>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--primary', usage: 'data-[state=checked]:text-primary (fill circle)', category: 'color', description: 'Selected state fill' },
+      { token: '--border', usage: 'border-input', category: 'color', description: 'Unchecked border' },
+      { token: '--ring', usage: 'focus-visible:ring-ring/50', category: 'color', description: 'Focus ring' },
+    ],
+    outOfToken: [
+      { property: 'size-4 / size-2', category: 'spacing', note: 'Outer and inner circle sizes hardcoded', suggestion: 'Define componentSizes.radio token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Label } from '@/components/ui/label'
+
+<RadioGroup value={availability} onValueChange={setAvailability}>
+  <div className="flex items-center gap-2">
+    <RadioGroupItem value="available" id="avail" />
+    <Label htmlFor="avail">Available now</Label>
+  </div>
+  <div className="flex items-center gap-2">
+    <RadioGroupItem value="open" id="open" />
+    <Label htmlFor="open">Open to work</Label>
+  </div>
+</RadioGroup>`,
+    html: `<div role="radiogroup" data-slot="radio-group">
+  <button role="radio" aria-checked="true" data-slot="radio-group-item"></button>
+</div>`,
+    css: `:root { --primary: oklch(0.205 0 0); --border: oklch(0.922 0 0); }`,
+  },
+}
+
+// ─── Popover ──────────────────────────────────────────────────────────────────
+
+const popoverMeta: ComponentMeta = {
+  id: 'ui-popover',
+  name: 'Popover',
+  category: 'ui',
+  filePath: 'components/ui/popover.tsx',
+  description:
+    'Floating non-modal panel built on Radix Popover. Use for inline editors, date pickers, filter panels, and contextual tools. Unlike Dialog, it does not block background interaction and can be dismissed by clicking outside.',
+  guidelines: [
+    'Use for inline contextual actions — not for alerts or confirmations.',
+    'Keep content width within 320px (default w-72) unless the content requires more.',
+    'Include a PopoverHeader with title when the popover purpose is not obvious.',
+    'Popover is dismissible by clicking outside — do not put required decision content in it.',
+  ],
+  variations: [
+    { name: 'default', description: 'Plain floating panel, no header.' },
+    { name: 'with header', description: 'PopoverHeader with PopoverTitle and description.' },
+  ],
+  behavior: [
+    'Renders in Portal — z-50 by default.',
+    'Dismisses on outside click and Escape.',
+    'Animates: zoom-in-95 on open, zoom-out-95 on close.',
+    'sideOffset=4 from trigger.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Filter Panel',
+      render: () => (
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="sm">Filters</Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverHeader>
+              <PopoverTitle>Filter results</PopoverTitle>
+              <PopoverDescription>Narrow by role type and location.</PopoverDescription>
+            </PopoverHeader>
+            <div className="flex flex-col gap-2 pt-1">
+              <div className="flex items-center gap-2">
+                <Checkbox id="pop-remote" />
+                <Label htmlFor="pop-remote">Remote only</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Checkbox id="pop-full" />
+                <Label htmlFor="pop-full">Full-time only</Label>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--popover', usage: 'bg-popover', category: 'color', description: 'Panel background' },
+      { token: '--popover-foreground', usage: 'text-popover-foreground', category: 'color', description: 'Panel text' },
+      { token: '--foreground', usage: 'ring-foreground/10', category: 'color', description: 'Subtle border shadow' },
+    ],
+    outOfToken: [
+      { property: 'shadow-md', category: 'shadow', note: 'Uses Tailwind shadow-md, not a token', suggestion: 'Define --shadow-popover token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import {
+  Popover, PopoverTrigger, PopoverContent,
+  PopoverHeader, PopoverTitle, PopoverDescription
+} from '@/components/ui/popover'
+
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Open</Button>
+  </PopoverTrigger>
+  <PopoverContent>
+    <PopoverHeader>
+      <PopoverTitle>Title</PopoverTitle>
+    </PopoverHeader>
+    {/* content */}
+  </PopoverContent>
+</Popover>`,
+    html: `<div data-slot="popover-content" role="dialog">Content</div>`,
+    css: `:root { --popover: oklch(1 0 0); --popover-foreground: oklch(0.145 0 0); }`,
+  },
+}
+
+// ─── Sheet ────────────────────────────────────────────────────────────────────
+
+const sheetMeta: ComponentMeta = {
+  id: 'ui-sheet',
+  name: 'Sheet',
+  category: 'ui',
+  filePath: 'components/ui/sheet.tsx',
+  description:
+    'Slide-in panel built on Radix Dialog. Slides from top, right, bottom, or left. Use for settings panels, filters, navigation drawers, and detail sidebars. Full-height by default when side="right" or "left".',
+  guidelines: [
+    'Use side="right" for detail panels and forms (the primary pattern).',
+    'Use side="left" for navigation drawers.',
+    'Include SheetHeader with SheetTitle for accessibility.',
+    'Use SheetFooter for action buttons — primary right, cancel left.',
+    'Avoid nesting dialogs inside Sheets — use a Popover or Collapsible instead.',
+  ],
+  variations: [
+    { name: 'right', description: 'Slides from the right. Default for detail panels.' },
+    { name: 'left', description: 'Slides from the left. For navigation drawers.' },
+    { name: 'bottom', description: 'Slides from the bottom. For mobile-style action sheets.' },
+  ],
+  behavior: [
+    'Overlay: bg-black/50, blocks background interaction.',
+    'Slide animation: data-[side=right]:slide-in-from-right-full etc.',
+    'Close button: top-right X icon.',
+    'Escape and overlay click both close.',
+  ],
+  knobs: [
+    { name: 'side', type: 'select', options: ['right', 'left', 'bottom', 'top'], defaultValue: 'right' },
+  ],
+  stories: [
+    {
+      id: 'default',
+      name: 'Right Panel',
+      render: () => (
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="sm">Open Settings</Button>
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Profile Settings</SheetTitle>
+              <SheetDescription>Manage your public profile and preferences.</SheetDescription>
+            </SheetHeader>
+            <div className="py-4">
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-1.5">
+                  <Label>Display Name</Label>
+                  <Input placeholder="Alex Rivera" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <Label>Headline</Label>
+                  <Textarea placeholder="Full-stack engineer..." rows={2} />
+                </div>
+              </div>
+            </div>
+            <SheetFooter>
+              <Button size="sm">Save Changes</Button>
+            </SheetFooter>
+          </SheetContent>
+        </Sheet>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--background', usage: 'bg-background', category: 'color', description: 'Sheet panel background' },
+      { token: '--border', usage: 'border (edge line)', category: 'color', description: 'Sheet border on open edge' },
+      { token: '--foreground', usage: 'text-foreground', category: 'color', description: 'Title text' },
+    ],
+    outOfToken: [
+      { property: 'w-3/4 max-w-sm/lg', category: 'spacing', note: 'Width is hardcoded per side, not a token', suggestion: 'Define --sheet-width-sm/lg tokens' },
+    ],
+  },
+  codeSnippet: {
+    react: `import {
+  Sheet, SheetTrigger, SheetContent, SheetHeader,
+  SheetTitle, SheetDescription, SheetFooter
+} from '@/components/ui/sheet'
+
+<Sheet>
+  <SheetTrigger asChild>
+    <Button>Open Panel</Button>
+  </SheetTrigger>
+  <SheetContent side="right">
+    <SheetHeader>
+      <SheetTitle>Settings</SheetTitle>
+    </SheetHeader>
+    {/* content */}
+    <SheetFooter>
+      <Button>Save</Button>
+    </SheetFooter>
+  </SheetContent>
+</Sheet>`,
+    html: `<div role="dialog" data-slot="sheet-content" data-side="right">
+  <div data-slot="sheet-header">
+    <h2 data-slot="sheet-title">Settings</h2>
+  </div>
+</div>`,
+    css: `:root { --background: oklch(1 0 0); --border: oklch(0.922 0 0); }`,
+  },
+}
+
+// ─── Breadcrumb ───────────────────────────────────────────────────────────────
+
+const breadcrumbMeta: ComponentMeta = {
+  id: 'ui-breadcrumb',
+  name: 'Breadcrumb',
+  category: 'ui',
+  filePath: 'components/ui/breadcrumb.tsx',
+  description:
+    'Navigation trail showing the current page location. Built with semantic <nav aria-label="breadcrumb">. Supports links, current page (BreadcrumbPage), separator, and ellipsis for collapsed paths.',
+  guidelines: [
+    'The last item should be BreadcrumbPage (not a link) — it indicates current location.',
+    'Use BreadcrumbEllipsis to collapse deep paths — expand on interaction.',
+    'Separators render automatically via BreadcrumbSeparator.',
+    'Keep breadcrumb to 3–4 levels max in the UI.',
+  ],
+  variations: [
+    { name: 'default', description: 'Full path with links and separator.' },
+    { name: 'collapsed', description: 'BreadcrumbEllipsis hides middle items.' },
+  ],
+  behavior: [
+    'BreadcrumbLink: text-muted-foreground, hover:text-foreground transition.',
+    'BreadcrumbPage: text-foreground, aria-current="page".',
+    'BreadcrumbSeparator: text-muted-foreground ChevronRight icon.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Default',
+      render: () => (
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="#">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="#">Profile</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Signal History</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--muted-foreground', usage: 'text-muted-foreground (links, separator)', category: 'color', description: 'Link and separator color' },
+      { token: '--foreground', usage: 'hover:text-foreground, BreadcrumbPage', category: 'color', description: 'Active link hover and current page' },
+    ],
+    outOfToken: [],
+  },
+  codeSnippet: {
+    react: `import {
+  Breadcrumb, BreadcrumbList, BreadcrumbItem,
+  BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator
+} from '@/components/ui/breadcrumb'
+
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbPage>Current</BreadcrumbPage>
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>`,
+    html: `<nav aria-label="breadcrumb" data-slot="breadcrumb">
+  <ol data-slot="breadcrumb-list">
+    <li data-slot="breadcrumb-item">
+      <a data-slot="breadcrumb-link" href="/">Home</a>
+    </li>
+    <li role="presentation" data-slot="breadcrumb-separator">›</li>
+    <li data-slot="breadcrumb-item">
+      <span data-slot="breadcrumb-page" aria-current="page">Current</span>
+    </li>
+  </ol>
+</nav>`,
+    css: `:root { --muted-foreground: oklch(0.556 0 0); --foreground: oklch(0.145 0 0); }`,
+  },
+}
+
+// ─── Pagination ───────────────────────────────────────────────────────────────
+
+const paginationMeta: ComponentMeta = {
+  id: 'ui-pagination',
+  name: 'Pagination',
+  category: 'ui',
+  filePath: 'components/ui/pagination.tsx',
+  description:
+    'Page navigation control with Previous, Next, numbered pages, and ellipsis for large ranges. Built with semantic <nav aria-label="pagination">. Each link is an anchor — wrap with your router Link using asChild.',
+  guidelines: [
+    'Show current page with aria-current="page" on PaginationLink.',
+    'Use PaginationEllipsis to indicate skipped page ranges.',
+    'Always include PaginationPrevious and PaginationNext for full keyboard navigation.',
+    'Use asChild on PaginationLink to render next/link for client-side routing.',
+  ],
+  variations: [
+    { name: 'default', description: 'Prev, page numbers, ellipsis, Next.' },
+  ],
+  behavior: [
+    'PaginationPrevious/Next: gap-1 with arrow icon.',
+    'PaginationLink: size="icon" button style.',
+    'PaginationEllipsis: MoreHorizontalIcon, aria-hidden.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Default',
+      render: () => (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem><PaginationPrevious href="#" /></PaginationItem>
+            <PaginationItem><PaginationLink href="#">1</PaginationLink></PaginationItem>
+            <PaginationItem><PaginationLink href="#" isActive>2</PaginationLink></PaginationItem>
+            <PaginationItem><PaginationLink href="#">3</PaginationLink></PaginationItem>
+            <PaginationItem><PaginationEllipsis /></PaginationItem>
+            <PaginationItem><PaginationLink href="#">8</PaginationLink></PaginationItem>
+            <PaginationItem><PaginationNext href="#" /></PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--muted-foreground', usage: 'text-muted-foreground (inactive links)', category: 'color', description: 'Non-active page text' },
+      { token: '--foreground', usage: 'text-foreground (active, via button)', category: 'color', description: 'Current page text' },
+      { token: '--muted', usage: 'hover:bg-muted', category: 'color', description: 'Link hover state' },
+    ],
+    outOfToken: [],
+  },
+  codeSnippet: {
+    react: `import {
+  Pagination, PaginationContent, PaginationItem,
+  PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis
+} from '@/components/ui/pagination'
+
+<Pagination>
+  <PaginationContent>
+    <PaginationItem><PaginationPrevious href="/page/1" /></PaginationItem>
+    <PaginationItem><PaginationLink href="/page/1">1</PaginationLink></PaginationItem>
+    <PaginationItem><PaginationLink href="/page/2" isActive>2</PaginationLink></PaginationItem>
+    <PaginationItem><PaginationEllipsis /></PaginationItem>
+    <PaginationItem><PaginationNext href="/page/3" /></PaginationItem>
+  </PaginationContent>
+</Pagination>`,
+    html: `<nav aria-label="pagination" data-slot="pagination">
+  <ul data-slot="pagination-content">
+    <li><a data-slot="pagination-link" aria-current="page">2</a></li>
+  </ul>
+</nav>`,
+    css: `:root { --muted: oklch(0.97 0 0); --muted-foreground: oklch(0.556 0 0); }`,
+  },
+}
+
+// ─── ScrollArea ───────────────────────────────────────────────────────────────
+
+const scrollAreaMeta: ComponentMeta = {
+  id: 'ui-scroll-area',
+  name: 'ScrollArea',
+  category: 'ui',
+  filePath: 'components/ui/scroll-area.tsx',
+  description:
+    'Custom-styled scrollable container built on Radix ScrollArea. Hides native scrollbar and shows a thin themed scrollbar on hover. Use when native scrollbars would break the visual design.',
+  guidelines: [
+    'Always set a fixed height on the ScrollArea container — it does not auto-size.',
+    'Use orientation="horizontal" for horizontal scrolling lists.',
+    'Do not use inside overflow:hidden containers — the scrollbar track will be clipped.',
+    'Prefer native overflow-auto for non-design-critical contexts — ScrollArea adds DOM overhead.',
+  ],
+  variations: [
+    { name: 'vertical', description: 'Default. Vertical scroll with right-side track.' },
+    { name: 'horizontal', description: 'orientation="horizontal". Bottom track.' },
+  ],
+  behavior: [
+    'Scrollbar appears on hover/interaction, hides when idle.',
+    'ScrollBar uses bg-border/60 thumb.',
+    'Track is bg-transparent.',
+    'Full keyboard scroll support.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Vertical List',
+      render: () => (
+        <ScrollArea className="h-48 w-64 border border-border">
+          <div className="p-3 flex flex-col gap-2">
+            {Array.from({ length: 12 }, (_, i) => (
+              <div key={i} className="text-xs px-2 py-1.5 rounded-none bg-muted/50">
+                Item {i + 1}
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--border', usage: 'bg-border/60 (scrollbar thumb)', category: 'color', description: 'Scrollbar thumb color' },
+    ],
+    outOfToken: [
+      { property: 'scrollbar width (2.5px)', category: 'spacing', note: 'Scrollbar thickness is hardcoded', suggestion: 'Define --scrollbar-width token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import { ScrollArea } from '@/components/ui/scroll-area'
+
+// Vertical (always set a height)
+<ScrollArea className="h-64">
+  {items.map((item) => <div key={item.id}>{item.name}</div>)}
+</ScrollArea>
+
+// Horizontal
+<ScrollArea orientation="horizontal" className="w-full">
+  <div className="flex gap-2">
+    {cards.map((c) => <Card key={c.id} className="w-48 shrink-0" />)}
+  </div>
+</ScrollArea>`,
+    html: `<div data-slot="scroll-area" style="overflow:hidden; position:relative;">
+  <div data-slot="scroll-area-viewport"><!-- content --></div>
+  <div data-slot="scroll-area-scrollbar" data-orientation="vertical"></div>
+</div>`,
+    css: `:root { --border: oklch(0.922 0 0); }`,
+  },
+}
+
+// ─── Collapsible ──────────────────────────────────────────────────────────────
+
+const collapsibleMeta: ComponentMeta = {
+  id: 'ui-collapsible',
+  name: 'Collapsible',
+  category: 'ui',
+  filePath: 'components/ui/collapsible.tsx',
+  description:
+    'Simple show/hide wrapper built on Radix Collapsible. Lower-level than Accordion — no visual chrome, no chevron animation built in. Use when you need a custom toggle UI or a single expandable section without the Accordion container.',
+  guidelines: [
+    'Use Accordion when you have multiple sections with the same visual pattern.',
+    'Use Collapsible for one-off expand/collapse with a custom trigger.',
+    'CollapsibleTrigger must be a button for accessibility — use asChild with Button.',
+    'CollapsibleContent automatically handles open/closed animation.',
+  ],
+  variations: [
+    { name: 'default', description: 'Plain Radix primitive — no built-in styles.' },
+  ],
+  behavior: [
+    'data-state="open" / "closed" on root and content for CSS targeting.',
+    'CollapsibleContent animates via tailwind data-closed:animate-out.',
+    'open prop + onOpenChange for controlled use.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Expandable Section',
+      render: () => (
+        <Collapsible className="w-72">
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-medium">Advanced Filters</p>
+            <CollapsibleTrigger asChild>
+              <Button variant="ghost" size="sm">Show</Button>
+            </CollapsibleTrigger>
+          </div>
+          <CollapsibleContent className="mt-2 flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <Checkbox id="col-remote" />
+              <Label htmlFor="col-remote">Remote only</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Checkbox id="col-verified" />
+              <Label htmlFor="col-verified">Verified companies only</Label>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [],
+    outOfToken: [],
+  },
+  codeSnippet: {
+    react: `import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible'
+
+const [open, setOpen] = useState(false)
+
+<Collapsible open={open} onOpenChange={setOpen}>
+  <CollapsibleTrigger asChild>
+    <Button variant="ghost" size="sm">{open ? 'Hide' : 'Show'} details</Button>
+  </CollapsibleTrigger>
+  <CollapsibleContent>
+    <p>Expanded content here.</p>
+  </CollapsibleContent>
+</Collapsible>`,
+    html: `<div data-slot="collapsible" data-state="open">
+  <button data-slot="collapsible-trigger" aria-expanded="true">Toggle</button>
+  <div data-slot="collapsible-content">Content</div>
+</div>`,
+    css: `/* No tokens — style children directly */`,
+  },
+}
+
+// ─── Empty ────────────────────────────────────────────────────────────────────
+
+const emptyMeta: ComponentMeta = {
+  id: 'ui-empty',
+  name: 'Empty',
+  category: 'ui',
+  filePath: 'components/ui/empty.tsx',
+  description:
+    'Empty state container for zero-result and first-use contexts. Centered flex column with dashed border. Composed of EmptyHeader, EmptyMedia (icon or illustration), EmptyTitle, EmptyDescription, and EmptyContent (action buttons).',
+  guidelines: [
+    'Always include an EmptyTitle — one sentence saying what is missing.',
+    'Include an EmptyContent with a primary action button where applicable.',
+    'Use EmptyMedia variant="icon" for a standard muted icon indicator.',
+    'Keep EmptyDescription to one sentence — explain why or what to do next.',
+    'Use inside a min-h container so it fills the available space.',
+  ],
+  variations: [
+    { name: 'default', description: 'Dashed border, centered content.' },
+    { name: 'with icon', description: 'EmptyMedia variant="icon" for muted icon box.' },
+  ],
+  behavior: [
+    'Dashed border-dashed border (default).',
+    'text-balance on root for responsive centering.',
+    'EmptyMedia icon variant: size-8 muted bg square.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'No Results',
+      render: () => (
+        <Empty className="min-h-48 max-w-sm">
+          <EmptyHeader>
+            <EmptyTitle>No opportunities found</EmptyTitle>
+            <EmptyDescription>
+              Try adjusting your filters or check back later.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button size="sm" variant="outline">Clear filters</Button>
+          </EmptyContent>
+        </Empty>
+      ),
+      defaultProps: {},
+    },
+    {
+      id: 'with-icon',
+      name: 'With Icon',
+      render: () => (
+        <Empty className="min-h-48 max-w-sm">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <span className="text-base">📭</span>
+            </EmptyMedia>
+            <EmptyTitle>No signals recorded yet</EmptyTitle>
+            <EmptyDescription>
+              Complete your first engagement to start building your signal history.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button size="sm">Get started</Button>
+          </EmptyContent>
+        </Empty>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--border', usage: 'border-dashed border', category: 'color', description: 'Dashed outer border' },
+      { token: '--muted', usage: 'bg-muted (icon variant)', category: 'color', description: 'Icon media background' },
+      { token: '--foreground', usage: 'text-foreground (icon variant)', category: 'color', description: 'Icon color' },
+      { token: '--muted-foreground', usage: 'text-muted-foreground (description)', category: 'color', description: 'Description text' },
+    ],
+    outOfToken: [
+      { property: 'p-6 gap-4', category: 'spacing', note: 'Internal padding hardcoded', suggestion: 'Map to --space-6 / --space-4 tokens' },
+    ],
+  },
+  codeSnippet: {
+    react: `import {
+  Empty, EmptyHeader, EmptyMedia, EmptyTitle,
+  EmptyDescription, EmptyContent
+} from '@/components/ui/empty'
+
+<Empty className="min-h-64">
+  <EmptyHeader>
+    <EmptyMedia variant="icon">
+      <InboxIcon />
+    </EmptyMedia>
+    <EmptyTitle>Nothing here yet</EmptyTitle>
+    <EmptyDescription>Create your first item to get started.</EmptyDescription>
+  </EmptyHeader>
+  <EmptyContent>
+    <Button size="sm">Create item</Button>
+  </EmptyContent>
+</Empty>`,
+    html: `<div data-slot="empty">
+  <div data-slot="empty-header">
+    <div data-slot="empty-icon" data-variant="icon"><!-- icon --></div>
+    <div data-slot="empty-title">Nothing here yet</div>
+    <div data-slot="empty-description">Create an item to get started.</div>
+  </div>
+</div>`,
+    css: `:root { --border: oklch(0.922 0 0); --muted: oklch(0.97 0 0); }`,
+  },
+}
+
+// ─── Item ─────────────────────────────────────────────────────────────────────
+
+const itemMeta: ComponentMeta = {
+  id: 'ui-item',
+  name: 'Item',
+  category: 'ui',
+  filePath: 'components/ui/item.tsx',
+  description:
+    'Flexible list row component with media, content, and actions slots. Three variants (default/outline/muted) and three sizes (default/sm/xs). Composes with ItemGroup for lists. Supports asChild for link/button rendering.',
+  guidelines: [
+    'Use ItemGroup to wrap multiple Items — handles gap and role="list".',
+    'Use ItemMedia variant="icon" for icon columns, variant="image" for avatars.',
+    'Use ItemActions for trailing action buttons (icon-only).',
+    'Use asChild on Item to render as a link without losing styles.',
+    'Use size="xs" inside DropdownMenuContent for menu-style rows.',
+  ],
+  variations: [
+    { name: 'default', description: 'Transparent border. Plain row.' },
+    { name: 'outline', description: 'border-border. Card-like row.' },
+    { name: 'muted', description: 'bg-muted/50 fill. Recessed row.' },
+  ],
+  behavior: [
+    'ItemGroup adjusts gap based on child data-size attribute.',
+    'ItemMedia image variant: size-10 square, overflow-hidden.',
+    'ItemDescription: line-clamp-2, text-muted-foreground.',
+    'ItemTitle: line-clamp-1 with underline-offset-4.',
+  ],
+  knobs: [
+    { name: 'variant', type: 'select', options: ['default', 'outline', 'muted'], defaultValue: 'default' },
+    { name: 'size', type: 'select', options: ['default', 'sm', 'xs'], defaultValue: 'default' },
+  ],
+  stories: [
+    {
+      id: 'default',
+      name: 'Profile List',
+      render: () => (
+        <ItemGroup className="w-72">
+          {[
+            { name: 'Alex Rivera', role: 'Engineer', score: 82 },
+            { name: 'Sam Chen', role: 'Designer', score: 74 },
+            { name: 'Jordan Kim', role: 'PM', score: 91 },
+          ].map((person) => (
+            <Item key={person.name} variant="outline">
+              <ItemMedia variant="image">
+                <div className="size-10 bg-muted flex items-center justify-center text-xs font-medium">
+                  {person.name.split(' ').map(n => n[0]).join('')}
+                </div>
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>{person.name}</ItemTitle>
+                <ItemDescription>{person.role}</ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <Badge variant="secondary">{person.score}</Badge>
+              </ItemActions>
+            </Item>
+          ))}
+        </ItemGroup>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--border', usage: 'border (outline variant)', category: 'color', description: 'Outline variant border' },
+      { token: '--muted', usage: 'bg-muted/50 (muted variant)', category: 'color', description: 'Muted variant background' },
+      { token: '--muted-foreground', usage: 'text-muted-foreground (description)', category: 'color', description: 'Description text' },
+      { token: '--ring', usage: 'focus-visible:border-ring', category: 'color', description: 'Focus border' },
+    ],
+    outOfToken: [
+      { property: 'px-3 py-2.5', category: 'spacing', note: 'Default padding uses Tailwind scale', suggestion: 'Map to --item-px and --item-py tokens' },
+    ],
+  },
+  codeSnippet: {
+    react: `import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription, ItemActions, ItemGroup } from '@/components/ui/item'
+
+<ItemGroup>
+  <Item variant="outline">
+    <ItemMedia variant="image">
+      <img src={user.avatar} alt={user.name} />
+    </ItemMedia>
+    <ItemContent>
+      <ItemTitle>{user.name}</ItemTitle>
+      <ItemDescription>{user.role}</ItemDescription>
+    </ItemContent>
+    <ItemActions>
+      <Button variant="ghost" size="icon"><MoreHorizontalIcon /></Button>
+    </ItemActions>
+  </Item>
+</ItemGroup>`,
+    html: `<div role="list" data-slot="item-group">
+  <div data-slot="item" data-variant="outline">
+    <div data-slot="item-media" data-variant="image"><!-- avatar --></div>
+    <div data-slot="item-content">
+      <div data-slot="item-title">Name</div>
+      <p data-slot="item-description">Role</p>
+    </div>
+  </div>
+</div>`,
+    css: `:root { --border: oklch(0.922 0 0); --muted: oklch(0.97 0 0); }`,
+  },
+}
+
+// ─── Field ────────────────────────────────────────────────────────────────────
+
+const fieldMeta: ComponentMeta = {
+  id: 'ui-field',
+  name: 'Field',
+  category: 'ui',
+  filePath: 'components/ui/field.tsx',
+  description:
+    'Form field wrapper system with label, description, error, and grouping. Supports vertical, horizontal, and responsive orientations. Use FieldGroup for multiple related fields. Use FieldSet + FieldLegend for radio/checkbox groups.',
+  guidelines: [
+    'Use FieldLabel instead of bare Label for proper disabled-state inheritance.',
+    'Use FieldError with errors prop for react-hook-form integration.',
+    'Use orientation="horizontal" for settings-style label-left, control-right rows.',
+    'Use orientation="responsive" for forms that stack on mobile, align on desktop.',
+    'FieldGroup with @container handles responsive layout automatically.',
+  ],
+  variations: [
+    { name: 'vertical', description: 'Default. Label above input.' },
+    { name: 'horizontal', description: 'Label left, input right.' },
+    { name: 'responsive', description: 'Stacks on mobile, horizontal on desktop (@md).' },
+  ],
+  behavior: [
+    'data-[invalid=true] on Field: text-destructive propagates to FieldLabel.',
+    'group-data-[disabled=true]/field:opacity-50 on FieldLabel.',
+    'FieldError renders role="alert" for screen reader announcements.',
+    'FieldGroup uses @container/field-group for responsive layout queries.',
+  ],
+  knobs: [
+    { name: 'orientation', type: 'select', options: ['vertical', 'horizontal', 'responsive'], defaultValue: 'vertical' },
+  ],
+  stories: [
+    {
+      id: 'default',
+      name: 'Form Fields',
+      render: () => (
+        <FieldGroup className="w-72">
+          <Field orientation="vertical">
+            <FieldLabel htmlFor="f-name">Display Name</FieldLabel>
+            <Input id="f-name" placeholder="Alex Rivera" />
+            <FieldDescription>Shown on your public profile.</FieldDescription>
+          </Field>
+          <Field orientation="vertical">
+            <FieldLabel htmlFor="f-rate">Hourly Rate</FieldLabel>
+            <Input id="f-rate" type="number" placeholder="90" />
+            <FieldError>Rate must be between $30 and $500.</FieldError>
+          </Field>
+        </FieldGroup>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--destructive', usage: 'text-destructive (data-invalid, FieldError)', category: 'color', description: 'Error state text' },
+      { token: '--muted-foreground', usage: 'text-muted-foreground (FieldDescription)', category: 'color', description: 'Helper text' },
+    ],
+    outOfToken: [
+      { property: 'gap-2 / gap-5', category: 'spacing', note: 'Field and FieldGroup gap uses Tailwind defaults', suggestion: 'Define --field-gap and --field-group-gap tokens' },
+    ],
+  },
+  codeSnippet: {
+    react: `import { Field, FieldLabel, FieldDescription, FieldError, FieldGroup } from '@/components/ui/field'
+import { Input } from '@/components/ui/input'
+
+// Basic vertical field
+<Field>
+  <FieldLabel htmlFor="email">Email</FieldLabel>
+  <Input id="email" type="email" />
+  <FieldDescription>We'll never share your email.</FieldDescription>
+</Field>
+
+// With react-hook-form errors
+<Field data-invalid={!!errors.email}>
+  <FieldLabel htmlFor="email">Email</FieldLabel>
+  <Input id="email" {...register('email')} />
+  <FieldError errors={[errors.email]} />
+</Field>
+
+// Horizontal orientation
+<FieldGroup>
+  <Field orientation="horizontal">
+    <FieldLabel htmlFor="notify">Email Notifications</FieldLabel>
+    <Switch id="notify" />
+  </Field>
+</FieldGroup>`,
+    html: `<div role="group" data-slot="field" data-orientation="vertical">
+  <label data-slot="field-label">Email</label>
+  <input type="email" />
+  <p data-slot="field-description">Helper text.</p>
+</div>`,
+    css: `:root { --destructive: oklch(0.577 0.245 27.325); --muted-foreground: oklch(0.556 0 0); }`,
+  },
+}
+
+// ─── ButtonGroup ─────────────────────────────────────────────────────────────
+
+const buttonGroupMeta: ComponentMeta = {
+  id: 'ui-button-group',
+  name: 'ButtonGroup',
+  category: 'ui',
+  filePath: 'components/ui/button-group.tsx',
+  description:
+    'Groups adjacent buttons or inputs into a single connected unit by removing inner borders and radius. Supports horizontal (default) and vertical orientation. ButtonGroupText adds a muted label addon. ButtonGroupSeparator inserts a visible divider.',
+  guidelines: [
+    'All children must be Button, Input, or Select — mixed types are supported.',
+    'Use orientation="vertical" for stacked action groups.',
+    'ButtonGroupText is for non-interactive labels (prefix/suffix indicators).',
+    'Do not mix primary and ghost buttons in the same group — it creates ambiguity.',
+  ],
+  variations: [
+    { name: 'horizontal', description: 'Default. Side-by-side with shared borders.' },
+    { name: 'vertical', description: 'Stacked with shared top/bottom borders.' },
+  ],
+  behavior: [
+    'Inner borders removed via CSS :not(:first-child) border-l-0 selectors.',
+    'rounded-none on all children.',
+    'ButtonGroupSeparator: thin bg-input line between items.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Button Group',
+      render: () => (
+        <div className="flex flex-col gap-4">
+          <ButtonGroup>
+            <Button variant="outline" size="sm">Previous</Button>
+            <ButtonGroupText>Page 2</ButtonGroupText>
+            <Button variant="outline" size="sm">Next</Button>
+          </ButtonGroup>
+          <ButtonGroup>
+            <Button size="sm">Save</Button>
+            <ButtonGroupSeparator />
+            <Button size="sm" variant="outline">Options</Button>
+          </ButtonGroup>
+        </div>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--muted', usage: 'bg-muted (ButtonGroupText)', category: 'color', description: 'Addon background' },
+      { token: '--input', usage: 'bg-input (ButtonGroupSeparator)', category: 'color', description: 'Separator color' },
+      { token: '--border', usage: 'border (ButtonGroupText)', category: 'color', description: 'Addon border' },
+    ],
+    outOfToken: [],
+  },
+  codeSnippet: {
+    react: `import { ButtonGroup, ButtonGroupText, ButtonGroupSeparator } from '@/components/ui/button-group'
+import { Button } from '@/components/ui/button'
+
+// Labeled group
+<ButtonGroup>
+  <ButtonGroupText>https://</ButtonGroupText>
+  <Input placeholder="yoursite.com" />
+</ButtonGroup>
+
+// Split button
+<ButtonGroup>
+  <Button>Publish</Button>
+  <ButtonGroupSeparator />
+  <Button size="icon" variant="default"><ChevronDownIcon /></Button>
+</ButtonGroup>`,
+    html: `<div role="group" data-slot="button-group" data-orientation="horizontal">
+  <button data-slot="button">Save</button>
+  <div data-slot="button-group-separator"></div>
+  <button data-slot="button">Options</button>
+</div>`,
+    css: `:root { --muted: oklch(0.97 0 0); --input: oklch(0.922 0 0); }`,
+  },
+}
+
+// ─── InputGroup ───────────────────────────────────────────────────────────────
+
+const inputGroupMeta: ComponentMeta = {
+  id: 'ui-input-group',
+  name: 'InputGroup',
+  category: 'ui',
+  filePath: 'components/ui/input-group.tsx',
+  description:
+    'Wraps an input with prefix/suffix addons (text, icons, or buttons). InputGroupAddon is a non-interactive label. InputGroupButton holds a button. InputGroupInput/InputGroupTextarea are the actual field slots.',
+  guidelines: [
+    'Use for URL inputs, currency fields, search with icon, and unit suffixes.',
+    'InputGroupAddon should be text or a static icon — not interactive.',
+    'InputGroupButton holds a Button — use for search submit or copy.',
+    'Avoid more than one addon on each side — it creates visual clutter.',
+  ],
+  variations: [
+    { name: 'prefix addon', description: 'InputGroupAddon before the input.' },
+    { name: 'suffix button', description: 'InputGroupButton after the input.' },
+    { name: 'icon prefix', description: 'Icon inside InputGroupAddon.' },
+  ],
+  behavior: [
+    'Joins children with shared border via CSS group selectors.',
+    'Inherits rounded-none from design system.',
+    'Focus state propagates from InputGroupInput to the wrapper via :has(:focus-visible).',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'With Addons',
+      render: () => (
+        <div className="flex flex-col gap-3 w-64">
+          <InputGroup>
+            <InputGroupAddon>https://</InputGroupAddon>
+            <InputGroupInput placeholder="yoursite.com" />
+          </InputGroup>
+          <InputGroup>
+            <InputGroupInput placeholder="Amount" type="number" />
+            <InputGroupAddon>USD/hr</InputGroupAddon>
+          </InputGroup>
+          <InputGroup>
+            <InputGroupInput placeholder="Search..." />
+            <InputGroupButton>
+              <Button size="sm">Search</Button>
+            </InputGroupButton>
+          </InputGroup>
+        </div>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--muted', usage: 'bg-muted (InputGroupAddon)', category: 'color', description: 'Addon background' },
+      { token: '--input', usage: 'border-input', category: 'color', description: 'Group border' },
+      { token: '--muted-foreground', usage: 'text-muted-foreground (addon text)', category: 'color', description: 'Addon label text' },
+    ],
+    outOfToken: [],
+  },
+  codeSnippet: {
+    react: `import {
+  InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput
+} from '@/components/ui/input-group'
+
+// Currency field
+<InputGroup>
+  <InputGroupAddon>$</InputGroupAddon>
+  <InputGroupInput type="number" placeholder="90" />
+  <InputGroupAddon>USD</InputGroupAddon>
+</InputGroup>
+
+// Search with button
+<InputGroup>
+  <InputGroupInput placeholder="Search opportunities..." />
+  <InputGroupButton>
+    <Button size="sm">Search</Button>
+  </InputGroupButton>
+</InputGroup>`,
+    html: `<div data-slot="input-group">
+  <div data-slot="input-group-addon">$</div>
+  <input data-slot="input-group-input" />
+</div>`,
+    css: `:root { --muted: oklch(0.97 0 0); --input: oklch(0.922 0 0); }`,
+  },
+}
+
+// ─── HoverCard ────────────────────────────────────────────────────────────────
+
+const hoverCardMeta: ComponentMeta = {
+  id: 'ui-hover-card',
+  name: 'HoverCard',
+  category: 'ui',
+  filePath: 'components/ui/hover-card.tsx',
+  description:
+    'Floating card that appears on trigger hover, built on Radix HoverCard. Use for rich link previews, user profile previews, and contextual info that supplements without requiring a click. Not for interactive content — use Popover for that.',
+  guidelines: [
+    'Trigger should be a link or text element — use asChild.',
+    'HoverCard is display-only — do not put buttons or interactive elements inside.',
+    'Use for link previews, user cards, and skill definitions.',
+    'Default open/close delay: 700ms/300ms — do not reduce below 300ms to avoid accidental triggers.',
+  ],
+  variations: [
+    { name: 'default', description: 'Floating card on hover with w-80 default width.' },
+  ],
+  behavior: [
+    'Opens on hover after 700ms delay, closes after 300ms.',
+    'Renders in Portal for z-index safety.',
+    'Animates zoom-in/fade-in on open, zoom-out/fade-out on close.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'User Preview',
+      render: () => (
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <Button variant="link" size="sm" className="px-0">@alexrivera</Button>
+          </HoverCardTrigger>
+          <HoverCardContent className="w-72">
+            <div className="flex gap-3">
+              <div className="size-10 bg-muted flex items-center justify-center text-xs font-medium shrink-0">AR</div>
+              <div className="flex flex-col gap-1">
+                <p className="text-xs font-medium">Alex Rivera</p>
+                <p className="text-xs text-muted-foreground">Senior Product Engineer · Signal 82</p>
+                <p className="text-xs text-muted-foreground mt-1">Full-stack engineer focused on product UX. Based in Barcelona.</p>
+              </div>
+            </div>
+          </HoverCardContent>
+        </HoverCard>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--popover', usage: 'bg-popover', category: 'color', description: 'Card background' },
+      { token: '--popover-foreground', usage: 'text-popover-foreground', category: 'color', description: 'Card text' },
+      { token: '--foreground', usage: 'ring-foreground/10', category: 'color', description: 'Subtle border' },
+    ],
+    outOfToken: [
+      { property: 'openDelay=700 closeDelay=300', category: 'animation', note: 'Hover delays are hardcoded in HoverCardProvider', suggestion: 'Define --hover-card-open-delay / --close-delay tokens' },
+    ],
+  },
+  codeSnippet: {
+    react: `import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card'
+
+<HoverCard>
+  <HoverCardTrigger asChild>
+    <a href="/profile/alex">@alexrivera</a>
+  </HoverCardTrigger>
+  <HoverCardContent>
+    <div className="flex gap-3">
+      <Avatar><AvatarFallback>AR</AvatarFallback></Avatar>
+      <div>
+        <p className="text-xs font-medium">Alex Rivera</p>
+        <p className="text-xs text-muted-foreground">Signal 82 · Available</p>
+      </div>
+    </div>
+  </HoverCardContent>
+</HoverCard>`,
+    html: `<div data-slot="hover-card-content" role="tooltip">
+  <!-- preview content -->
+</div>`,
+    css: `:root { --popover: oklch(1 0 0); --popover-foreground: oklch(0.145 0 0); }`,
+  },
+}
+
+// ─── NativeSelect ─────────────────────────────────────────────────────────────
+
+const nativeSelectMeta: ComponentMeta = {
+  id: 'ui-native-select',
+  name: 'NativeSelect',
+  category: 'ui',
+  filePath: 'components/ui/native-select.tsx',
+  description:
+    'Styled native <select> element. Lighter than Radix Select — no portal, no custom list, better mobile performance. Use when the number of options is large (20+) or native OS behavior is preferred.',
+  guidelines: [
+    'Prefer NativeSelect for large option sets (countries, timezones, 20+ items).',
+    'Prefer Radix Select for short lists (2–15 items) where custom styling is needed.',
+    'Always provide a default disabled option as a placeholder: <option value="" disabled>Select...</option>.',
+    'Pair with Label for accessibility.',
+  ],
+  variations: [
+    { name: 'default', description: 'h-8 (32px). Standard size.' },
+    { name: 'sm', description: 'h-7 (28px). For dense forms.' },
+  ],
+  behavior: [
+    'ChevronDownIcon positioned absolutely — pointer-events-none.',
+    'appearance-none removes native OS arrow.',
+    'aria-invalid: border-destructive + ring-destructive/20.',
+    'Dark mode: bg-input/30 resting.',
+  ],
+  knobs: [
+    { name: 'size', type: 'select', options: ['default', 'sm'], defaultValue: 'default' },
+  ],
+  stories: [
+    {
+      id: 'default',
+      name: 'Default',
+      render: () => (
+        <div className="flex flex-col gap-1.5 w-48">
+          <Label>Country</Label>
+          <NativeSelect defaultValue="">
+            <NativeSelectOption value="" disabled>Select country...</NativeSelectOption>
+            <NativeSelectOption value="us">United States</NativeSelectOption>
+            <NativeSelectOption value="es">Spain</NativeSelectOption>
+            <NativeSelectOption value="de">Germany</NativeSelectOption>
+          </NativeSelect>
+        </div>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--input', usage: 'border-input', category: 'color', description: 'Select border' },
+      { token: '--ring', usage: 'focus-visible:ring-ring/50', category: 'color', description: 'Focus ring' },
+      { token: '--destructive', usage: 'aria-invalid:border-destructive', category: 'color', description: 'Error state border' },
+      { token: '--muted-foreground', usage: 'text-muted-foreground (icon)', category: 'color', description: 'Chevron icon color' },
+    ],
+    outOfToken: [
+      { property: 'h-8 / h-7', category: 'spacing', note: 'Height hardcoded per size', suggestion: 'Define componentSizes.nativeSelect token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select'
+import { Label } from '@/components/ui/label'
+
+<div className="flex flex-col gap-1.5">
+  <Label htmlFor="timezone">Timezone</Label>
+  <NativeSelect id="timezone" defaultValue="">
+    <NativeSelectOption value="" disabled>Select timezone...</NativeSelectOption>
+    {timezones.map((tz) => (
+      <NativeSelectOption key={tz.value} value={tz.value}>{tz.label}</NativeSelectOption>
+    ))}
+  </NativeSelect>
+</div>`,
+    html: `<div data-slot="native-select-wrapper">
+  <select data-slot="native-select"></select>
+  <svg data-slot="native-select-icon" aria-hidden="true"></svg>
+</div>`,
+    css: `:root { --input: oklch(0.922 0 0); --ring: oklch(0.708 0 0); }`,
+  },
+}
+
+// ─── AspectRatio ──────────────────────────────────────────────────────────────
+
+const aspectRatioMeta: ComponentMeta = {
+  id: 'ui-aspect-ratio',
+  name: 'AspectRatio',
+  category: 'ui',
+  filePath: 'components/ui/aspect-ratio.tsx',
+  description:
+    'Maintains a fixed width/height ratio for child content. Built on Radix AspectRatio. Use for images, videos, and embed containers that must not distort. ratio prop defaults to 1 (square) — pass 16/9, 4/3, etc.',
+  guidelines: [
+    'Always set a width on the AspectRatio container — the height is derived from the ratio.',
+    'Use for images where both dimensions matter: thumbnails, avatars, video embeds.',
+    'Do not use for text content — use a Card or a fixed-height container instead.',
+    'object-cover on the child image prevents distortion inside the ratio box.',
+  ],
+  variations: [
+    { name: '1:1', description: 'ratio={1} — square. For avatars and thumbnails.' },
+    { name: '16:9', description: 'ratio={16/9} — widescreen. For video embeds.' },
+    { name: '4:3', description: 'ratio={4/3} — classic. For cards and previews.' },
+  ],
+  behavior: [
+    'Sets padding-bottom: (1/ratio)*100% on a position:relative wrapper.',
+    'Child is absolutely positioned to fill the box.',
+    'Overflow is hidden on the wrapper.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Image Ratios',
+      render: () => (
+        <div className="flex gap-4 items-start">
+          {[
+            { ratio: 1, label: '1:1' },
+            { ratio: 16 / 9, label: '16:9' },
+            { ratio: 4 / 3, label: '4:3' },
+          ].map(({ ratio, label }) => (
+            <div key={label} className="flex flex-col gap-1 w-28">
+              <AspectRatio ratio={ratio} className="bg-muted border border-border">
+                <div className="size-full flex items-center justify-center text-[10px] text-muted-foreground">{label}</div>
+              </AspectRatio>
+              <p className="text-[10px] text-muted-foreground text-center">{label}</p>
+            </div>
+          ))}
+        </div>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [],
+    outOfToken: [],
+  },
+  codeSnippet: {
+    react: `import { AspectRatio } from '@/components/ui/aspect-ratio'
+
+// 16:9 video thumbnail
+<AspectRatio ratio={16 / 9} className="w-full max-w-sm bg-muted">
+  <img
+    src={thumbnail}
+    alt="Video thumbnail"
+    className="size-full object-cover"
+  />
+</AspectRatio>
+
+// Square profile photo
+<AspectRatio ratio={1} className="w-20">
+  <img src={avatar} alt={name} className="size-full object-cover" />
+</AspectRatio>`,
+    html: `<div data-slot="aspect-ratio" style="position:relative; padding-bottom:56.25%;">
+  <img style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
+</div>`,
+    css: `/* Ratio is set via padding-bottom on the wrapper — no CSS tokens */`,
+  },
+}
+
+// ─── FormField ────────────────────────────────────────────────────────────────
+
+const formFieldMeta: ComponentMeta = {
+  id: 'ui-form-field',
+  name: 'FormField',
+  category: 'ui',
+  filePath: 'components/ui/form-field.tsx',
+  description:
+    'Lightweight form field wrapper that combines Label, hint text, and error message in a single component. Simpler than the Field/FieldGroup system — use when react-hook-form integration is not needed and a basic label+input+error pattern suffices.',
+  guidelines: [
+    'Use FormField for simple forms without complex layout requirements.',
+    'Use Field + FieldGroup for settings pages, horizontal layouts, or react-hook-form.',
+    'The error prop shows in red and replaces the hint — only one shows at a time.',
+    'Pass required={true} to show a red asterisk next to the label.',
+    'Pass id matching the input id for proper label association.',
+  ],
+  variations: [
+    { name: 'with label + hint', description: 'Label above, hint text below.' },
+    { name: 'with error', description: 'Error replaces hint. Red text.' },
+    { name: 'required', description: 'Asterisk after label text.' },
+  ],
+  behavior: [
+    'React.cloneElement injects id and error prop into direct child.',
+    'error prop replaces hint — mutually exclusive display.',
+    'Label htmlFor links to id prop.',
+  ],
+  knobs: [],
+  stories: [
+    {
+      id: 'default',
+      name: 'Field States',
+      render: () => (
+        <div className="flex flex-col gap-4 w-64">
+          <FormField label="Display Name" hint="Shown on your public profile." id="ff-name">
+            <Input placeholder="Alex Rivera" />
+          </FormField>
+          <FormField label="Hourly Rate" required error="Rate must be at least $30." id="ff-rate">
+            <Input type="number" placeholder="90" aria-invalid />
+          </FormField>
+          <FormField label="Bio" id="ff-bio">
+            <Textarea placeholder="Tell us about yourself..." rows={2} />
+          </FormField>
+        </div>
+      ),
+      defaultProps: {},
+    },
+  ],
+  tokenAudit: {
+    inToken: [
+      { token: '--destructive', usage: 'text-destructive (error, asterisk)', category: 'color', description: 'Error state and required indicator' },
+      { token: '--muted-foreground', usage: 'text-muted-foreground (hint)', category: 'color', description: 'Hint text' },
+    ],
+    outOfToken: [
+      { property: 'gap-1.5', category: 'spacing', note: 'Field gap hardcoded', suggestion: 'Map to --space-1.5 token' },
+    ],
+  },
+  codeSnippet: {
+    react: `import { FormField } from '@/components/ui/form-field'
+import { Input } from '@/components/ui/input'
+
+// With hint
+<FormField label="Email" hint="Work email preferred." id="email">
+  <Input type="email" placeholder="you@company.com" />
+</FormField>
+
+// With error
+<FormField label="Rate" required error="Must be at least $30." id="rate">
+  <Input type="number" aria-invalid />
+</FormField>`,
+    html: `<div class="flex flex-col gap-1.5">
+  <label for="email">Email <span class="text-destructive">*</span></label>
+  <input id="email" type="email" />
+  <p class="text-xs text-destructive">Error message here.</p>
+</div>`,
+    css: `:root { --destructive: oklch(0.577 0.245 27.325); --muted-foreground: oklch(0.556 0 0); }`,
+  },
+}
+
 // ─── Registry export ────────────────────────────────────────────────────────
 
 export const registry: ComponentMeta[] = [
+  // ── UI primitives ──────────────────────────────────────────────────────────
   buttonMeta,
+  buttonGroupMeta,
   badgeMeta,
   cardMeta,
   inputMeta,
+  inputGroupMeta,
   textareaMeta,
+  labelMeta,
+  formFieldMeta,
+  fieldMeta,
+  checkboxMeta,
+  radioGroupMeta,
   switchMeta,
+  sliderMeta,
+  selectMeta,
+  nativeSelectMeta,
   tabsMeta,
+  toggleMeta,
+  toggleGroupMeta,
+  accordionMeta,
+  collapsibleMeta,
+  tableMeta,
   avatarMeta,
+  kbdMeta,
+  spinnerMeta,
+  // ── Overlays & floating ────────────────────────────────────────────────────
+  alertDialogMeta,
+  dialogMeta,
+  sheetMeta,
+  popoverMeta,
+  tooltipMeta,
+  hoverCardMeta,
+  dropdownMenuMeta,
+  // ── Navigation ────────────────────────────────────────────────────────────
+  breadcrumbMeta,
+  paginationMeta,
+  // ── Layout utilities ──────────────────────────────────────────────────────
+  scrollAreaMeta,
+  aspectRatioMeta,
+  emptyMeta,
+  itemMeta,
+  // ── Progress & feedback ───────────────────────────────────────────────────
   progressMeta,
   alertMeta,
   separatorMeta,
+  // ── Shared / Cosmico-specific ─────────────────────────────────────────────
   glowCardMeta,
   animatedNumberMeta,
   skeletonMeta,
+  // ── Signal ────────────────────────────────────────────────────────────────
   signalPulseMeta,
   signalRadarMeta,
   signalTimelineMeta,
   signalDimensionCardMeta,
+  // ── Profile ───────────────────────────────────────────────────────────────
   skillConstellationMeta,
   availabilityToggleMeta,
   profileHeaderMeta,
+  // ── Trajectory & opportunities ────────────────────────────────────────────
   trajectoryPhaseCardMeta,
   opportunityCardMeta,
 ]

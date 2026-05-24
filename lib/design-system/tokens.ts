@@ -192,7 +192,7 @@ export const componentSizes = {
 
 export const signalThresholds = {
   low:    { min: 0,  max: 39,  label: 'Emerging',    color: 'text-amber-400' },
-  mid:    { min: 40, max: 69,  label: 'Developing',  color: 'text-violet-400' },
-  high:   { min: 70, max: 89,  label: 'Strong',      color: 'text-violet-300' },
+  mid:    { min: 40, max: 69,  label: 'Developing',  color: 'text-foreground' },
+  high:   { min: 70, max: 89,  label: 'Strong',      color: 'text-foreground' },
   peak:   { min: 90, max: 100, label: 'Elite',       color: 'text-white' },
 } as const

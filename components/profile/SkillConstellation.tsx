@@ -28,7 +28,7 @@ export function SkillConstellation({ skills }: SkillConstellationProps) {
               PROFICIENCY_SIZE[profIdx],
               PROFICIENCY_OPACITY[profIdx],
               skill.is_primary
-                ? 'border-violet-500/50 bg-violet-500/10 text-violet-200'
+                ? 'border-border bg-muted/10 text-foreground'
                 : 'border-border/50 bg-muted/30 text-muted-foreground hover:border-border'
             )}
             initial={{ opacity: 0, scale: 0.85 }}
@@ -38,7 +38,7 @@ export function SkillConstellation({ skills }: SkillConstellationProps) {
           >
             {skill.name}
             {skill.is_primary && (
-              <span className="ml-1 text-violet-400/60">·</span>
+              <span className="ml-1 text-muted-foreground">·</span>
             )}
           </motion.div>
         )

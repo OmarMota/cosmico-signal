@@ -34,11 +34,6 @@ export default function LoginPage() {
     <div className="min-h-screen bg-background flex flex-col overflow-hidden">
       <LoadingScreen show={!loadingDone} onComplete={() => setLoadingDone(true)} />
 
-      {/* Ambient glow */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-signal/[0.06] rounded-full blur-3xl" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-trajectory/[0.05] rounded-full blur-3xl" />
-      </div>
 
       {/* Header */}
       <AnimatePresence>
@@ -70,13 +65,13 @@ export default function LoginPage() {
           animate={loadingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
         >
-          <Badge variant="outline" className="mb-5 border-signal/20 bg-signal/8 text-signal-light gap-1.5">
+          <Badge variant="outline" className="mb-5 border-border bg-primary/8 text-primary gap-1.5">
             <Sparkles className="w-3 h-3" />
             Prototype — no account required
           </Badge>
           <h1 className="text-4xl font-bold text-foreground tracking-tight leading-tight mb-4">
             Understand who<br />
-            <span className="text-gradient-signal">you are becoming</span>
+            <span className="text-foreground">you are becoming</span>
           </h1>
           <p className="text-base text-muted-foreground leading-relaxed">
             Cosmico Signal observes how you work, tracks how you evolve,
@@ -96,14 +91,14 @@ export default function LoginPage() {
           >
             <Card
               onClick={handleLoginAsAlex}
-              className="group cursor-pointer h-full hover:border-signal/30 hover:shadow-lg hover:shadow-signal/8 transition-all duration-300"
+              className="group cursor-pointer h-full hover:border-border hover:shadow-lg hover:shadow-black/10 transition-all duration-300"
             >
               <CardContent className="p-6 flex flex-col h-full">
                 {/* Avatar */}
                 <div className="relative w-14 h-14 mb-5">
-                  <div className="absolute inset-0 rounded-full bg-signal/15 blur-md" />
-                  <div className="relative w-14 h-14 rounded-full border-2 border-signal/30 bg-signal/10 flex items-center justify-center">
-                    <span className="text-xl font-bold text-signal-light">A</span>
+                  <div className="absolute inset-0 rounded-full bg-primary/10 blur-md" />
+                  <div className="relative w-14 h-14 rounded-full border-2 border-border bg-primary/10 flex items-center justify-center">
+                    <span className="text-xl font-bold text-primary">A</span>
                   </div>
                   <span className="absolute bottom-0.5 right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-card" />
                 </div>
@@ -115,20 +110,20 @@ export default function LoginPage() {
                 </div>
 
                 <div className="flex items-center gap-3 mb-4">
-                  <Badge variant="signal" className="gap-1">
-                    <span className="w-1 h-1 rounded-full bg-signal inline-block" />
+                  <Badge variant="outline" className="gap-1">
+                    <span className="w-1 h-1 rounded-full bg-foreground inline-block" />
                     Signal 74.8
                   </Badge>
-                  <Badge variant="success" className="gap-1">Rising ↑</Badge>
+                  <Badge variant="secondary" className="gap-1">Rising ↑</Badge>
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 mb-5">
                   {['12wk history', 'Trajectory', 'Learning', 'Opportunities'].map(f => (
-                    <Badge key={f} variant="muted">{f}</Badge>
+                    <Badge key={f} variant="secondary">{f}</Badge>
                   ))}
                 </div>
 
-                <div className="mt-auto flex items-center gap-2 text-sm font-medium text-signal-light group-hover:text-signal transition-colors">
+                <div className="mt-auto flex items-center gap-2 text-sm font-medium text-primary group-hover:text-foreground transition-colors">
                   Load full profile
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </div>
@@ -145,11 +140,11 @@ export default function LoginPage() {
           >
             <Card
               onClick={handleCreateNew}
-              className="group cursor-pointer h-full border-dashed hover:border-signal/30 hover:bg-card transition-all duration-300 hover:shadow-lg hover:shadow-signal/8 bg-card/50"
+              className="group cursor-pointer h-full border-dashed hover:border-border hover:bg-card transition-all duration-300 hover:shadow-lg hover:shadow-black/10 bg-card/50"
             >
               <CardContent className="p-6 flex flex-col h-full">
-                <div className="w-14 h-14 rounded-full border-2 border-dashed border-border group-hover:border-signal/30 bg-accent/50 flex items-center justify-center mb-5 transition-colors">
-                  <Sparkles className="w-6 h-6 text-muted-foreground group-hover:text-signal transition-colors" />
+                <div className="w-14 h-14 rounded-full border-2 border-dashed border-border group-hover:border-border bg-accent/50 flex items-center justify-center mb-5 transition-colors">
+                  <Sparkles className="w-6 h-6 text-muted-foreground group-hover:text-foreground transition-colors" />
                 </div>
 
                 <div className="mb-4">
@@ -173,7 +168,7 @@ export default function LoginPage() {
                   ))}
                 </div>
 
-                <div className="mt-auto flex items-center gap-2 text-sm font-medium text-muted-foreground group-hover:text-signal-light transition-colors">
+                <div className="mt-auto flex items-center gap-2 text-sm font-medium text-muted-foreground group-hover:text-primary transition-colors">
                   Start 7-step onboarding
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </div>

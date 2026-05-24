@@ -4,21 +4,19 @@ import { cn } from '@/lib/utils/cn'
 interface GlowCardProps extends React.HTMLAttributes<HTMLDivElement> {
   hover?: boolean
   glow?: boolean
-  variant?: 'default' | 'signal' | 'trajectory' | 'intent'
+  variant?: 'default' | 'primary' | 'muted'
 }
 
 const variantStyles = {
-  default:    'border-border',
-  signal:     'border-signal/20 shadow-[0_0_24px_0_hsl(var(--signal)/0.12)]',
-  trajectory: 'border-[hsl(var(--trajectory)/0.25)] shadow-[0_0_24px_0_hsl(var(--trajectory)/0.12)]',
-  intent:     'border-[hsl(var(--intent)/0.25)] shadow-[0_0_24px_0_hsl(var(--intent)/0.12)]',
+  default: 'border-border',
+  primary: 'border-primary/20',
+  muted:   'border-border bg-muted/20',
 }
 
 const hoverStyles = {
-  default:    'hover:border-signal/20',
-  signal:     'hover:border-signal/40 hover:shadow-[0_0_32px_0_hsl(var(--signal)/0.2)]',
-  trajectory: 'hover:border-[hsl(var(--trajectory)/0.4)]',
-  intent:     'hover:border-[hsl(var(--intent)/0.4)]',
+  default: 'hover:border-primary/30',
+  primary: 'hover:border-primary/40',
+  muted:   'hover:border-border',
 }
 
 export const GlowCard = React.forwardRef<HTMLDivElement, GlowCardProps>(
@@ -26,10 +24,10 @@ export const GlowCard = React.forwardRef<HTMLDivElement, GlowCardProps>(
     <div
       ref={ref}
       className={cn(
-        'rounded-2xl border bg-card',
+        'rounded-none border bg-card',
         variantStyles[variant],
         hover && ['transition-all duration-200', hoverStyles[variant]],
-        glow && variant === 'signal' && 'shadow-[0_0_40px_0_hsl(var(--signal)/0.2)]',
+        glow && 'shadow-md',
         className
       )}
       {...props}

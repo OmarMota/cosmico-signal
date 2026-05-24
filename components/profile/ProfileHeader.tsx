@@ -65,14 +65,14 @@ export function ProfileHeader({ profile, signalProfile }: ProfileHeaderProps) {
 
           {/* Rate */}
           {(profile.hourly_rate_min || profile.hourly_rate_max) && (
-            <Badge variant="muted">
+            <Badge variant="secondary">
               {formatRate(profile.hourly_rate_min, profile.hourly_rate_max, profile.currency)}
             </Badge>
           )}
 
           {/* Location */}
           {profile.location && (
-            <Badge variant="muted" className="flex items-center gap-1">
+            <Badge variant="secondary" className="flex items-center gap-1">
               <MapPin className="w-3 h-3" />
               {profile.location}
             </Badge>
@@ -80,7 +80,7 @@ export function ProfileHeader({ profile, signalProfile }: ProfileHeaderProps) {
 
           {/* Hours */}
           {profile.hours_per_week && (
-            <Badge variant="muted" className="flex items-center gap-1">
+            <Badge variant="secondary" className="flex items-center gap-1">
               <Clock className="w-3 h-3" />
               {profile.hours_per_week}h/wk
             </Badge>

@@ -36,7 +36,7 @@ export function getTrendColor(trend: ScoreTrend): string {
 
 export function getScoreColor(score: number): string {
   if (score >= 80) return 'text-emerald-400'
-  if (score >= 65) return 'text-violet-400'
+  if (score >= 65) return 'text-foreground'
   if (score >= 45) return 'text-amber-400'
   return 'text-slate-400'
 }

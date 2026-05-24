@@ -3,7 +3,7 @@ import { useRef, useEffect } from 'react'
 import { Zap } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { TOTAL_STEPS, STEP_META } from '@/lib/stores/onboarding.store'
-import { fadeUpEnter } from '@/lib/gsap/animations'
+import { Button } from '@/components/ui/button'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 
@@ -31,7 +31,6 @@ export function OnboardingShell({
   const cardRef = useRef<HTMLDivElement>(null)
   const prevStep = useRef(currentStep)
 
-  // Animate card on step change
   useEffect(() => {
     if (!cardRef.current) return
     const isForward = currentStep > prevStep.current
@@ -47,16 +46,10 @@ export function OnboardingShell({
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden">
 
-      {/* Ambient bg */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-signal/6 rounded-full blur-3xl" />
-        <div className="absolute bottom-[-10%] right-[-5%] w-80 h-80 bg-trajectory/5 rounded-full blur-3xl" />
-      </div>
-
       {/* Logo */}
       <div className="relative z-10 flex items-center gap-2 mb-10">
-        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-signal to-trajectory flex items-center justify-center shadow-lg shadow-signal/20">
-          <Zap className="w-3.5 h-3.5 text-white" />
+        <div className="w-7 h-7 rounded-lg bg-foreground flex items-center justify-center">
+          <Zap className="w-3.5 h-3.5 text-background" />
         </div>
         <span className="font-semibold text-sm tracking-tight text-foreground">Cosmico Signal</span>
       </div>
@@ -70,8 +63,8 @@ export function OnboardingShell({
               key={i}
               className={cn(
                 'rounded-full transition-all duration-300',
-                state === 'done'   && 'h-2 w-5 bg-signal',
-                state === 'active' && 'h-2 w-8 bg-signal/80',
+                state === 'done'   && 'h-2 w-5 bg-primary',
+                state === 'active' && 'h-2 w-8 bg-primary/70',
                 state === 'future' && 'h-2 w-2 bg-muted/40'
               )}
             />
@@ -82,37 +75,32 @@ export function OnboardingShell({
       {/* Card */}
       <div
         ref={cardRef}
-        className="relative z-10 w-full max-w-md rounded-2xl border border-border/50 bg-card/90 backdrop-blur-sm p-8 shadow-2xl shadow-black/30"
+        className="relative z-10 w-full max-w-md rounded-none border border-border bg-card p-8 shadow-xl"
       >
-        {/* Step label */}
-        <p className="text-[10px] text-signal/60 uppercase tracking-widest mb-1 font-medium">
+        <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1 font-medium">
           Step {currentStep} of {TOTAL_STEPS}
         </p>
         <h1 className="text-2xl font-bold text-foreground mb-0.5">{step?.title}</h1>
         <p className="text-sm text-muted-foreground mb-6">{step?.subtitle}</p>
 
-        {/* Step content */}
         <div>{children}</div>
 
-        {/* Footer actions */}
         <div className="mt-8 flex items-center justify-between">
           {currentStep > 1 ? (
-            <button onClick={onBack} className="btn-ghost">
+            <Button variant="outline" size="sm" onClick={onBack}>
               ← Back
-            </button>
+            </Button>
           ) : <div />}
 
-          <button
+          <Button
             onClick={onNext}
             disabled={!canProceed || isLoading}
-            className="btn-signal"
           >
             {isLoading ? 'Saving…' : isLast ? 'Launch My Signal ✦' : 'Continue →'}
-          </button>
+          </Button>
         </div>
       </div>
 
-      {/* Sub-footnote */}
       <p className="relative z-10 mt-6 text-xs text-muted-foreground/40 text-center">
         Your data is stored locally. Nothing is sent to any server.
       </p>
