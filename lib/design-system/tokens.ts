@@ -9,17 +9,6 @@
 // ─── Color Tokens ──────────────────────────────────────────────────────────
 
 export const colors = {
-  // Brand
-  signal:          'hsl(var(--signal))',
-  signalLight:     'hsl(var(--signal-light))',
-  signalMuted:     'var(--signal-muted)',
-  signalBorder:    'var(--signal-border)',
-  signalGlow:      'var(--signal-glow)',
-  trajectory:      'hsl(var(--trajectory))',
-  trajectoryMuted: 'var(--trajectory-muted)',
-  intent:          'hsl(var(--intent))',
-  intentMuted:     'var(--intent-muted)',
-
   // Semantic
   background:           'hsl(var(--background))',
   foreground:           'hsl(var(--foreground))',
@@ -120,13 +109,10 @@ export const radius = {
 // ─── Shadows ───────────────────────────────────────────────────────────────
 
 export const shadows = {
-  sm:       'var(--shadow-sm)',
-  md:       'var(--shadow-md)',
-  lg:       'var(--shadow-lg)',
-  xl:       'var(--shadow-xl)',
-  signal:   'var(--shadow-signal)',
-  signalLg: 'var(--shadow-signal-lg)',
-  glow:     'var(--shadow-glow)',
+  sm: 'var(--shadow-sm)',
+  md: 'var(--shadow-md)',
+  lg: 'var(--shadow-lg)',
+  xl: 'var(--shadow-xl)',
 } as const
 
 // ─── Animation ─────────────────────────────────────────────────────────────

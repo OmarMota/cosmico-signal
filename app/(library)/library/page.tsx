@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useMemo, useEffect, useCallback } from 'react'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 import { registry } from '@/lib/component-library/registry'
-import type { ComponentMeta, Knob, TokenCategory } from '@/lib/component-library/types'
+import type { ComponentMeta, Knob, TokenCategory, ChangelogEntry } from '@/lib/component-library/types'
 import { cn } from '@/lib/utils'
 
 // ─── Constants ──────────────────────────────────────────────────────────────
@@ -28,7 +29,7 @@ const TOKEN_CATEGORY_STYLES: Record<TokenCategory, string> = {
   'z-index':  'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
 }
 
-type MainTab = 'docs' | 'code' | 'tokens' | 'request'
+type MainTab = 'docs' | 'code' | 'tokens' | 'request' | 'changelog'
 type CodeTab = 'react' | 'html' | 'css'
 
 // ─── Page ───────────────────────────────────────────────────────────────────
@@ -53,6 +54,9 @@ export default function LibraryPage() {
   const [requestWhat, setRequestWhat] = useState('')
   const [requestWhy, setRequestWhy] = useState('')
   const [copied, setCopied] = useState(false)
+  const [openCategories, setOpenCategories] = useState<Set<string>>(
+    () => new Set(CATEGORIES.map((c) => c.id))
+  )
 
   const activeMeta = useMemo(() => registry.find((m) => m.id === selectedId), [selectedId])
   const activeStory = useMemo(
@@ -136,27 +140,53 @@ export default function LibraryPage() {
 
         {/* Nav */}
         <nav className="flex-1 overflow-y-auto py-3 px-2">
-          {categorized.map((cat) => (
-            <div key={cat.id} className="mb-4">
-              <p className="px-2 mb-1 text-[10px] font-semibold tracking-widest text-muted-foreground uppercase">
-                {cat.label}
-              </p>
-              {cat.components.map((m) => (
+          {categorized.map((cat) => {
+            const isOpen = openCategories.has(cat.id)
+            return (
+              <div key={cat.id} className="mb-1">
+                {/* Collapsible section header */}
                 <button
-                  key={m.id}
-                  onClick={() => setSelectedId(m.id)}
-                  className={cn(
-                    'w-full text-left px-2 py-1.5 rounded-none transition-colors',
-                    selectedId === m.id
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-foreground hover:bg-muted',
-                  )}
+                  onClick={() =>
+                    setOpenCategories((prev) => {
+                      const next = new Set(prev)
+                      next.has(cat.id) ? next.delete(cat.id) : next.add(cat.id)
+                      return next
+                    })
+                  }
+                  className="w-full flex items-center justify-between px-2 py-1.5 mb-0.5 hover:bg-muted rounded-none transition-colors group"
                 >
-                  {m.name}
+                  <span className="text-[10px] font-semibold tracking-widest text-muted-foreground uppercase">
+                    {cat.label}
+                  </span>
+                  {isOpen ? (
+                    <ChevronDown className="size-3 text-muted-foreground" />
+                  ) : (
+                    <ChevronRight className="size-3 text-muted-foreground" />
+                  )}
                 </button>
-              ))}
-            </div>
-          ))}
+
+                {/* Component list */}
+                {isOpen && (
+                  <div className="mb-3">
+                    {cat.components.map((m) => (
+                      <button
+                        key={m.id}
+                        onClick={() => setSelectedId(m.id)}
+                        className={cn(
+                          'w-full text-left px-2 py-1.5 rounded-none transition-colors',
+                          selectedId === m.id
+                            ? 'bg-primary text-primary-foreground'
+                            : 'text-foreground hover:bg-muted',
+                        )}
+                      >
+                        {m.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </nav>
 
         {/* Footer */}
@@ -258,6 +288,7 @@ export default function LibraryPage() {
                   { id: 'docs', label: 'Docs' },
                   { id: 'code', label: 'Code' },
                   { id: 'tokens', label: 'Token Audit' },
+                  { id: 'changelog', label: 'Changelog' },
                   { id: 'request', label: 'Change Request' },
                 ] as { id: MainTab; label: string }[]
               ).map((tab) => (
@@ -290,6 +321,7 @@ export default function LibraryPage() {
               />
             )}
             {mainTab === 'tokens' && <TokenPanel meta={activeMeta} />}
+            {mainTab === 'changelog' && <ChangelogPanel meta={activeMeta} />}
             {mainTab === 'request' && (
               <RequestPanel
                 meta={activeMeta}
@@ -665,6 +697,81 @@ function RequestPanel({
       >
         {copied ? '✓ Copied to clipboard' : 'Copy as Markdown'}
       </button>
+    </div>
+  )
+}
+
+// ─── ChangelogPanel ──────────────────────────────────────────────────────────
+
+function ChangelogPanel({ meta }: { meta: ComponentMeta }) {
+  const entries: ChangelogEntry[] = meta.changelog ?? []
+
+  function formatDate(iso: string) {
+    try {
+      const d = new Date(iso)
+      return d.toLocaleString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short',
+      })
+    } catch {
+      return iso
+    }
+  }
+
+  if (entries.length === 0) {
+    return (
+      <div className="max-w-2xl">
+        <p className="text-muted-foreground text-xs italic">
+          No history recorded for <strong className="text-foreground font-semibold">{meta.name}</strong> yet.
+        </p>
+        <p className="text-muted-foreground text-[10px] mt-2">
+          Use the Change Request tab to propose a change — once applied it will be logged here.
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="max-w-2xl space-y-0">
+      <div className="flex items-center justify-between mb-4">
+        <SectionLabel className="mb-0">
+          Changelog
+          <span className="ml-2 text-muted-foreground font-normal normal-case tracking-normal">
+            ({entries.length} entr{entries.length !== 1 ? 'ies' : 'y'})
+          </span>
+        </SectionLabel>
+      </div>
+
+      {/* Timeline */}
+      <div className="relative border-l border-border ml-2">
+        {[...entries].reverse().map((entry, i) => (
+          <div key={i} className="relative pl-6 pb-6 last:pb-0">
+            {/* Timeline dot */}
+            <span className="absolute left-[-5px] top-1 w-2.5 h-2.5 rounded-full bg-background border-2 border-border block" />
+
+            {/* Date + author */}
+            <div className="flex items-baseline gap-3 mb-1.5">
+              <span className="font-mono text-[10px] text-muted-foreground">{formatDate(entry.date)}</span>
+              {entry.author && (
+                <span className="text-[10px] text-muted-foreground">by {entry.author}</span>
+              )}
+            </div>
+
+            {/* Description */}
+            <p className="text-foreground leading-relaxed mb-1">{entry.description}</p>
+
+            {/* Reason */}
+            <p className="text-muted-foreground leading-relaxed text-[11px]">
+              <span className="font-semibold uppercase tracking-wider text-[9px]">Reason</span>{' '}
+              {entry.reason}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

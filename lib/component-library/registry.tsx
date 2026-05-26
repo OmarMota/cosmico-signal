@@ -109,14 +109,7 @@ import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/h
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { FormField } from '@/components/ui/form-field'
-import { SidebarNav } from '@/components/shared/SidebarNav'
-import { NextStepsPanel } from '@/components/dashboard/NextStepsPanel'
-import { ContentCard } from '@/components/learning/ContentCard'
-import { ProfileSectionNav } from '@/components/profile/ProfileSectionNav'
-import { RoleEvolutionMap } from '@/components/trajectory/RoleEvolutionMap'
-import { TrajectoryArc } from '@/components/trajectory/TrajectoryArc'
-import { OnboardingShell } from '@/components/onboarding/OnboardingShell'
-import type { ComponentMeta } from './types'
+import type { ComponentMeta, ChangelogEntry } from './types'
 
 // ─── Mock data ──────────────────────────────────────────────────────────────
 
@@ -399,6 +392,20 @@ const buttonMeta: ComponentMeta = {
   --ease-default:    cubic-bezier(0.4, 0, 0.2, 1);
 }`,
   },
+  changelog: [
+    {
+      date: '2026-05-22T11:26:33+02:00',
+      description: 'Replaced custom Cosmico variant styles with Lyra preset (shadcn b38Tv0N96). Applied rounded-none across all size variants. Removed btn-signal and btn-ghost CSS classes.',
+      reason: 'Design system reset to neutral oklch palette — brand signal/violet colors retired.',
+      author: 'OmarMota',
+    },
+    {
+      date: '2026-05-24T02:05:52+02:00',
+      description: 'Added to component library registry with full tokenAudit, knobs, stories, and code snippets.',
+      reason: 'In-app component library launched at /library.',
+      author: 'OmarMota',
+    },
+  ],
 }
 
 // ─── Badge ─────────────────────────────────────────────────────────────────
@@ -552,6 +559,20 @@ const badgeMeta: ComponentMeta = {
   overflow: hidden;
 }`,
   },
+  changelog: [
+    {
+      date: '2026-05-22T11:26:33+02:00',
+      description: 'Replaced signal/violet Cosmico variant with shadcn Lyra preset. Added ghost and link variants. Removed text-gradient-signal class.',
+      reason: 'Design system reset — all brand-specific badge colors retired in favour of neutral oklch scale.',
+      author: 'OmarMota',
+    },
+    {
+      date: '2026-05-24T02:05:52+02:00',
+      description: 'Added to component library registry with five documented variants and tokenAudit.',
+      reason: 'In-app component library launched at /library.',
+      author: 'OmarMota',
+    },
+  ],
 }
 
 // ─── Card ──────────────────────────────────────────────────────────────────
@@ -1013,8 +1034,9 @@ const signalPulseMeta: ComponentMeta = {
   tokenAudit: {
     inToken: [
       { token: '--border', usage: 'border-border/40, border-border/60', category: 'color', description: 'Pulse ring borders at two opacities' },
-      { token: '--foreground', usage: 'bg-foreground (glow backdrop)', category: 'color', description: 'Glow blur layer color' },
+      { token: '--foreground', usage: 'bg-foreground (glow backdrop), text-foreground (score numeral)', category: 'color', description: 'Glow blur layer and animated score number' },
       { token: '--card', usage: 'bg-card', category: 'color', description: 'Core orb background' },
+      { token: '--muted-foreground', usage: 'text-muted-foreground', category: 'color', description: 'Score label text (getScoreLabel) at size lg' },
     ],
     outOfToken: [
       {
@@ -1090,11 +1112,32 @@ setScore(85) // animates smoothly via useSpring`,
 }
 
 .core-orb {
+
   background: oklch(var(--card));
   border: 1px solid oklch(var(--border));
   border-radius: 9999px;
 }`,
   },
+  changelog: [
+    {
+      date: '2026-04-13T00:17:43+02:00',
+      description: 'Initial implementation — animated orb with concentric rings, Framer Motion spring score interpolation, size variants sm/md/lg.',
+      reason: 'Core signal score visualisation for profile and onboarding pages.',
+      author: 'OmarMota',
+    },
+    {
+      date: '2026-05-24T02:05:52+02:00',
+      description: 'Added to component library registry. Documented tokenAudit (5 out-of-token hardcoded values identified: rgba shadows, hex trend colors, spring parameters, blur values).',
+      reason: 'In-app component library launched at /library.',
+      author: 'OmarMota',
+    },
+    {
+      date: '2026-05-24T10:00:00+02:00',
+      description: 'Fixed tokenAudit — added missing --muted-foreground (score label) and clarified --foreground usage (glow backdrop + score numeral).',
+      reason: 'Token audit verification pass: inToken entries were incomplete.',
+      author: 'OmarMota',
+    },
+  ],
 }
 
 // ─── Input ─────────────────────────────────────────────────────────────────

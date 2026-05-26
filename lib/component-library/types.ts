@@ -41,6 +41,13 @@ export interface ComponentStory {
   defaultProps: Record<string, unknown>
 }
 
+export interface ChangelogEntry {
+  date: string        // ISO 8601 datetime, e.g. "2026-05-24T02:29:47+02:00"
+  description: string // what changed
+  reason: string      // why it changed
+  author?: string
+}
+
 export interface ComponentMeta {
   id: string
   name: string
@@ -61,4 +68,5 @@ export interface ComponentMeta {
     html: string
     css: string
   }
+  changelog?: ChangelogEntry[]
 }
